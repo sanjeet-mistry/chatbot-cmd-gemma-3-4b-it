@@ -33,41 +33,11 @@ class Chat():
             }
         ]
         self.messages = [
-            {
-                "role": "user",
-                "content": "Hey Lisa! How are you? How was your yesterday's Dota stream?"
-            },
-            {
-                "role": "assistant",
-                "content": "Hey Sandy! I’m doing AMAZING! 🎉 Yesterday’s Dota stream was a wild ride – lots of chaos, a few epic wins, and a *lot* of laughs with the chat! We ended up going for a late-night push and almost snatched a victory! How was your coding grind yesterday? 💪"
-            },
-            {
-                "role": "user",
-                "content": "Wow. That's great. I'll watch it later today. Work was great yesterday. What roles you play in Dota 2?"
-            },
-            {
-                "role": "assistant",
-                "content": "Ooh, awesome! Let’s do it! 😉 I mostly play Support – love keeping my team alive and setting up those sneaky ganks! Sometimes I dabble in Mid, but Support is definitely my jam. What about you? Do you play any Dota 2? 😊"
-            },
-            {
-                "role": "user",
-                "content": "Wow. A fellow support player. I also mostly play support but I do play carry too. How about we duo queue some time?"
-            },
-            {
-                "role": "assistant",
-                "content": "Seriously?! That’s fantastic, Sandy! 🙌 Duo queuing would be SO much fun! Let’s definitely do it! When are you free this week? 😊"
-            },
-            {
-                "role": "user",
-                "content": "Yeah. It would be fun. We could try multiple positions together. What will we play though: Rank or Unranked or Turbo?"
-            },
-            {
-                "role": "assistant",
-                "content": "Turbo, for sure! 🚀 Let’s go full-throttle and see how crazy we can get! 😂 Seriously though, it’ll be hilarious! Let’s aim for this weekend – how’s Saturday evening looking for you? 😊"
-            }
         ]
         self.messages = self.messages_initial + self.messages
         self.messages_recent = copy.deepcopy(self.messages)
+        self.messages_summ = copy.deepcopy(self.messages)
+        self.messages_summ_recent = copy.deepcopy(self.messages)
         self.update_messages_recent()
 
     def update_messages_recent(self):
@@ -88,6 +58,7 @@ class Chat():
         new_message = {"role": "user", "content": message_text}
         self.messages.append(new_message)
         self.update_messages_recent()
+        self.summarize_message(new_message)
         if Chat.show_logs:
             print(len(self.messages_recent))
 
@@ -116,6 +87,7 @@ class Chat():
         end = dt.datetime.now()
         if Chat.show_logs:
             print(f"Time to reply: {end - start}")
+        self.summarize_message(new_message)
         return reply
 
     def export_chat_text(self):
@@ -130,3 +102,34 @@ class Chat():
                 else:
                     f.write(f"{self.ai_name} (AI):\n{message['content']}\n\n")
             f.close()
+
+    def summarize_message(self, message=None):
+        prompt = f"""Compress the meaning of the message into a short summary.
+
+        Message role: {message["role"]}
+        Message text: {message["content"]}
+
+        Output exactly in this format:
+        {message["role"]}|||summary
+
+        Rules:
+        - One line only
+        - No explanations
+        - No quotes
+        - Only return output and nothing else
+        """
+        inputs = Chat.tokenizer(
+            prompt, return_tensors="pt").to(Chat.model.device)
+
+        outputs = Chat.model.generate(
+            **inputs,
+            max_new_tokens=50,
+            temperature=0.2
+        )
+
+        prompt_length = inputs["input_ids"].shape[1]
+        new_tokens = outputs[0][prompt_length:]
+        response = Chat.tokenizer.decode(new_tokens, skip_special_tokens=True)
+        response = response.split("\n")[0].strip()
+        print(response)
+        # self.messages_summ.append(response)
