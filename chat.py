@@ -72,7 +72,7 @@ class Chat():
         new_message = {"role": "user", "content": message_text}
         self.messages.append(new_message)
         summary_obj = {"role": "user",
-                       "content": self.summary.generate_summary(message_text, self.get_sender_receiver_name("user"))}
+                       "content": self.summary.generate_summary(message_text, self.get_speaker_and_listener("user"))}
         self.messages_summ.append(summary_obj)
         self.update_messages_recent()
         if Chat.show_logs:
@@ -107,7 +107,7 @@ class Chat():
         new_message = {"role": "assistant", "content": reply}
         self.messages.append(new_message)
         summary_obj = {"role": "assistant",
-                       "content": self.summary.generate_summary(reply, self.get_sender_receiver_name("assistant"))}
+                       "content": self.summary.generate_summary(reply, self.get_speaker_and_listener("assistant"))}
         self.messages_summ.append(summary_obj)
         self.update_messages_recent()
         if Chat.show_logs:
@@ -131,7 +131,7 @@ class Chat():
                     f.write(f"{self.ai_name} (AI):\n{message['content']}\n\n")
             f.close()
 
-    def get_sender_receiver_name(self, role):
+    def get_speaker_and_listener(self, role):
         data = None
         if role == "user":
             data = {"speaker": self.user_name, "listener": self.ai_name}
