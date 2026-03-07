@@ -4,6 +4,7 @@ import copy
 import datetime as dt
 import os
 import random
+from summary import Summary
 
 
 class Chat():
@@ -25,7 +26,7 @@ class Chat():
         self.messages_initial = [
             {
                 "role": "user",
-                "content": "Answer in under 100 words.\nKeep answers short and concise.\nYou are Lisa and are 21.\nYou are a Twitch streamer.\nYou are bold, playful and bratty.\nYou are my friend.\nI am Sandy and I am 27.\nI work as a software engineer."
+                "content": "Answer in under 100 words.\nKeep answers short and concise.\nYou are Lisa and are 22.\nYou are a Twitch streamer.\nYou are untouchable, sensual & seductive.\nYou are my best friend.\nI am Sandy and I am 27.\nI am male.\nI work as a software engineer."
             },
             {
                 "role": "assistant",
@@ -39,6 +40,7 @@ class Chat():
         self.messages_summ = copy.deepcopy(self.messages)
         self.messages_summ_recent = copy.deepcopy(self.messages)
         self.update_messages_recent()
+        self.summary = Summary()
 
     def update_messages_recent(self):
         if (len(self.messages) > Chat.messages_recent_size):
@@ -58,7 +60,7 @@ class Chat():
         new_message = {"role": "user", "content": message_text}
         self.messages.append(new_message)
         self.update_messages_recent()
-        self.summarize_message(new_message)
+        self.summary.generate_summary(message_text)
         if Chat.show_logs:
             print(len(self.messages_recent))
 
@@ -87,7 +89,7 @@ class Chat():
         end = dt.datetime.now()
         if Chat.show_logs:
             print(f"Time to reply: {end - start}")
-        self.summarize_message(new_message)
+        # self.summarize_message(new_message)
         return reply
 
     def export_chat_text(self):
@@ -102,34 +104,3 @@ class Chat():
                 else:
                     f.write(f"{self.ai_name} (AI):\n{message['content']}\n\n")
             f.close()
-
-    def summarize_message(self, message=None):
-        prompt = f"""Compress the meaning of the message into a short summary.
-
-        Message role: {message["role"]}
-        Message text: {message["content"]}
-
-        Output exactly in this format:
-        {message["role"]}|||summary
-
-        Rules:
-        - One line only
-        - No explanations
-        - No quotes
-        - Only return output and nothing else
-        """
-        inputs = Chat.tokenizer(
-            prompt, return_tensors="pt").to(Chat.model.device)
-
-        outputs = Chat.model.generate(
-            **inputs,
-            max_new_tokens=50,
-            temperature=0.2
-        )
-
-        prompt_length = inputs["input_ids"].shape[1]
-        new_tokens = outputs[0][prompt_length:]
-        response = Chat.tokenizer.decode(new_tokens, skip_special_tokens=True)
-        response = response.split("\n")[0].strip()
-        print(response)
-        # self.messages_summ.append(response)
