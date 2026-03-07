@@ -15,26 +15,23 @@ class Summary():
 
     def generate_summary(self, message_text):
         start = dt.datetime.now()
-        prompt = f"""Summarize the following message in ONE short sentence.
+        prompt = f"""Summarize the message in ONE short sentence in third person.
 
-Message: {message_text}
-
-Write the summary in THIRD PERSON.
-
-Speaker names:
-user = Sandy
-assistant = Lisa
+Message:
+---
+{message_text}
+---
 
 Rules:
-- The summary must use the speaker's name (Sandy or Lisa)
-- Do NOT use I, me, my, or we
-- One line only
-- No explanations
-- No quotes
-- Only return summary and nothing else
-
-Output format:
-summary"""
+- Use the speaker's name (Sandy or Lisa)
+- Include important actions and dialogue
+- Keep greetings or questions if present
+- Do not invent information
+- No pronouns
+- Maximum 20 words
+- Do not change known character facts such as gender
+- Return only the summary sentence
+"""
         inputs = Summary.tokenizer(
             prompt, return_tensors="pt").to(Summary.model.device)
 
@@ -47,7 +44,7 @@ summary"""
         prompt_length = inputs["input_ids"].shape[1]
         new_tokens = outputs[0][prompt_length:]
         response = Summary.tokenizer.decode(
-            new_tokens, skip_special_tokens=True)
+            new_tokens, skip_special_tokens=True).strip()
         end = dt.datetime.now()
         if self.show_logs:
             print(response)

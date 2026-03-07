@@ -17,7 +17,7 @@ class Chat():
     )
     # number of recent messages to add in context including the initial messages
     messages_recent_size = 11
-    show_logs = True
+    show_logs = False
 
     def __init__(self, user_name, ai_name):
         self.id = random.randint(10000000, 99999999)
@@ -26,7 +26,7 @@ class Chat():
         self.messages_initial = [
             {
                 "role": "user",
-                "content": "Answer in under 100 words.\nKeep answers short and concise.\nYou are Lisa and are 22.\nYou are a Twitch streamer.\nYou are untouchable, sensual & seductive.\nYou are my best friend.\nI am Sandy and I am 27.\nI am male.\nI work as a software engineer."
+                "content": "Answer in under 100 words.\nKeep answers short and concise.\nYou are Lisa and are 22.\nYou are female.\nYou are a latina.\nYou are a Twitch streamer.\nYou are untouchable, sensual & seductive.\nWe are roommates.\nI am Sandy and I am 27.\nI am male.\nI work as a software engineer.\nWe live together in an apartment in Mumbai."
             },
             {
                 "role": "assistant",
@@ -39,36 +39,57 @@ class Chat():
         self.messages_recent = copy.deepcopy(self.messages)
         self.messages_summ = copy.deepcopy(self.messages)
         self.messages_summ_recent = copy.deepcopy(self.messages)
-        self.update_messages_recent()
         self.summary = Summary()
+        self.use_summ = True
 
     def update_messages_recent(self):
-        if (len(self.messages) > Chat.messages_recent_size):
-            if len(self.messages) % 2 == 0:
-                self.messages_recent = self.messages_initial + \
-                    copy.deepcopy(
-                        self.messages[-(Chat.messages_recent_size - 3):])
-            else:
-                self.messages_recent = self.messages_initial + \
-                    copy.deepcopy(
-                        self.messages[-(Chat.messages_recent_size - 2):])
+        messages_recent = None
+        messages = None
+        if self.use_summ:
+            messages = self.messages_summ
+            messages_recent = self.messages_summ_recent
         else:
-            self.messages_recent = self.messages
+            messages = self.messages
+            messages_recent = self.messages_recent
+        if (len(messages) > Chat.messages_recent_size):
+            if len(messages) % 2 == 0:
+                messages_recent = self.messages_initial + \
+                    copy.deepcopy(
+                        messages[-(Chat.messages_recent_size - 3):])
+            else:
+                messages_recent = self.messages_initial + \
+                    copy.deepcopy(
+                        messages[-(Chat.messages_recent_size - 2):])
+        else:
+            messages_recent = messages
+        if self.use_summ:
+            self.messages_summ_recent = messages_recent
+        else:
+            self.messages_recent = messages_recent
 
     def generate_output(self, message_text):
         start = dt.datetime.now()
         new_message = {"role": "user", "content": message_text}
         self.messages.append(new_message)
+        summary_obj = {"role": "user",
+                       "content": self.summary.generate_summary(message_text)}
+        self.messages_summ.append(summary_obj)
         self.update_messages_recent()
-        self.summary.generate_summary(message_text)
         if Chat.show_logs:
-            print(len(self.messages_recent))
+            print(len(self.messages_summ_recent))
 
-        input_ids = Chat.tokenizer.apply_chat_template(
-            self.messages_recent,
-            tokenize=True,
-            add_generation_prompt=True,
-            return_tensors="pt").to(Chat.model.device)
+        if self.use_summ:
+            input_ids = Chat.tokenizer.apply_chat_template(
+                self.messages_summ_recent,
+                tokenize=True,
+                add_generation_prompt=True,
+                return_tensors="pt").to(Chat.model.device)
+        else:
+            input_ids = Chat.tokenizer.apply_chat_template(
+                self.messages_recent,
+                tokenize=True,
+                add_generation_prompt=True,
+                return_tensors="pt").to(Chat.model.device)
 
         outputs = Chat.model.generate(
             **input_ids,
@@ -85,7 +106,12 @@ class Chat():
 
         new_message = {"role": "assistant", "content": reply}
         self.messages.append(new_message)
+        summary_obj = {"role": "assistant",
+                       "content": self.summary.generate_summary(reply)}
+        self.messages_summ.append(summary_obj)
         self.update_messages_recent()
+        if Chat.show_logs:
+            print(len(self.messages_summ_recent))
         end = dt.datetime.now()
         if Chat.show_logs:
             print(f"Time to reply: {end - start}")
