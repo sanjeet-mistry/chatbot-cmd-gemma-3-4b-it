@@ -33,7 +33,7 @@ Rules:
 - No pronouns
 - Maximum 20 words
 - Do not change known character facts such as gender
-- Return only the summary sentence and nothing else
+- Return only the summary text and nothing else
 """
         inputs = Summary.tokenizer(
             prompt, return_tensors="pt").to(Summary.model.device)

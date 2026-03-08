@@ -40,7 +40,9 @@ class Chat():
         self.messages_summ = copy.deepcopy(self.messages)
         self.messages_summ_recent = copy.deepcopy(self.messages)
         self.summary = Summary()
-        self.use_summ = True
+        self.use_summ = False
+        if self.use_summ:
+            Chat.messages_recent_size = 21
 
     def update_messages_recent(self):
         messages_recent = None
@@ -71,9 +73,7 @@ class Chat():
         start = dt.datetime.now()
         new_message = {"role": "user", "content": message_text}
         self.messages.append(new_message)
-        summary_obj = {"role": "user",
-                       "content": self.summary.generate_summary(message_text, self.get_speaker_and_listener("user"))}
-        self.messages_summ.append(summary_obj)
+        self.create_summary("user", message_text)
         self.update_messages_recent()
         if Chat.show_logs:
             print(len(self.messages_summ_recent))
@@ -106,9 +106,7 @@ class Chat():
 
         new_message = {"role": "assistant", "content": reply}
         self.messages.append(new_message)
-        summary_obj = {"role": "assistant",
-                       "content": self.summary.generate_summary(reply, self.get_speaker_and_listener("assistant"))}
-        self.messages_summ.append(summary_obj)
+        self.create_summary("assistant", reply)
         self.update_messages_recent()
         if Chat.show_logs:
             print(len(self.messages_summ_recent))
@@ -138,3 +136,10 @@ class Chat():
         else:
             data = {"speaker": self.ai_name, "listener": self.user_name}
         return data
+
+    def create_summary(self, role, message_text):
+        condition = len(self.messages_summ)
+        if self.use_summ:
+            summary_obj = {"role": role,
+                           "content": self.summary.generate_summary(message_text, self.get_speaker_and_listener("user"))}
+            self.messages_summ.append(summary_obj)
