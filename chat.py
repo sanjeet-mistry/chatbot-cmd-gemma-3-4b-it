@@ -30,9 +30,9 @@ class Chat():
         self.messages_recent = copy.deepcopy(self.messages)
         self.messages_summ = copy.deepcopy(self.messages)
         self.messages_summ_recent = copy.deepcopy(self.messages)
-        self.summary = Summary()
         self.use_summ = False
         if self.use_summ:
+            self.summary = Summary()
             Chat.messages_recent_size = 21
 
     def update_messages_recent(self):
