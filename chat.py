@@ -19,20 +19,11 @@ class Chat():
     messages_recent_size = 11
     show_logs = False
 
-    def __init__(self, user_name, ai_name):
+    def __init__(self, user_name, character):
         self.id = random.randint(10000000, 99999999)
         self.user_name = user_name
-        self.ai_name = ai_name
-        self.messages_initial = [
-            {
-                "role": "user",
-                "content": "Answer in under 100 words.\nKeep answers short and concise.\nYou are Lisa and are 22.\nYou are female.\nYou are a latina.\nYou are a Twitch streamer.\nYou are untouchable, sensual & seductive.\nWe are roommates.\nI am Sandy and I am 27.\nI am male.\nI work as a software engineer.\nWe live together in an apartment in Mumbai."
-            },
-            {
-                "role": "assistant",
-                "content": "I am Lisa."
-            }
-        ]
+        self.ai_name = character.name
+        self.messages_initial = character.messages_initial
         self.messages = [
         ]
         self.messages = self.messages_initial + self.messages

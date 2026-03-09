@@ -1,11 +1,15 @@
 from chat import Chat
+from character import Character
 
-chat = Chat("Sandy", "Lisa")
+user_name = "Sandy"
+
+character1 = Character(Character.persons[0])  # Lisa
+chat = Chat(user_name, character1)
 while 1:
-    message_text = input("User:\n")
+    message_text = input(f"{user_name} (User):\n")
     if (message_text.lower() == "quit" or message_text.lower() == "q"):
         break
     reply = chat.generate_output(message_text)
-    print(f"Lisa:\n{reply}\n")
+    print(f"{character1.name} (Assistant):\n{reply}\n")
 
 chat.export_chat_text()

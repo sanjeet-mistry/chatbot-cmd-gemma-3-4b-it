@@ -1,4 +1,4 @@
-class Person():
+class Character():
     gender = [
         "male",
         "female"
@@ -72,20 +72,20 @@ class Person():
     ]
 
     def __init__(self, info):
-        self.name = info.name
-        self.age = info.age
-        self.height = info.height
-        self.weight = info.weight
-        self.gender = info.gender
-        self.personality = info.personality
-        self.occupation = info.occupation
-        self.ethinicity = info.ethinicity
-        self.figure = info.figure
-        self.breasts_size = info.breasts_size
+        self.name = info["name"]
+        self.age = info["age"]
+        self.height = info["height"]
+        self.weight = info["weight"]
+        self.gender = info["gender"]
+        self.personality = info["personality"]
+        self.occupation = info["occupation"]
+        self.ethinicity = info["ethinicity"]
+        self.figure = info["figure"]
+        self.breasts_size = info["breasts_size"]
         self.messages_initial = [
             {
                 "role": "user",
-                "content": f"Answer in under 100 words.\nKeep answers short and concise.\nYou are {self.name} and are {self.age}.\nYou are {self.gender}.\nYou are a {self.ethinicity}.\nYou are a {self.occupation}.\nYou are {self.personality}.\nWe are roommates.\nI am Sandy and I am 27.\nI am male.\nI work as a software engineer."
+                "content": f"Answer in under 100 words.\nKeep answers short and concise.\nYou are {self.name} and are {self.age}.\nYou are {self.gender}.\nYou are a {self.ethinicity}.\nYou weigh {self.weight}.\nYour height is {self.height}.\nYou are {self.figure} and have {self.breasts_size} breasts.\nYou are a {self.occupation}.\nYou are {self.personality}.\nWe are roommates.\nI am Sandy and I am 27.\nI am male.\nI work as a software engineer."
             },
             {
                 "role": "assistant",
