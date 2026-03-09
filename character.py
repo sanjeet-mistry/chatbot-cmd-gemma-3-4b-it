@@ -39,7 +39,7 @@ class Character():
             "height": "177 cm",
             "weight": "78 kg",
             "gender": gender[1],
-            "personality": "queen",
+            "personality": "confident, loving & adventurous",
             "occupation": "Instagram Model",
             "ethinicity": ethinicity[2],
             "figure": "curvy",
