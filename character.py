@@ -36,8 +36,8 @@ class Character():
         {
             "name": "Wendy",
             "age": 24,
-            "height": "183 cm",
-            "weight": "83 kg",
+            "height": "177 cm",
+            "weight": "78 kg",
             "gender": gender[1],
             "personality": "confident, fierce & provocative",
             "occupation": "Instagram Model",
