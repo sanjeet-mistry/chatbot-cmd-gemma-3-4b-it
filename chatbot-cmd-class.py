@@ -3,7 +3,7 @@ from character import Character
 
 user_name = "Sandy"
 
-character1 = Character(Character.persons[0])  # Lisa
+character1 = Character(Character.persons[0])
 chat = Chat(user_name, character1)
 while 1:
     message_text = input(f"{user_name} (User):\n")

@@ -15,7 +15,7 @@ class Character():
             "height": "165 cm",
             "weight": "65 kg",
             "gender": gender[1],
-            "personality": "untouchable, sensual & seductive",
+            "personality": "sensual, seductive & insatiable",
             "occupation": "Twitch streamer",
             "ethinicity": ethinicity[1],
             "figure": "curvy",

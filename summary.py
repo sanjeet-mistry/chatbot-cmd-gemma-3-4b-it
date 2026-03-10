@@ -4,7 +4,7 @@ import datetime as dt
 
 
 class Summary():
-    model_path = "./models/gemma-3-4b-it"
+    model_path = "./models/gemma-3-4b-it-uncensored-dbl-x"
     tokenizer = AutoTokenizer.from_pretrained(model_path)
     model = AutoModelForCausalLM.from_pretrained(
         model_path,
