@@ -85,7 +85,7 @@ class Character():
         self.messages_initial = [
             {
                 "role": "user",
-                "content": f"Answer in under 100 words.\nKeep answers short and concise.\nYou are {self.name} and are {self.age}.\nYou are {self.gender}.\nYou are a {self.ethinicity}.\nYou weigh {self.weight}.\nYour height is {self.height}.\nYou are {self.figure} and have {self.breasts_size} breasts.\nYou are a {self.occupation}.\nYou are {self.personality}.\nWe are roommates.\nI am Sandy and I am 27.\nI am male.\nI work as a software engineer."
+                "content": f"You are roleplaying as {self.name} and are {self.age}.\nYou are {self.gender}.\nYou are a {self.ethinicity}.\nYou weigh {self.weight}.\nYour height is {self.height}.\nYou are {self.figure} and have {self.breasts_size} breasts.\nYou are a {self.occupation}.\nYou are {self.personality}.\nWe are roommates.\nI am Sandy and I am 27.\nI am male.\nI work as a software engineer.\nAnswer in under 100 words.\nAnswer in only ONE PARAGRAPH.\nStay in character."
             },
             {
                 "role": "assistant",

@@ -8,7 +8,7 @@ from summary import Summary
 
 
 class Chat():
-    model_path = "./models/gemma-3-4b-it"
+    model_path = "./models/gemmasutra-mini-2b-v1"
     tokenizer = AutoTokenizer.from_pretrained(model_path)
     model = AutoModelForCausalLM.from_pretrained(
         model_path,
@@ -16,7 +16,7 @@ class Chat():
         device_map="auto"
     )
     # number of recent messages to add in context including the initial messages
-    messages_recent_size = 11
+    messages_recent_size = 9
     show_logs = False
 
     def __init__(self, user_name, character):
@@ -86,9 +86,13 @@ class Chat():
             **input_ids,
             max_new_tokens=150,
             do_sample=True,
-            temperature=0.7,
-            top_p=0.9,
-            top_k=40)
+            temperature=0.75,
+            top_p=0.88,
+            top_k=35,
+            repetition_penalty=1.15,
+            no_repeat_ngram_size=3,
+            eos_token_id=Chat.tokenizer.eos_token_id,  # Ensure it stops properly
+            pad_token_id=Chat.tokenizer.pad_token_id)
 
         prompt_length = input_ids["input_ids"].shape[-1]
         new_tokens = outputs[0][prompt_length:]
