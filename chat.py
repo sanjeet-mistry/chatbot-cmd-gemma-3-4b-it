@@ -108,7 +108,6 @@ class Chat():
         end = dt.datetime.now()
         if Chat.show_logs:
             print(f"Time to reply: {end - start}")
-        # self.summarize_message(new_message)
         return reply
 
     def export_chat_text(self):
