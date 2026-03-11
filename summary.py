@@ -13,17 +13,19 @@ class Summary():
     )
     show_logs = True
 
-    def generate_summary(self, message_text, obj):
+    def generate_summary(self, message_text, names, genders):
         start = dt.datetime.now()
-        speaker = obj["speaker"]
-        listener = obj["listener"]
+        speaker_name = names[0]
+        listener_name = names[1]
+        speaker_gender = genders[0]
+        listener_gender = genders[1]
         prompt = f"""Summarize the message in ONE short sentence in third person.
 
 Message:
 {message_text}
 
-Speaker: {speaker}
-Listener: {listener}
+Speaker: {speaker_name}
+Listener: {listener_name}
 
 Rules:
 - Use the Speaker's & Listener's name.
@@ -32,7 +34,7 @@ Rules:
 - Do not invent information
 - No pronouns
 - Maximum 20 words
-- Do not change known character facts such as gender
+- {speaker_name} is a {speaker_gender}, {listener_name} is a {listener_gender}
 - Return only the summary text and nothing else
 """
         inputs = Summary.tokenizer(

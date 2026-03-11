@@ -15,7 +15,7 @@ class Character():
             "height": "165 cm",
             "weight": "65 kg",
             "gender": gender[1],
-            "personality": "untouchable, sensual & seductive",
+            "personality": "sensual, seductive & insatiable",
             "occupation": "Twitch streamer",
             "ethinicity": ethinicity[1],
             "figure": "curvy",
@@ -27,7 +27,7 @@ class Character():
             "height": "169 cm",
             "weight": "65 kg",
             "gender": gender[1],
-            "personality": "caring, loyal, bubbly & outgoing",
+            "personality": "caring, loyal & outgoing",
             "occupation": "Manager",
             "ethinicity": ethinicity[0],
             "figure": "hourglass",
@@ -71,21 +71,21 @@ class Character():
         },
     ]
 
-    def __init__(self, info):
-        self.name = info["name"]
-        self.age = info["age"]
-        self.height = info["height"]
-        self.weight = info["weight"]
-        self.gender = info["gender"]
-        self.personality = info["personality"]
-        self.occupation = info["occupation"]
-        self.ethinicity = info["ethinicity"]
-        self.figure = info["figure"]
-        self.breasts_size = info["breasts_size"]
+    def __init__(self, char_info, user_info):
+        self.name = char_info["name"]
+        self.age = char_info["age"]
+        self.height = char_info["height"]
+        self.weight = char_info["weight"]
+        self.gender = char_info["gender"]
+        self.personality = char_info["personality"]
+        self.occupation = char_info["occupation"]
+        self.ethinicity = char_info["ethinicity"]
+        self.figure = char_info["figure"]
+        self.breasts_size = char_info["breasts_size"]
         self.messages_initial = [
             {
                 "role": "user",
-                "content": f"Answer in under 100 words.\nKeep answers short and concise.\nYou are {self.name} and are {self.age}.\nYou are {self.gender}.\nYou are a {self.ethinicity}.\nYou weigh {self.weight}.\nYour height is {self.height}.\nYou are {self.figure} and have {self.breasts_size} breasts.\nYou are a {self.occupation}.\nYou are {self.personality}.\nWe are roommates.\nI am Sandy and I am 27.\nI am male.\nI work as a software engineer."
+                "content": f"Answer in under 100 words.\nKeep answers short and concise.\nYou are {self.name} and are {self.age}.\nYou are {self.gender}.\nYou are a {self.ethinicity}.\nYou weigh {self.weight}.\nYour height is {self.height}.\nYou are {self.figure} and have {self.breasts_size} breasts.\nYou are a {self.occupation}.\nYou are {self.personality}.\nWe are roommates.\nI am {user_info["name"]}.\nI am {user_info["age"]}, {user_info["gender"]}.\nI work as a {user_info["occupation"]}."
             },
             {
                 "role": "assistant",

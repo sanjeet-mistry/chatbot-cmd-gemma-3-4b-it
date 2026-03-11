@@ -19,10 +19,12 @@ class Chat():
     messages_recent_size = 11
     show_logs = False
 
-    def __init__(self, user_name, character):
+    def __init__(self, user_info, character):
         self.id = random.randint(10000000, 99999999)
-        self.user_name = user_name
+        self.user_name = user_info["name"]
+        self.user_gender = user_info["gender"]
         self.ai_name = character.name
+        self.ai_gender = character.gender
         self.messages_initial = character.messages_initial
         self.messages = [
         ]
@@ -64,7 +66,8 @@ class Chat():
         start = dt.datetime.now()
         new_message = {"role": "user", "content": message_text}
         self.messages.append(new_message)
-        self.create_summary("user", message_text)
+        self.check_to_create_summary("user", message_text, [self.user_name, self.ai_name], [
+                                     self.user_gender, self.ai_gender])
         self.update_messages_recent()
         if Chat.show_logs:
             print(len(self.messages_summ_recent))
@@ -97,7 +100,8 @@ class Chat():
 
         new_message = {"role": "assistant", "content": reply}
         self.messages.append(new_message)
-        self.create_summary("assistant", reply)
+        self.check_to_create_summary("assistant", reply, [self.ai_name, self.user_name], [
+                                     self.ai_gender, self.user_gender])
         self.update_messages_recent()
         if Chat.show_logs:
             print(len(self.messages_summ_recent))
@@ -120,17 +124,9 @@ class Chat():
                     f.write(f"{self.ai_name} (AI):\n{message['content']}\n\n")
             f.close()
 
-    def get_speaker_and_listener(self, role):
-        data = None
-        if role == "user":
-            data = {"speaker": self.user_name, "listener": self.ai_name}
-        else:
-            data = {"speaker": self.ai_name, "listener": self.user_name}
-        return data
-
-    def create_summary(self, role, message_text):
+    def check_to_create_summary(self, role, message_text, names, genders):
         condition = len(self.messages_summ)
         if self.use_summ:
             summary_obj = {"role": role,
-                           "content": self.summary.generate_summary(message_text, self.get_speaker_and_listener("user"))}
+                           "content": self.summary.generate_summary(message_text, names, genders)}
             self.messages_summ.append(summary_obj)
