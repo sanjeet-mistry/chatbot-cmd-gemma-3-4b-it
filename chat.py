@@ -16,7 +16,7 @@ class Chat():
         device_map="auto"
     )
     # number of recent messages to add in context including the initial messages
-    messages_recent_size = 9
+    messages_recent_size = 11
     show_logs = False
 
     def __init__(self, user_name, character):
