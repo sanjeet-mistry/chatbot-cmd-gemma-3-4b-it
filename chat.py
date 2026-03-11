@@ -20,7 +20,7 @@ class Chat():
     show_logs = False
 
     def __init__(self, user_info, character):
-        self.id = random.randint(10000000, 99999999)
+        self.id = random.randint(1000000000, 9999999999)
         self.user_name = user_info["name"]
         self.user_gender = user_info["gender"]
         self.ai_name = character.name
