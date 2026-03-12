@@ -11,7 +11,7 @@ class Summary():
         dtype=torch.bfloat16,
         device_map="auto"
     )
-    show_logs = False
+    show_logs = True
 
     def generate_summary(self, message_text, names, genders):
         start = dt.datetime.now()
@@ -43,7 +43,7 @@ Rules:
 
         outputs = Summary.model.generate(
             **inputs,
-            max_new_tokens=35,
+            max_new_tokens=30,
             temperature=0.2,
             repetition_penalty=1.1
         )
@@ -51,7 +51,7 @@ Rules:
         prompt_length = inputs["input_ids"].shape[1]
         new_tokens = outputs[0][prompt_length:]
         response = Summary.tokenizer.decode(
-            new_tokens, skip_special_tokens=True).strip()
+            new_tokens, skip_special_tokens=True).strip().lstrip("---\n\n")
         end = dt.datetime.now()
         if self.show_logs:
             print(response)

@@ -11,7 +11,7 @@ user_info = {
 character1 = Character(Character.persons[0], user_info)  # Lisa
 chat = Chat(user_info, character1)
 while 1:
-    message_text = input(f"{user_info["name"]} (User):\n")
+    message_text = input(f"{user_info["name"]} (User):\n").strip()
     if (message_text.lower() == "quit" or message_text.lower() == "q"):
         break
     reply = chat.generate_output(message_text)
