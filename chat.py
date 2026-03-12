@@ -30,10 +30,10 @@ class Chat():
         ]
         self.messages = self.messages_initial + self.messages
         self.messages_recent = copy.deepcopy(self.messages)
-        self.messages_summ = copy.deepcopy(self.messages)
-        self.messages_summ_recent = copy.deepcopy(self.messages)
-        self.use_summ = False
+        self.use_summ = True
         if self.use_summ:
+            self.messages_summ = copy.deepcopy(self.messages)
+            self.messages_summ_recent = copy.deepcopy(self.messages)
             self.summary = Summary()
             Chat.messages_recent_size = 21
 
@@ -66,8 +66,7 @@ class Chat():
         start = dt.datetime.now()
         new_message = {"role": "user", "content": message_text}
         self.messages.append(new_message)
-        self.check_to_create_summary("user", message_text, [self.user_name, self.ai_name], [
-                                     self.user_gender, self.ai_gender])
+        self.check_to_create_summary()
         self.update_messages_recent()
         if Chat.show_logs:
             print(len(self.messages_summ_recent))
@@ -100,8 +99,7 @@ class Chat():
 
         new_message = {"role": "assistant", "content": reply}
         self.messages.append(new_message)
-        self.check_to_create_summary("assistant", reply, [self.ai_name, self.user_name], [
-                                     self.ai_gender, self.user_gender])
+        self.check_to_create_summary()
         self.update_messages_recent()
         if Chat.show_logs:
             print(len(self.messages_summ_recent))
@@ -123,9 +121,23 @@ class Chat():
                     f.write(f"{self.ai_name} (AI):\n{message['content']}\n\n")
             f.close()
 
-    def check_to_create_summary(self, role, message_text, names, genders):
-        condition = len(self.messages_summ)
+    def check_to_create_summary(self):
+        messages_summ_len = len(self.messages_summ)
+        condition = messages_summ_len > 8
         if self.use_summ:
-            summary_obj = {"role": role,
-                           "content": self.summary.generate_summary(message_text, names, genders)}
-            self.messages_summ.append(summary_obj)
+            if condition:
+                message = self.messages_summ[messages_summ_len - 7]
+                message_role = message["role"]
+                message_text = message["content"]
+                if message_role == "user":
+                    names = [self.user_name, self.ai_name]
+                    genders = [self.user_gender, self.ai_gender]
+                else:
+                    names = [self.ai_name, self.user_name]
+                    genders = [self.ai_gender, self.user_gender]
+                summary_text = self.summary.generate_summary(
+                    message_text, names, genders)
+                self.messages_summ.append(
+                    {"role": message_role, "content": summary_text})
+            else:
+                self.messages_summ = copy.deepcopy(self.messages)
