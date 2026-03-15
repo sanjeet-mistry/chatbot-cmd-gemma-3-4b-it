@@ -4,7 +4,6 @@ import copy
 import datetime as dt
 import os
 import random
-from summary import Summary
 
 
 class Chat():
@@ -17,7 +16,7 @@ class Chat():
     )
     # number of recent messages to add in context including the initial messages
     messages_recent_size = 11
-    show_logs = False
+    show_logs = True
 
     def __init__(self, user_info, character):
         self.id = random.randint(1000000000, 9999999999)
@@ -30,8 +29,9 @@ class Chat():
         ]
         self.messages = self.messages_initial + self.messages
         self.messages_recent = copy.deepcopy(self.messages)
-        self.use_summ = True
+        self.use_summ = False
         if self.use_summ:
+            from summary import Summary
             self.messages_summ = copy.deepcopy(self.messages)
             self.messages_summ_recent = copy.deepcopy(self.messages)
             self.summary = Summary()
@@ -68,8 +68,6 @@ class Chat():
         self.append_new_message(new_message)
         self.check_to_create_summary()
         self.update_messages_recent()
-        if Chat.show_logs:
-            print(len(self.messages_summ_recent))
 
         if self.use_summ:
             input_ids = Chat.tokenizer.apply_chat_template(
@@ -101,8 +99,6 @@ class Chat():
         self.append_new_message(new_message)
         self.check_to_create_summary()
         self.update_messages_recent()
-        if Chat.show_logs:
-            print(len(self.messages_summ_recent))
         end = dt.datetime.now()
         if Chat.show_logs:
             print(f"Time to reply: {end - start}")
@@ -122,24 +118,25 @@ class Chat():
             f.close()
 
     def check_to_create_summary(self):
-        messages_summ_len = len(self.messages_summ)
-        condition = messages_summ_len > 8
-        if self.use_summ and condition:
-            message = self.messages_summ[messages_summ_len - 7]
-            message_role = message["role"]
-            message_text = message["content"]
-            if message_role == "user":
-                names = [self.user_name, self.ai_name]
-                genders = [self.user_gender, self.ai_gender]
-            else:
-                names = [self.ai_name, self.user_name]
-                genders = [self.ai_gender, self.user_gender]
-            summary_text = self.summary.generate_summary(
-                message_text, names, genders)
-            self.messages_summ[messages_summ_len -
-                               7]["content"] = summary_text
-            print(self.messages_summ)
+        if self.use_summ:
+            messages_summ_len = len(self.messages_summ)
+            condition = messages_summ_len > 8
+            if condition:
+                message = self.messages_summ[messages_summ_len - 7]
+                message_role = message["role"]
+                message_text = message["content"]
+                if message_role == "user":
+                    names = [self.user_name, self.ai_name]
+                    genders = [self.user_gender, self.ai_gender]
+                else:
+                    names = [self.ai_name, self.user_name]
+                    genders = [self.ai_gender, self.user_gender]
+                summary_text = self.summary.generate_summary(
+                    message_text, names, genders)
+                self.messages_summ[messages_summ_len -
+                                   7]["content"] = summary_text
 
     def append_new_message(self, new_message):
         self.messages.append(new_message)
-        self.messages_summ.append(new_message)
+        if (self.use_summ):
+            self.messages_summ.append(new_message)

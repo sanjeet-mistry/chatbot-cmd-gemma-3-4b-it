@@ -11,7 +11,8 @@ class Summary():
         dtype=torch.bfloat16,
         device_map="auto"
     )
-    show_logs = True
+
+    show_logs = False
 
     def generate_summary(self, message_text, names, genders):
         start = dt.datetime.now()
