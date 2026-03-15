@@ -23,7 +23,7 @@ class Summary():
         device_map="auto"  # Auto will perfectly map it to your GPU now
     )
 
-    show_logs = True
+    show_logs = False
 
     def generate_summary(self, message_text, names=None, genders=None):
         start = dt.datetime.now()
