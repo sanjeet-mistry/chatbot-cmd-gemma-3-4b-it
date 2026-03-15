@@ -1,4 +1,4 @@
-from transformers import AutoTokenizer, AutoModelForCausalLM
+from transformers import AutoTokenizer, AutoModelForCausalLM, BitsAndBytesConfig
 import torch
 import copy
 import datetime as dt
@@ -8,10 +8,14 @@ import random
 
 class Chat():
     model_path = "./models/gemma-3-4b-it"
+    bnb_config = BitsAndBytesConfig(
+        load_in_4bit=True,
+        bnb_4bit_compute_dtype=torch.float16
+    )
     tokenizer = AutoTokenizer.from_pretrained(model_path)
     model = AutoModelForCausalLM.from_pretrained(
         model_path,
-        dtype=torch.bfloat16,
+        quantization_config=bnb_config,  # Apply quantization here
         device_map="auto"
     )
     # number of recent messages to add in context including the initial messages
@@ -74,21 +78,22 @@ class Chat():
                 self.messages_summ_recent,
                 tokenize=True,
                 add_generation_prompt=True,
-                return_tensors="pt").to(Chat.model.device)
+                return_tensors="pt").to("cuda")
         else:
             input_ids = Chat.tokenizer.apply_chat_template(
                 self.messages_recent,
                 tokenize=True,
                 add_generation_prompt=True,
-                return_tensors="pt").to(Chat.model.device)
+                return_tensors="pt").to("cuda")
 
-        outputs = Chat.model.generate(
-            **input_ids,
-            max_new_tokens=150,
-            do_sample=True,
-            temperature=0.7,
-            top_p=0.9,
-            top_k=40)
+        with torch.inference_mode():
+            outputs = Chat.model.generate(
+                **input_ids,
+                max_new_tokens=150,
+                do_sample=True,
+                temperature=0.7,
+                top_p=0.9,
+                top_k=40)
 
         prompt_length = input_ids["input_ids"].shape[-1]
         new_tokens = outputs[0][prompt_length:]
