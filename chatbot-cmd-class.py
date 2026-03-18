@@ -8,7 +8,7 @@ user_info = {
     "occupation": "Software Developer"
 }
 
-character1 = Character(Character.persons[0], user_info)  # Lisa
+character1 = Character(Character.persons[3], user_info)
 chat = Chat(user_info, character1)
 while 1:
     message_text = input(f"{user_info['name']} (User):\n").strip()
