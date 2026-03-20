@@ -57,7 +57,7 @@ class Character():
             "height": "155 cm",
             "weight": "46 kg",
             "gender": gender[1],
-            "personality": "loving, outgoing, bratty, arrogant, secretly kind & caring, naughty",
+            "personality": "cheerful, girly & fun",
             "occupation": "Senior HR",
             "ethinicity": ethinicity[0],
             "figure": "slim",
