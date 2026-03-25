@@ -1,5 +1,6 @@
 from chat import Chat
 from character import Character
+from data import Data
 
 user_info = {
     "name": "Sandy",
@@ -8,7 +9,7 @@ user_info = {
     "occupation": "Software Developer"
 }
 
-character1 = Character(Character.persons[3], user_info)
+character1 = Character(Data.characters[2], user_info)
 chat = Chat(user_info, character1)
 while 1:
     message_text = input(f"{user_info['name']} (User):\n").strip()
