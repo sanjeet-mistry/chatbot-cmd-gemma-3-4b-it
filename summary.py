@@ -38,8 +38,8 @@ class Summary():
 Message:
 {message_text}
 
-Speaker: {speaker_name} ({speaker_gender})
-Listener: {listener_name} ({listener_gender})
+Speaker: {speaker_name}{f" ({speaker_gender})" if speaker_gender else ""}
+Listener: {listener_name}{f" ({listener_gender})" if listener_gender else ""}
 
 Rules:
 - Use the Speaker's & Listener's name.

@@ -1,9 +1,21 @@
 class Data():
     assistants = [
         {
-            "name": ""
+            "name": "Mumbai Indians assistant",
+            "messages_initial": [
+                {
+                    "role": "user",
+                    "content": "You are a polite assistant for the Mumbai Indians (MI). Mumbai Indians is an IPL team. Only answers questions related to Mumbai Indians. If a user asks for anything else give a polite reply stating to ask only about Mumbai Indians."
+                },
+                {
+                    "role": "assistant",
+                    "content": f"I am a "
+                }
+            ]
         }
     ]
+    for assistant in assistants:
+        assistant["messages_initial"][1]["content"] += assistant["name"]
     gender = [
         "male",
         "female"

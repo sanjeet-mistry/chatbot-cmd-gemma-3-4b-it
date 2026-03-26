@@ -22,13 +22,15 @@ class Chat():
     messages_recent_size = 11
     show_logs = True
 
-    def __init__(self, user_info, character):
+    def __init__(self, user_info, ai, mode):
         self.id = random.randint(1000000000, 9999999999)
         self.user_name = user_info["name"]
         self.user_gender = user_info["gender"]
-        self.ai_name = character.name
-        self.ai_gender = character.gender
-        self.messages_initial = character.messages_initial
+        self.ai_name = ai.name
+        self.mode = mode
+        if self.mode == "roleplay":
+            self.ai_gender = ai.gender
+        self.messages_initial = ai.messages_initial
         self.messages = [
         ]
         self.messages = self.messages_initial + self.messages
@@ -131,11 +133,17 @@ class Chat():
                 message_role = message["role"]
                 message_text = message["content"]
                 if message_role == "user":
+                    if self.mode == "assistant":
+                        genders = [self.user_gender, None]
+                    elif self.mode == "roleplay":
+                        genders = [self.user_gender, self.ai_gender]
                     names = [self.user_name, self.ai_name]
-                    genders = [self.user_gender, self.ai_gender]
                 else:
+                    if self.mode == "assistant":
+                        genders = [None, self.user_gender]
+                    elif self.mode == "roleplay":
+                        genders = [self.ai_gender, self.user_gender]
                     names = [self.ai_name, self.user_name]
-                    genders = [self.ai_gender, self.user_gender]
                 summary_text = self.summary.generate_summary(
                     message_text, names, genders)
                 self.messages_summ[messages_summ_len -
