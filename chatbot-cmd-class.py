@@ -13,7 +13,7 @@ user_info = {
 mode = "assistant"
 
 character1 = Character(Data.characters[2], user_info)
-assistant1 = Assistant(Data.assistants[0], user_info)
+assistant1 = Assistant(Data.assistants[1], user_info)
 # chat = Chat(user_info, character1, "roleplay")
 chat = Chat(user_info, assistant1, mode)
 while 1:

@@ -5,7 +5,20 @@ class Data():
             "messages_initial": [
                 {
                     "role": "user",
-                    "content": "You are a polite assistant for the Mumbai Indians (MI). Mumbai Indians is an IPL team. Only answers questions related to Mumbai Indians. If a user asks for anything else give a polite reply stating to ask only about Mumbai Indians."
+                    "content": "You are a polite assistant for the Mumbai Indians (MI). Mumbai Indians is an IPL team. Only answers questions related to Mumbai Indians. If a user asks for anything else give a polite reply stating to ask only about Mumbai Indians. Answer in under 100 words."
+                },
+                {
+                    "role": "assistant",
+                    "content": f"I am a "
+                }
+            ]
+        },
+        {
+            "name": "Gemma assistant",
+            "messages_initial": [
+                {
+                    "role": "user",
+                    "content": "You are a polite assistant for the gemma-3-4b-it AI model. Answer questions only related to you and nothing else. Answer in under 100 words."
                 },
                 {
                     "role": "assistant",
