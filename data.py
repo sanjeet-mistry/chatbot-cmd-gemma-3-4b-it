@@ -25,6 +25,29 @@ class Data():
                     "content": f"I am a "
                 }
             ]
+        },
+        {
+            "name": "Service ratings",
+            "messages_initial": [
+                {
+                    "role": "user",
+                    "content": """Classify the sentiment as Positive, Negative, or Neutral.
+Only return the value (Positive / Negative / Neutral).
+Examples:
+User: I love this product.
+Assistant: Positive
+
+User: This is terrible service.
+Assistant: Negative
+
+User: The product is okay.
+Assistant: Neutral"""
+                },
+                {
+                    "role": "assistant",
+                    "content": f"I am a "
+                }
+            ]
         }
     ]
     for assistant in assistants:
