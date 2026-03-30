@@ -19,15 +19,18 @@ class Chat():
         device_map="auto"
     )
     # number of recent messages to add in context including the initial messages
-    messages_recent_size = 11
+    messages_in_context = 11
     show_logs = True
 
-    def __init__(self, user_info, ai, mode):
+    def __init__(self, user_info, ai, mode, chat_settings, chat_context_length=messages_in_context):
         self.id = random.randint(1000000000, 9999999999)
         self.user_name = user_info["name"]
         self.user_gender = user_info["gender"]
         self.ai_name = ai.name
         self.mode = mode
+        self.chat_settings = chat_settings
+        if chat_context_length < 3:
+            Chat.messages_in_context = 3
         if self.mode == "roleplay":
             self.ai_gender = ai.gender
         self.messages_initial = ai.messages_initial
@@ -41,7 +44,7 @@ class Chat():
             self.messages_summ = copy.deepcopy(self.messages)
             self.messages_summ_recent = copy.deepcopy(self.messages)
             self.summary = Summary()
-            Chat.messages_recent_size = 21
+            Chat.messages_in_context = 21
 
     def update_messages_recent(self):
         messages_recent = None
@@ -52,15 +55,15 @@ class Chat():
         else:
             messages = self.messages
             messages_recent = self.messages_recent
-        if (len(messages) > Chat.messages_recent_size):
+        if (len(messages) > Chat.messages_in_context):
             if len(messages) % 2 == 0:
                 messages_recent = self.messages_initial + \
                     copy.deepcopy(
-                        messages[-(Chat.messages_recent_size - 3):])
+                        messages[-(Chat.messages_in_context - 3):])
             else:
                 messages_recent = self.messages_initial + \
                     copy.deepcopy(
-                        messages[-(Chat.messages_recent_size - 2):])
+                        messages[-(Chat.messages_in_context - 2):])
         else:
             messages_recent = messages
         if self.use_summ:
@@ -91,11 +94,11 @@ class Chat():
         with torch.inference_mode():
             outputs = Chat.model.generate(
                 **input_ids,
-                max_new_tokens=150,
-                do_sample=True,
-                temperature=0.7,
-                top_p=0.9,
-                top_k=40)
+                max_new_tokens=self.chat_settings["max_new_tokens"],
+                do_sample=self.chat_settings["do_sample"],
+                temperature=self.chat_settings["temperature"],
+                top_p=self.chat_settings["top_p"],
+                top_k=self.chat_settings["top_k"])
 
         prompt_length = input_ids["input_ids"].shape[-1]
         new_tokens = outputs[0][prompt_length:]

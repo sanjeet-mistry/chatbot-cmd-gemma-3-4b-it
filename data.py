@@ -31,17 +31,36 @@ class Data():
             "messages_initial": [
                 {
                     "role": "user",
-                    "content": """Classify the sentiment as Positive, Negative, or Neutral.
-Only return the value (Positive / Negative / Neutral).
+                    "content": """You are a strict sentiment classifier.
+
+Task:
+Classify ONLY the sentiment of the PRODUCT.
+
+Rules:
+- Completely ignore anything about delivery, service, staff, or experience.
+- If text contains both product and non-product sentiment, ONLY use the product part.
+- If NO product-related words exist, return Neutral.
+- If the sentence is generic (e.g., "Excellent", "Very good"), assume it refers to the product.
+
+CRITICAL:
+- Words like "rude", "bad service", "delivery", "staff", "experience" MUST be ignored.
+
+Output:
+Return exactly one word: Positive, Negative, or Neutral.
+No explanation.
+
 Examples:
-User: I love this product.
-Assistant: Positive
+Input: Delivery guy was rude but the product is very good.
+Output: Positive
 
-User: This is terrible service.
-Assistant: Negative
+Input: Service is bad.
+Output: Neutral
 
-User: The product is okay.
-Assistant: Neutral"""
+Input: Excellent
+Output: Positive
+
+Input: Product is okay.
+Output: Neutral"""
                 },
                 {
                     "role": "assistant",
