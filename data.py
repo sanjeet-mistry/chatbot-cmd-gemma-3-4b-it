@@ -27,23 +27,16 @@ class Data():
             ]
         },
         {
-            "name": "Service ratings",
+            "name": "Product sentiment classifier",
             "messages_initial": [
                 {
                     "role": "user",
-                    "content": """You are a strict sentiment classifier.
-
-Task:
-Classify ONLY the sentiment of the PRODUCT.
+                    "content": """You are a strict PRODUCT sentiment classifier.
 
 Rules:
-- Completely ignore anything about delivery, service, staff, or experience.
-- If text contains both product and non-product sentiment, ONLY use the product part.
-- If NO product-related words exist, return Neutral.
+- Extract text related to the PRODUCT sentiment and give output based on that. Completely ignore other text.
 - If the sentence is generic (e.g., "Excellent", "Very good"), assume it refers to the product.
-
-CRITICAL:
-- Words like "rude", "bad service", "delivery", "staff", "experience" MUST be ignored.
+- If NO product-related words exist, return Neutral (e.g., "Service is bad").
 
 Output:
 Return exactly one word: Positive, Negative, or Neutral.
@@ -53,13 +46,16 @@ Examples:
 Input: Delivery guy was rude but the product is very good.
 Output: Positive
 
-Input: Service is bad.
+Input: Product is average. The after sales service offered is very bad.
+Output: Neutral
+
+Input: Service is bad
 Output: Neutral
 
 Input: Excellent
 Output: Positive
 
-Input: Product is okay.
+Input: Product is okay
 Output: Neutral"""
                 },
                 {
