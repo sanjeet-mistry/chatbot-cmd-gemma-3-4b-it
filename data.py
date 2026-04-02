@@ -1,4 +1,31 @@
 class Data():
+    user_info = {
+        "name": "Sandy",
+        "gender": "Male",
+        "age": 27,
+        "occupation": "Software Developer"
+    }
+    assistant_chat_params = {
+        "max_new_tokens": 250,
+        "temperature": .6,
+        "top_p": .9,
+        "top_k": 50,
+        "do_sample": True
+    }
+    assistant_classify_chat_params = {
+        "max_new_tokens": 50,
+        "temperature": 0,
+        "top_p": 1,
+        "top_k": 0,
+        "do_sample": False
+    }
+    roleplay_chat_params = {
+        "max_new_tokens": 150,
+        "temperature": .7,
+        "top_p": .9,
+        "top_k": 40,
+        "do_sample": True
+    }
     assistants = [
         {
             "name": "Mumbai Indians assistant",
