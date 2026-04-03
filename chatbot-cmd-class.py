@@ -8,7 +8,8 @@ mode = "roleplay"
 character1 = Character(Data.characters[0], Data.user_info)
 assistant1 = Assistant(Data.assistants[2], Data.user_info)
 chat = Chat(Data.user_info, character1, "roleplay", Data.roleplay_chat_params)
-# chat = Chat(user_info, assistant1, mode, assistant_classify_chat_params, 0)
+# chat = Chat(Data.user_info, assistant1, mode, Data.assistant_classify_chat_params, 0)
+# chat = Chat(Data.user_info, assistant1, mode, Data.assistant_chat_params)
 while 1:
     message_text = input(f"{Data.user_info['name']} (User):\n").strip()
     if (message_text.lower() == "quit" or message_text.lower() == "q"):
