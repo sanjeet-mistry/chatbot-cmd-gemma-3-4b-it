@@ -24,6 +24,15 @@ class Data():
         "temperature": .7,
         "top_p": .9,
         "top_k": 40,
+        "repetition_penalty": 1.15,
+        "do_sample": True
+    }
+    roleplay_nsfw_chat_params = {
+        "max_new_tokens": 150,
+        "temperature": .8,
+        "top_p": .92,
+        "top_k": 50,
+        "repetition_penalty": 1.15,
         "do_sample": True
     }
     assistants = [

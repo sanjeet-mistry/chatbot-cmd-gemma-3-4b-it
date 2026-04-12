@@ -2,7 +2,6 @@ from transformers import AutoTokenizer, AutoModelForCausalLM, BitsAndBytesConfig
 import torch
 import copy
 import datetime as dt
-import os
 import random
 
 
@@ -98,7 +97,8 @@ class Chat():
                 do_sample=self.chat_settings["do_sample"],
                 temperature=self.chat_settings["temperature"],
                 top_p=self.chat_settings["top_p"],
-                top_k=self.chat_settings["top_k"])
+                top_k=self.chat_settings["top_k"],
+                repetition_penalty=self.chat_settings.get("repetition_penalty", 1.0))
 
         prompt_length = input_ids["input_ids"].shape[-1]
         new_tokens = outputs[0][prompt_length:]
@@ -115,6 +115,7 @@ class Chat():
         return reply
 
     def export_chat_text(self):
+        import os
         filename = "week-3/chatbot-cmd-class/chats/chat-" + \
             str(self.id) + ".txt"
         if not os.path.exists(filename):
