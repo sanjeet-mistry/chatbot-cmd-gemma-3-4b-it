@@ -3,19 +3,22 @@ from character import Character
 from data import Data
 from assistant import Assistant
 
-mode = "roleplay"
+mode = "assistant"
 
 character1 = Character(Data.characters[0], Data.user_info)
-assistant1 = Assistant(Data.assistants[2], Data.user_info)
-chat = Chat(Data.user_info, character1, "roleplay",
-            Data.roleplay_chat_params)
+assistant1 = Assistant(Data.assistants[1], Data.user_info)
+# chat = Chat(Data.user_info, character1, "roleplay",
+#             Data.roleplay_chat_params)
 # chat = Chat(Data.user_info, assistant1, mode, Data.assistant_classify_chat_params, 0)
-# chat = Chat(Data.user_info, assistant1, mode, Data.assistant_chat_params)
+chat = Chat(Data.user_info, assistant1, mode, Data.assistant_chat_params, 0)
 while 1:
     message_text = input(f"{Data.user_info['name']} (User):\n").strip()
     if (message_text.lower() == "quit" or message_text.lower() == "q"):
         break
-    reply = chat.generate_output(message_text)
+    from embeddings import return_similarity_scores
+    results = return_similarity_scores(
+        "text", "./week-3/chatbot-cmd-class/data/swapnil-info.txt", message_text, 5)
+    reply = chat.generate_output(message_text, results)
     if mode == "assistant":
         print(f"Assistant:\n{reply}\n")
     elif mode == "roleplay":

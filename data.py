@@ -50,11 +50,11 @@ class Data():
             ]
         },
         {
-            "name": "Gemma assistant",
+            "name": "Swapnil's assistant",
             "messages_initial": [
                 {
                     "role": "user",
-                    "content": "You are a polite assistant for the gemma-3-4b-it AI model. Answer questions only related to you and nothing else. Answer in under 100 words."
+                    "content": "You are a polite assistant for Swapnil. Answer questions only related to him and nothing else. Answer in under 100 words."
                 },
                 {
                     "role": "assistant",

@@ -35,7 +35,7 @@ class Chat():
         self.messages_initial = ai.messages_initial
         self.messages = [
         ]
-        self.messages = self.messages_initial + self.messages
+        self.messages = copy.deepcopy(self.messages_initial) + self.messages
         self.messages_recent = copy.deepcopy(self.messages)
         self.use_summ = False
         if self.use_summ:
@@ -70,12 +70,17 @@ class Chat():
         else:
             self.messages_recent = messages_recent
 
-    def generate_output(self, message_text):
+    def generate_output(self, message_text, context):
         start = dt.datetime.now()
         new_message = {"role": "user", "content": message_text}
         self.append_new_message(new_message)
         self.check_to_create_summary()
         self.update_messages_recent()
+
+        print(self.messages_initial[0]['content'])
+        self.messages_recent[0]["content"] = f"{self.messages_initial[0]['content']} Context: "
+        for obj in context:
+            self.messages_recent[0]["content"] += " " + obj["text"].strip("\n")
 
         if self.use_summ:
             input_ids = Chat.tokenizer.apply_chat_template(

@@ -1,0 +1,202 @@
+[
+  {
+    "id": 1,
+    "name": "Lenovo LOQ 2024",
+    "category": "gaming",
+    "specs": {
+      "cpu": "Intel i5 13450HX",
+      "ram": "24 GB",
+      "gpu": "RTX 4050 6GB",
+      "storage": "1 TB",
+      "display": "15.6 inch FHD (1920x1080) IPS Technology | 144 Hz Refresh Rate | 100% sRGB |Brightness: 300Nits Anti-glare"
+    },
+    "specs_score": {
+      "cpu": 6.5,
+      "ram": 8,
+      "gpu": 5,
+      "storage": 8,
+      "display": 6.5
+    },
+    "price": 95000
+  },
+  {
+    "id": 2,
+    "name": "Lenovo LOQ 2025",
+    "category": "gaming",
+    "specs": {
+      "cpu": "Intel i5 14700HX",
+      "ram": "32 GB",
+      "gpu": "RTX 5060 8GB",
+      "storage": "1 TB",
+      "display": "15.6 inch QHD (2560x1440) IPS Technology | 144 Hz Refresh Rate | 100% sRGB |Brightness: 300Nits Anti-glare"
+    },
+    "specs_score": {
+      "cpu": 8,
+      "ram": 9,
+      "gpu": 7,
+      "storage": 8,
+      "display": 7.5
+    },
+    "price": 150000
+  },
+  {
+    "id": 3,
+    "name": "Lenovo LOQ 2025 AMD Ryzen 7-250",
+    "category": "gaming",
+    "specs": {
+      "cpu": "AMD Ryzen 7-250",
+      "ram": "24 GB",
+      "gpu": "RTX 5050 8GB",
+      "storage": "1 TB",
+      "display": "15.6 inch FHD (1920x1080) IPS Technology | 144 Hz Refresh Rate | 100% sRGB |Brightness: 300Nits Anti-glare"
+    },
+    "specs_score": {
+      "cpu": 7,
+      "ram": 8,
+      "gpu": 6,
+      "storage": 8,
+      "display": 6.5
+    },
+    "price": 130000
+  },
+  {
+    "id": 4,
+    "name": "Lenovo IdeaPad Slim 3",
+    "category": "regular",
+    "specs": {
+      "cpu": "Intel Core i7-13620H",
+      "ram": "16 GB DDR5 4800MHz",
+      "gpu": "Intel UHD Graphics",
+      "storage": "512 GB",
+      "display": "15.3 inch FHD (1920x1200) | 300Nits Brightness | Anti Glare |TUV Low Blue Light Certified"
+    },
+    "specs_score": {
+      "cpu": 6,
+      "ram": 6,
+      "gpu": 1,
+      "storage": 6,
+      "display": 6.5
+    },
+    "price": 85000
+  },
+  {
+    "id": 5,
+    "name": "Lenovo V15 G4",
+    "category": "regular",
+    "specs": {
+      "cpu": "AMD Ryzen 5 7520U",
+      "ram": "16 GB DDR5 5500Mhz Ram",
+      "gpu": "Integrated AMD Radeon™ 610M Graphics",
+      "storage": "512 GB",
+      "display": "1920x1080. Anti-glare."
+    },
+    "specs_score": {
+      "cpu": 3,
+      "ram": 6,
+      "gpu": 1,
+      "storage": 6,
+      "display": 4
+    },
+    "price": 50000
+  },
+  {
+    "id": 6,
+    "name": "Lenovo Yoga AMD Pro 7",
+    "category": "premium ultrabook",
+    "specs": {
+      "cpu": "AMD Ryzen AI 9 365",
+      "ram": "32GB Soldered LPDDR5X-7500MHz",
+      "gpu": "Integrated AMD Radeon 880M Graphics",
+      "storage": "1 TB",
+      "display": "14.5 inch WQXGA (2880x1800) OLED| Display: 400nits Glossy | 120Hz |100% sRGB | 100% DCI-P3 | DisplayHDR True Black 500 | Dolby Vision | Eyesafe | AGC Dragontrail Glass, X-Rit."
+    },
+    "specs_score": {
+      "cpu": 9,
+      "ram": 9,
+      "gpu": 4.5,
+      "storage": 8,
+      "display": 9
+    },
+    "price": 130000
+  },
+  {
+    "id": 7,
+    "name": "Lenovo Yoga Slim 9",
+    "category": "premium ultrabook",
+    "specs": {
+      "cpu": "Intel Evo Core Ultra 7 258V",
+      "ram": "32GB Soldered LPDDR5x-8533MHz",
+      "gpu": "Integrated Intel Arc Graphics 140V",
+      "storage": "1 TB",
+      "display": "14 inch 4K WQUXGA OLED (3840x2400) | 750Nits Peak Brightness, 600Nits Typical Brightness | 100% DCI-P3 |DisplayHDR True Black 600 | Dolby Vision | Anti Glare | Glass | Touch | X-Rite | PureSight Pro."
+    },
+    "specs_score": {
+      "cpu": 8,
+      "ram": 9,
+      "gpu": 4,
+      "storage": 8,
+      "display": 10
+    },
+    "price": 200000
+  },
+  {
+    "id": 8,
+    "name": "Lenovo Legion 5",
+    "category": "gaming",
+    "specs": {
+      "cpu": "Intel Core i7-14650HX",
+      "ram": "16GB RAM DDR5-5600",
+      "gpu": "NVIDIA GeForce RTX 4070 8GB",
+      "storage": "1 TB",
+      "display": "16 inch WQXGA (2560x1600) IPS Dolby Vision | 165 Hz Refresh Rate |Brightness: 350Nits Anti-glare | 100% sRGB."
+    },
+    "specs_score": {
+      "cpu": 8.5,
+      "ram": 6,
+      "gpu": 8.5,
+      "storage": 8,
+      "display": 8
+    },
+    "price": 220000
+  },
+  {
+    "id": 9,
+    "name": "Lenovo legion 5 Pro",
+    "category": "gaming",
+    "specs": {
+      "cpu": "Intel Core Ultra 9 275HX",
+      "ram": "32GB DDR5",
+      "gpu": "NVIDIA GeForce RTX 5070 Ti 12GB",
+      "storage": "1 TB",
+      "display": "16 inch WQXGA (2560x1600) OLED 500nits (typical) / 1100nits (peak) Glossy, 100% DCI-P3, 240Hz, DisplayHDR True Black 1000, Dolby Vision, G-SYNC."
+    },
+    "specs_score": {
+      "cpu": 10,
+      "ram": 9,
+      "gpu": 10,
+      "storage": 8,
+      "display": 9.5
+    },
+    "price": 285000
+  },
+  {
+    "id": 10,
+    "name": "Lenovo IdeaPad Slim 5",
+    "category": "performance thin",
+    "specs": {
+      "cpu": "Ryzen 7 7735HS",
+      "ram": "16GB Soldered LPDDR5x-6400",
+      "gpu": "Integrated AMD Radeon 680M Graphics",
+      "storage": "1 TB",
+      "display": "13.3 inch WUXGA IPS (1920x1080) | 400Nits Brightness | 100% sRGB | Anti Glare |TUV Low Blue Light Certified"
+    },
+    "specs_score": {
+      "cpu": 7.5,
+      "ram": 6,
+      "gpu": 3.5,
+      "storage": 8,
+      "display": 7
+    },
+    "price": 71000
+  }
+]
