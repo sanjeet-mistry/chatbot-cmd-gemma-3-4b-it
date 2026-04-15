@@ -77,7 +77,6 @@ class Chat():
         self.check_to_create_summary()
         self.update_messages_recent()
 
-        print(self.messages_initial[0]['content'])
         self.messages_recent[0]["content"] = f"{self.messages_initial[0]['content']} Context: "
         for obj in context:
             self.messages_recent[0]["content"] += " " + obj["text"].strip("\n")
