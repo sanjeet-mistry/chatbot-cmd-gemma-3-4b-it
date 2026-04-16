@@ -77,10 +77,13 @@ class Chat():
         self.check_to_create_summary()
         self.update_messages_recent()
 
-        self.messages_recent[0]["content"] = f"{self.messages_initial[0]['content']} Context: "
+        self.messages_recent[0]["content"] = f"""{self.messages_initial[0]['content']} 
+Use the following information to answer:"""
         for obj in context:
-            self.messages_recent[0]["content"] += " " + obj["text"].strip("\n")
+            self.messages_recent[0]["content"] += "\n- " + \
+                obj["text"].strip("\n")
 
+        print(self.messages_recent)
         if self.use_summ:
             input_ids = Chat.tokenizer.apply_chat_template(
                 self.messages_summ_recent,

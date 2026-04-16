@@ -17,7 +17,7 @@ while 1:
         break
     from embeddings import return_similarity_scores
     results = return_similarity_scores(
-        "text", "./week-3/chatbot-cmd-class/data/swapnil-info.txt", message_text, 5)
+        "text", "./week-3/chatbot-cmd-class/data/swapnil-info.txt", message_text, 10)
     reply = chat.generate_output(message_text, results)
     if mode == "assistant":
         print(f"Assistant:\n{reply}\n")

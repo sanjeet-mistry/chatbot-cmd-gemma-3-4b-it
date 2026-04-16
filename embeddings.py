@@ -1,9 +1,10 @@
 from sentence_transformers import SentenceTransformer
 import numpy as np
 
+model = SentenceTransformer("./models/bge-large-en-v1.5")
+
 
 def return_similarity_scores(file_type="array", file=None, query="", number=1):
-    model = SentenceTransformer("./models/bge-large-en-v1.5")
     texts_output = []
     if file_type == "text":
         with open(file, encoding='utf-8') as f:
@@ -54,12 +55,13 @@ Price: {obj["price"]}"""
     query_embedding = model.encode(query)
 
     magA = np.linalg.norm(query_embedding)
-    scores = np.array([])
+    scores = []
     for i in np.arange(len(texts_output)):
         magB = np.linalg.norm(embeddings[i])
         dot = np.dot(query_embedding, embeddings[i])
-        scores = np.append(scores,  dot / (magA * magB))
+        scores.append(dot / (magA * magB))
 
+    scores = np.array(scores)
     for i in np.arange(len(texts_output)):
         texts_output[i]["similarity"] = float(scores[i])
 
