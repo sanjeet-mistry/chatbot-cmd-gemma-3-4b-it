@@ -1,71 +1,63 @@
 from sentence_transformers import SentenceTransformer
 import numpy as np
 
-model = SentenceTransformer("./models/bge-large-en-v1.5")
+model = SentenceTransformer("./models/e5-base-v2")
 
 
-def return_similarity_scores(file_type="array", file=None, query="", number=1):
-    texts_output = []
-    if file_type == "text":
-        with open(file, encoding='utf-8') as f:
-            for line in f:
-                obj = {
-                    "text": line.rstrip("\n"),
-                    "similarity": None
-                }
-                texts_output.append(obj)
+def return_similarity_scores(texts, file_type="array", embedding=None, query="", number=1):
+    embedding_array = np.array([])
+    similarity = []
+    for text in texts:
+        obj = {
+            "text": text,
+            "similarity": None
+        }
+        similarity.append(obj)
+    if file_type == "array":
+        embedding_array = embedding
     elif file_type == "json":
         import json
-        with open(file, 'r') as f:
-            data = json.load(f)
-        texts_only = []
-        for obj in data:
-            text = f"""
-Laptop information:
-Name: {obj["name"]}
-Category: {obj["category"]}
-CPU: {obj["specs"]["cpu"]}, CPU score: {obj["specs_score"]["cpu"]}
-RAM: {obj["specs"]["ram"]}, RAM score: {obj["specs_score"]["ram"]}
-GPU: {obj["specs"]["gpu"]}, GPU score: {obj["specs_score"]["gpu"]}
-Storage: {obj["specs"]["storage"]}, Storage score: {obj["specs_score"]["storage"]}
-Display: {obj["specs"]["display"]}, Display score: {obj["specs_score"]["display"]}
-Total score: {obj["specs_score"]["cpu"] + obj["specs_score"]["ram"] + obj["specs_score"]["gpu"] + obj["specs_score"]["storage"] + obj["specs_score"]["display"]}
-Price: {obj["price"]}"""
-            obj = {
-                "text": text,
-                "similarity": None
-            }
-            texts_only.append(text)
-            texts_output.append(obj)
-    elif file_type == "chat":
-        with open(file, encoding='utf-8') as f:
-            text = f.read()
-            messages = text.split("\n\n")
-            messages = [message for message in messages if message != ""]
-            print(messages)
-    elif file_type == "array":
-        for text in file:
-            obj = {
-                "text": text,
-                "similarity": None
-            }
-            texts_output = texts_output.append(obj)
-    texts_only = [item["text"] for item in texts_output]
-    embeddings = model.encode(texts_only)
-    query_embedding = model.encode(query)
+        with open(embedding, encoding='utf-8') as file:
+            data = json.load(file)
+            embedding_array = np.array(data["embeddings"])
 
+    query_embedding = model.encode(query)
     magA = np.linalg.norm(query_embedding)
     scores = []
-    for i in np.arange(len(texts_output)):
-        magB = np.linalg.norm(embeddings[i])
-        dot = np.dot(query_embedding, embeddings[i])
+    for i in np.arange(len(embedding_array)):
+        magB = np.linalg.norm(embedding_array[i])
+        dot = np.dot(query_embedding, embedding_array[i])
         scores.append(dot / (magA * magB))
 
     scores = np.array(scores)
-    for i in np.arange(len(texts_output)):
-        texts_output[i]["similarity"] = float(scores[i])
+    for i in range(len(similarity)):
+        similarity[i]["similarity"] = float(scores[i])
 
-    result = sorted(
-        texts_output, key=lambda x: x["similarity"], reverse=True)
+    result = sorted(similarity, key=lambda x: x["similarity"], reverse=True)
 
     return result[:number]
+
+
+def calculate_embeddings(file_type, data, file_name=None):
+    texts = []
+    if file_type == "text":
+        with open(data, encoding='utf-8') as f:
+            for line in f:
+                texts.append(line.rstrip("\n"))
+    elif file_type == "chat":
+        with open(data, encoding='utf-8') as f:
+            text = f.read()
+            texts = text.split("\n\n")
+            texts = [message for message in texts if message != ""]
+    elif file_type == "array":
+        texts = data
+
+    embeddings = model.encode(texts)
+    embeddings = [embedding.tolist() for embedding in embeddings]
+    if file_name:
+        import json
+        json_data = json.dumps({"embeddings": embeddings})
+        with open("./week-3/chatbot-cmd-class/data/" + file_name + ".json", 'w') as file:
+            file.write(json_data)
+    else:
+        return np.array(embeddings)

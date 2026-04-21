@@ -83,7 +83,6 @@ Use the following information to answer:"""
             self.messages_recent[0]["content"] += "\n- " + \
                 obj["text"].strip("\n")
 
-        print(self.messages_recent)
         if self.use_summ:
             input_ids = Chat.tokenizer.apply_chat_template(
                 self.messages_summ_recent,

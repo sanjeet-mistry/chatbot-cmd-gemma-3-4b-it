@@ -99,6 +99,19 @@ Output: Neutral"""
                     "content": f"I am a "
                 }
             ]
+        },
+        {
+            "name": "AI assistant",
+            "messages_initial": [
+                {
+                    "role": "user",
+                    "content": "You are a polite AI assistant. Answer questions using the context provided. Answer in under 100 words."
+                },
+                {
+                    "role": "assistant",
+                    "content": f"I am a "
+                }
+            ]
         }
     ]
     for assistant in assistants:
