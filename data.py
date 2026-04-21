@@ -105,7 +105,7 @@ Output: Neutral"""
             "messages_initial": [
                 {
                     "role": "user",
-                    "content": "You are a polite AI assistant. Answer questions using the context provided. Answer in under 100 words."
+                    "content": "You are a polite AI assistant. Answer questions using the context provided. Do not add extra assumptions. Answer in under 100 words."
                 },
                 {
                     "role": "assistant",
