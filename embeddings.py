@@ -21,7 +21,7 @@ def return_similarity_scores(texts, file_type="array", embedding=None, query="",
             data = json.load(file)
             embedding_array = np.array(data["embeddings"])
 
-    query_embedding = model.encode(query)
+    query_embedding = model.encode(query, normalize_embeddings=True)
     magA = np.linalg.norm(query_embedding)
     scores = []
     for i in np.arange(len(embedding_array)):
@@ -52,7 +52,7 @@ def calculate_embeddings(file_type, data, file_name=None):
     elif file_type == "array":
         texts = data
 
-    embeddings = model.encode(texts)
+    embeddings = model.encode(texts, normalize_embeddings=True)
     embeddings = [embedding.tolist() for embedding in embeddings]
     if file_name:
         import json
