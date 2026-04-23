@@ -74,7 +74,7 @@ elif calculate_similarity:
     similarity_scores = []
     for query in queries:
         similarity_scores.append(return_similarity_scores(
-            chunks, "json", f"./week-3/chatbot-cmd-class/data/{file_name}.json", query, 3))
+            chunks, "json", f"./week-3/chatbot-cmd-class/data/{file_name}.json", query, 4))
 
     from data import Data
     from assistant import Assistant

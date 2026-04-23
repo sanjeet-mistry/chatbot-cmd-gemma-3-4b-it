@@ -6,7 +6,7 @@ import random
 
 
 class Chat():
-    model_path = "./models/gemma-3-4b-it"
+    model_path = "./models/gemma-4-E2B-it"
     bnb_config = BitsAndBytesConfig(
         load_in_4bit=True,
         bnb_4bit_compute_dtype=torch.float16
@@ -15,7 +15,9 @@ class Chat():
     model = AutoModelForCausalLM.from_pretrained(
         model_path,
         quantization_config=bnb_config,  # Apply quantization here
-        device_map="auto"
+        device_map="auto",
+        offload_folder="offload",
+        offload_buffers=True
     )
     # number of recent messages to add in context including the initial messages
     messages_in_context = 11
@@ -70,31 +72,25 @@ class Chat():
         else:
             self.messages_recent = messages_recent
 
-    def generate_output(self, message_text, context):
+    def generate_output(self, message_text, context=None):
         start = dt.datetime.now()
         new_message = {"role": "user", "content": message_text}
         self.append_new_message(new_message)
         self.check_to_create_summary()
         self.update_messages_recent()
 
-        self.messages_recent[0]["content"] = f"""{self.messages_initial[0]['content']} 
+        if context:
+            self.messages_recent[0]["content"] = f"""{self.messages_initial[0]['content']} 
 Use the following information to answer:"""
-        for obj in context:
-            self.messages_recent[0]["content"] += "\n- " + \
-                obj["text"].strip("\n")
+            for obj in context:
+                self.messages_recent[0]["content"] += "\n- " + \
+                    obj["text"].strip("\n")
 
-        if self.use_summ:
-            input_ids = Chat.tokenizer.apply_chat_template(
-                self.messages_summ_recent,
-                tokenize=True,
-                add_generation_prompt=True,
-                return_tensors="pt").to("cuda")
-        else:
-            input_ids = Chat.tokenizer.apply_chat_template(
-                self.messages_recent,
-                tokenize=True,
-                add_generation_prompt=True,
-                return_tensors="pt").to("cuda")
+        input_ids = Chat.tokenizer.apply_chat_template(
+            self.messages_summ_recent if self.use_summ else self.messages_recent,
+            tokenize=True,
+            add_generation_prompt=True,
+            return_tensors="pt").to("cuda")
 
         with torch.inference_mode():
             outputs = Chat.model.generate(
