@@ -3,22 +3,10 @@ import torch
 import copy
 import datetime as dt
 import random
+from model import Model
 
 
 class Chat():
-    model_path = "./models/gemma-4-E2B-it"
-    bnb_config = BitsAndBytesConfig(
-        load_in_4bit=True,
-        bnb_4bit_compute_dtype=torch.float16
-    )
-    tokenizer = AutoTokenizer.from_pretrained(model_path)
-    model = AutoModelForCausalLM.from_pretrained(
-        model_path,
-        quantization_config=bnb_config,  # Apply quantization here
-        device_map="auto",
-        offload_folder="offload",
-        offload_buffers=True
-    )
     # number of recent messages to add in context including the initial messages
     messages_in_context = 11
     show_logs = True
@@ -39,6 +27,7 @@ class Chat():
         ]
         self.messages = copy.deepcopy(self.messages_initial) + self.messages
         self.messages_recent = copy.deepcopy(self.messages)
+        self.model = Model()
         self.use_summ = False
         if self.use_summ:
             from summary import Summary
@@ -86,14 +75,14 @@ Use the following information to answer:"""
                 self.messages_recent[0]["content"] += "\n- " + \
                     obj["text"].strip("\n")
 
-        input_ids = Chat.tokenizer.apply_chat_template(
+        input_ids = self.model.tokenizer.apply_chat_template(
             self.messages_summ_recent if self.use_summ else self.messages_recent,
             tokenize=True,
             add_generation_prompt=True,
             return_tensors="pt").to("cuda")
 
         with torch.inference_mode():
-            outputs = Chat.model.generate(
+            outputs = self.model.model_info.generate(
                 **input_ids,
                 max_new_tokens=self.chat_settings["max_new_tokens"],
                 do_sample=self.chat_settings["do_sample"],
@@ -105,7 +94,8 @@ Use the following information to answer:"""
         prompt_length = input_ids["input_ids"].shape[-1]
         new_tokens = outputs[0][prompt_length:]
         # Decode only assistant reply
-        reply = Chat.tokenizer.decode(new_tokens, skip_special_tokens=True)
+        reply = self.model.tokenizer.decode(
+            new_tokens, skip_special_tokens=True)
 
         new_message = {"role": "assistant", "content": reply}
         self.append_new_message(new_message)
