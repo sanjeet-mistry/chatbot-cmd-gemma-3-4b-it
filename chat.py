@@ -1,4 +1,3 @@
-from transformers import AutoTokenizer, AutoModelForCausalLM, BitsAndBytesConfig
 import torch
 import copy
 import datetime as dt
@@ -11,15 +10,16 @@ class Chat():
     messages_in_context = 11
     show_logs = True
 
-    def __init__(self, user_info, ai, mode, chat_settings, chat_context_length=messages_in_context):
+    def __init__(self, user_info, ai, mode, chat_settings, chat_context_length=None):
         self.id = random.randint(1000000000, 9999999999)
         self.user_name = user_info["name"]
         self.user_gender = user_info["gender"]
         self.ai_name = ai.name
         self.mode = mode
         self.chat_settings = chat_settings
-        if chat_context_length < 3:
-            Chat.messages_in_context = 3
+        if isinstance(chat_context_length, int):
+            if chat_context_length < 3:
+                Chat.messages_in_context = 3
         if self.mode == "roleplay":
             self.ai_gender = ai.gender
         self.messages_initial = ai.messages_initial
@@ -27,7 +27,7 @@ class Chat():
         ]
         self.messages = copy.deepcopy(self.messages_initial) + self.messages
         self.messages_recent = copy.deepcopy(self.messages)
-        self.model = Model()
+        self.model = Model("./models/gemma-4-e4b-it")
         self.use_summ = False
         if self.use_summ:
             from summary import Summary

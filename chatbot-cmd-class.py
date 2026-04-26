@@ -10,7 +10,7 @@ context_file = {
 }
 mode = "roleplay"
 
-character1 = Character(Data.characters[0], Data.user_info)
+character1 = Character(Data.characters[1], Data.user_info)
 assistant1 = Assistant(Data.assistants[1], Data.user_info)
 chat = Chat(Data.user_info, character1, "roleplay",
             Data.roleplay_chat_params)

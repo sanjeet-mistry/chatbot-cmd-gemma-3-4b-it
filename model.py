@@ -13,7 +13,5 @@ class Model():
         self.model_info = AutoModelForCausalLM.from_pretrained(
             self.model_path,
             quantization_config=self.bnb_config,  # Apply quantization here
-            device_map="auto",
-            offload_folder="offload",
-            offload_buffers=True
+            device_map="cuda"
         )
