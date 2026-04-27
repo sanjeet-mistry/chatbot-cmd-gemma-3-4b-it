@@ -10,12 +10,14 @@ context_file = {
 }
 mode = "roleplay"
 
-character1 = Character(Data.characters[1], Data.user_info)
-assistant1 = Assistant(Data.assistants[1], Data.user_info)
-chat = Chat(Data.user_info, character1, "roleplay",
-            Data.roleplay_chat_params, None)
-# chat = Chat(Data.user_info, assistant1, mode, Data.assistant_classify_chat_params, 0)
-# chat = Chat(Data.user_info, assistant1, mode, Data.assistant_chat_params, 0)
+if mode == "roleplay":
+    character1 = Character(Data.characters[1], Data.user_info)
+    chat = Chat(Data.user_info, character1, "roleplay",
+                Data.roleplay_chat_params, None)
+elif mode == "assistant":
+    assistant1 = Assistant(Data.assistants[1], Data.user_info)
+    # chat = Chat(Data.user_info, assistant1, mode, Data.assistant_classify_chat_params, 0)
+    # chat = Chat(Data.user_info, assistant1, mode, Data.assistant_chat_params, 0)
 while 1:
     message_text = input(f"{Data.user_info['name']} (User):\n").strip()
     if (message_text.lower() == "quit" or message_text.lower() == "q"):
