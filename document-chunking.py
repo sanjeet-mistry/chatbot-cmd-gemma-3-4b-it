@@ -81,7 +81,7 @@ elif calculate_similarity:
     assistant1 = Assistant(Data.assistants[3], Data.user_info)
     from chat import Chat
     chat1 = Chat(Data.user_info,
-                 assistant1, "assistant", Data.assistant_chat_params, 0)
+                 assistant1, "assistant", Data.assistant_chat_params, 0, "gemma-4-e4b-it")
     for i in range(len(similarity_scores)):
         print(queries[i])
         answer = chat1.generate_output(queries[i], similarity_scores[i])

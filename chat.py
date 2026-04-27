@@ -10,15 +10,15 @@ class Chat():
     messages_in_context = 11
     show_logs = True
 
-    def __init__(self, user_info, ai, mode, chat_settings, chat_context_length=None):
+    def __init__(self, user_info, ai, mode, chat_settings, max_messages_in_context=None, model_name="gemma-3-4b-it"):
         self.id = random.randint(1000000000, 9999999999)
         self.user_name = user_info["name"]
         self.user_gender = user_info["gender"]
         self.ai_name = ai.name
         self.mode = mode
         self.chat_settings = chat_settings
-        if isinstance(chat_context_length, int):
-            if chat_context_length < 3:
+        if isinstance(max_messages_in_context, int):
+            if max_messages_in_context < 3:
                 Chat.messages_in_context = 3
         if self.mode == "roleplay":
             self.ai_gender = ai.gender
@@ -27,7 +27,7 @@ class Chat():
         ]
         self.messages = copy.deepcopy(self.messages_initial) + self.messages
         self.messages_recent = copy.deepcopy(self.messages)
-        self.model = Model("./models/gemma-4-e4b-it")
+        self.model = Model("./models/" + model_name)
         self.use_summ = False
         if self.use_summ:
             from summary import Summary
