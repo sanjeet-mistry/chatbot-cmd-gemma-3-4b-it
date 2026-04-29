@@ -5,6 +5,14 @@ class Data():
         "age": 27,
         "occupation": "Software Developer"
     }
+    default_chat_params = {
+        "max_new_tokens": 150,
+        "temperature": 0.6,
+        "top_p": 0.9,
+        "top_k": 40,
+        "repetition_penalty": 1.1,
+        "do_sample": True
+    }
     assistant_chat_params = {
         "max_new_tokens": 250,
         "temperature": .6,
@@ -25,6 +33,14 @@ class Data():
         "top_p": .9,
         "top_k": 40,
         "repetition_penalty": 1.15,
+        "do_sample": True
+    }
+    roleplay_chat_params_gemma_4 = {
+        "max_new_tokens": 150,
+        "temperature": .6,
+        "top_p": .9,
+        "top_k": 40,
+        "repetition_penalty": 1.05,
         "do_sample": True
     }
     roleplay_nsfw_chat_params = {

@@ -10,22 +10,32 @@ class Chat():
     messages_in_context = 11
     show_logs = True
 
-    def __init__(self, user_info, ai, mode, chat_settings, max_messages_in_context=None, model_name="gemma-3-4b-it"):
+    def __init__(self, mode, user_info, ai=None, chat_settings=None, max_messages_in_context=None, model_name="gemma-3-4b-it"):
         self.id = random.randint(1000000000, 9999999999)
         self.user_name = user_info["name"]
         self.user_gender = user_info["gender"]
-        self.ai_name = ai.name
         self.mode = mode
-        self.chat_settings = chat_settings
+        if chat_settings is None:
+            from data import Data
+            self.chat_settings = Data.default_chat_params
+        else:
+            self.chat_settings = chat_settings
         if isinstance(max_messages_in_context, int):
             if max_messages_in_context < 3:
                 Chat.messages_in_context = 3
+        if ai is None:
+            self.messages_initial = []
+        else:
+            self.ai_name = ai.name
+            self.messages_initial = copy.deepcopy(ai.messages_initial)
         if self.mode == "roleplay":
             self.ai_gender = ai.gender
-        self.messages_initial = ai.messages_initial
+        elif self.mode == "query":
+            self.messages_initial = []
         self.messages = [
         ]
-        self.messages = copy.deepcopy(self.messages_initial) + self.messages
+        self.messages = (copy.deepcopy(self.messages_initial) +
+                         self.messages) if self.messages_initial else self.messages
         self.messages_recent = copy.deepcopy(self.messages)
         self.model = Model("./models/" + model_name)
         self.use_summ = False
@@ -64,17 +74,42 @@ class Chat():
     def generate_output(self, message_text, context=None):
         start = dt.datetime.now()
         new_message = {"role": "user", "content": message_text}
+        if self.mode == "query":
+            self.messages_recent = []
+            self.messages_recent.append(new_message)
         self.append_new_message(new_message)
-        self.check_to_create_summary()
-        self.update_messages_recent()
+        if self.mode == "roleplay":
+            self.check_to_create_summary()
+            self.update_messages_recent()
 
-        if context:
+        if context and self.mode == "assistant":
             self.messages_recent[0]["content"] = f"""{self.messages_initial[0]['content']} 
 Use the following information to answer:"""
             for obj in context:
                 self.messages_recent[0]["content"] += "\n- " + \
                     obj["text"].strip("\n")
 
+        if self.mode == "query":
+            self.messages_recent[0]["content"] = f"""Query:
+{message_text} 
+Answer using ONLY the information provided below.
+Do NOT add any new information, assumptions, or examples.
+
+First identify the relevant facts from the context, then answer using only those facts.
+
+If NO relevant information is present in the context, reply only with "Not enough information."
+Do NOT include this phrase if partial information is available.
+
+Include only the most relevant facts needed to answer the question. Avoid unnecessary details.
+
+Keep the answer in max of 120 words.
+Answer in one concise paragraph.
+Be direct and factual.
+
+Context:"""
+            for text in context:
+                self.messages_recent[0]["content"] += "\n- " + \
+                    text.strip("\n")
         input_ids = self.model.tokenizer.apply_chat_template(
             self.messages_summ_recent if self.use_summ else self.messages_recent,
             tokenize=True,
