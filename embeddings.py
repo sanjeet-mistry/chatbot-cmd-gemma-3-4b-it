@@ -51,13 +51,23 @@ def calculate_embeddings(file_type, data, file_name=None):
             texts = [message for message in texts if message != ""]
     elif file_type == "array":
         texts = data
+    elif file_type == "pdf":
+        import fitz
+        doc = fitz.open(
+            "./week-3/chatbot-cmd-class/data/Harry Potter and the Sorcerer's Stone.pdf")
+        texts = ""
+        for page in doc:
+            text = page.get_text()
+            texts += text
+
+        print(texts[:1000])  # preview
 
     embeddings = model.encode(texts, normalize_embeddings=True)
     embeddings = [embedding.tolist() for embedding in embeddings]
     if file_name:
         import json
         json_data = json.dumps({"embeddings": embeddings})
-        with open("./week-3/chatbot-cmd-class/data/" + file_name + ".json", 'w') as file:
+        with open("./week-3/chatbot-cmd-class/generated/" + file_name + ".json", 'w') as file:
             file.write(json_data)
     else:
         return np.array(embeddings)

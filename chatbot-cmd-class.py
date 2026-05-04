@@ -12,8 +12,8 @@ mode = "roleplay"
 
 if mode == "roleplay":
     character1 = Character(Data.characters[1], Data.user_info)
-    chat = Chat("roleplay", Data.user_info, character1,
-                Data.roleplay_chat_params, None)
+    chat = Chat("roleplay", Data.user_info,
+                character1, Data.roleplay_chat_params)
 elif mode == "assistant":
     assistant1 = Assistant(Data.assistants[1], Data.user_info)
     # chat = Chat(mode, Data.user_info, assistant1, Data.assistant_classify_chat_params, 0)

@@ -2,6 +2,7 @@ import chromadb
 from sentence_transformers import SentenceTransformer, CrossEncoder
 from chat import Chat
 from data import Data
+import torch
 
 # -------------------------
 # Load data
@@ -53,11 +54,10 @@ questions = [
     "If Swapnil plans a relaxed evening with his favorite activities, what might he do, where might he go, and what could he eat or drink?"
 ]
 
-chat1 = Chat("query", Data.user_info, None, Data.assistant_chat_params, 0)
-
 # -------------------------
 # Query + Rerank
 # -------------------------
+context_array = []
 for question in questions:
     query_embedding = embedding_model.encode([question])
 
@@ -80,10 +80,15 @@ for question in questions:
 
     # Step 5: Take top 7
     top_docs = [doc for doc, score in ranked_docs[:7]]
+    context_array.append(top_docs)
 
+
+torch.cuda.empty_cache()
+chat1 = Chat("query", Data.user_info, None,
+             Data.assistant_chat_params, 0, "gemma-4-e4b-it")
+for question, top_docs in zip(questions, context_array):
     print(f"Question: {question}")
     for doc in top_docs:
         print("-", doc)
-
     response = chat1.generate_output(question, top_docs)
     print(f"Answer: {response}\n")
