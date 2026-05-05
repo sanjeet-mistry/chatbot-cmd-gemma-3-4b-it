@@ -1,29 +1,18 @@
 from transformers import AutoTokenizer, AutoModelForCausalLM, BitsAndBytesConfig
 import torch
 import datetime as dt
+from model import Model
 
 
 class Summary():
 
-    model_path = "./models/gemma-3-4b-it"
-
-    bnb_config = BitsAndBytesConfig(
-        load_in_4bit=True,
-        bnb_4bit_compute_dtype=torch.float16
-    )
-
-    print("CUDA available:", torch.cuda.is_available())
-    print("CUDA version:", torch.version.cuda)
-
-    tokenizer = AutoTokenizer.from_pretrained(model_path)
-
-    model = AutoModelForCausalLM.from_pretrained(
-        model_path,
-        quantization_config=bnb_config,  # Apply quantization here
-        device_map="auto"  # Auto will perfectly map it to your GPU now
-    )
-
     show_logs = False
+
+    def __init__(self, model_name=None):
+        if model_name == None:
+            self.model = Model()
+        else:
+            self.model = Model(model_name)
 
     def generate_summary(self, message_text, names=None, genders=None):
         start = dt.datetime.now()
@@ -50,20 +39,21 @@ Rules:
 
 Summary:"""  # Added "Summary:" to give the model a clear starting point
 
-        inputs = Summary.tokenizer(prompt, return_tensors="pt").to("cuda")
+        inputs = self.model.tokenizer(
+            prompt, return_tensors="pt").to("cuda")
 
         with torch.inference_mode():
-            outputs = Summary.model.generate(
+            outputs = self.model.model_info.generate(
                 **inputs,
                 max_new_tokens=40,
                 do_sample=False,
                 repetition_penalty=1.1,  # Slightly increased to stop repetition
-                eos_token_id=Summary.tokenizer.eos_token_id  # Stop at end of sentence
+                eos_token_id=self.model.tokenizer.eos_token_id  # Stop at end of sentence
             )
 
         # Only decode the NEW tokens (ignoring the prompt)
         new_tokens = outputs[0][len(inputs["input_ids"][0]):]
-        response = Summary.tokenizer.decode(
+        response = self.model.tokenizer.decode(
             new_tokens, skip_special_tokens=True).strip()
 
         # Final cleanup: Grab only the first line and remove any trailing dashes/rules
