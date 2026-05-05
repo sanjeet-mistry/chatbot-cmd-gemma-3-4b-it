@@ -15,7 +15,7 @@ class Model:
 
             tokenizer = AutoTokenizer.from_pretrained(model_path)
 
-            model = AutoModelForCausalLM.from_pretrained(
+            model_info = AutoModelForCausalLM.from_pretrained(
                 model_path,
                 quantization_config=BitsAndBytesConfig(
                     load_in_4bit=True,
@@ -26,8 +26,8 @@ class Model:
 
             Model.cache[model_name] = {
                 "tokenizer": tokenizer,
-                "model": model
+                "model": model_info
             }
 
         self.tokenizer = Model.cache[model_name]["tokenizer"]
-        self.model = Model.cache[model_name]["model"]
+        self.model_info = Model.cache[model_name]["model"]

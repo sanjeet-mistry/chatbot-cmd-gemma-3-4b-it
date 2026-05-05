@@ -53,8 +53,7 @@ def calculate_embeddings(file_type, data, file_name=None):
         texts = data
     elif file_type == "pdf":
         import fitz
-        doc = fitz.open(
-            "./week-3/chatbot-cmd-class/data/Harry Potter and the Sorcerer's Stone.pdf")
+        doc = fitz.open(data)
         texts = ""
         for page in doc:
             text = page.get_text()
