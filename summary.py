@@ -1,4 +1,3 @@
-from transformers import AutoTokenizer, AutoModelForCausalLM, BitsAndBytesConfig
 import torch
 import datetime as dt
 from model import Model
