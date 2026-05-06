@@ -1,7 +1,7 @@
 from sentence_transformers import SentenceTransformer
 import numpy as np
 
-model = SentenceTransformer("./models/e5-base-v2")
+model = SentenceTransformer("./models/bge-large-en-v1.5")
 
 
 def return_similarity_scores(texts, file_type="array", embedding=None, query="", number=1):

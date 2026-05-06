@@ -4,6 +4,7 @@ import chromadb
 from sentence_transformers import CrossEncoder
 from chat import Chat
 from data import Data
+from utils import chunk_text_overlap
 
 doc = fitz.open(
     "./week-3/chatbot-cmd-class/data/harry-potter-and-the-sorcerer's-stone.pdf")
@@ -13,18 +14,6 @@ all_text = ""
 for page in doc:
     text = page.get_text()
     all_text += text
-
-
-def chunk_text_overlap(text, chunk_size=200, overlap=50):
-    words = text.split()
-    chunks = []
-
-    for i in range(0, len(words), chunk_size - overlap):
-        chunk = words[i:i+chunk_size]
-        chunks.append(" ".join(chunk))
-
-    return chunks
-
 
 chunks = chunk_text_overlap(all_text)
 embeddings_array = calculate_embeddings("array", chunks)
