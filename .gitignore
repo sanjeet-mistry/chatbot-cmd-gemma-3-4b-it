@@ -1,3 +1,5 @@
 __pycache__/
 chats/
 venv/
+chroma-db/
+generated/

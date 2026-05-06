@@ -1,10 +1,12 @@
 import fitz  # PyMuPDF
-from embeddings_old import calculate_embeddings
-import chromadb
-from sentence_transformers import CrossEncoder
 from chat import Chat
 from data import Data
 from utils import chunk_text_overlap
+from chroma_vector_db import ChromaVectorDB
+import json
+
+collection_file_name = "harry-potter-and-the-sorcerer-stone"
+collection_file_path = "./week-3/chatbot-cmd-class/chroma-db/"
 
 doc = fitz.open(
     "./week-3/chatbot-cmd-class/data/harry-potter-and-the-sorcerer's-stone.pdf")
@@ -16,7 +18,6 @@ for page in doc:
     all_text += text
 
 chunks = chunk_text_overlap(all_text)
-embeddings_array = calculate_embeddings("array", chunks)
 
 questions = [
     # Easy
@@ -43,38 +44,14 @@ questions = [
     "Explain how the author builds tension about Voldemort’s disappearance using multiple perspectives (e.g., news, conversations, and observations)."
 ]
 
-questions_embeddings_array = embeddings.calculate_embeddings(
-    "array", questions)
+with open("./week-3/chatbot-cmd-class/generated/harry-potter-and-the-sorcerer's-stone.json") as file:
+    embeddings_array = json.load(file)["embeddings"]
 
-reranker = CrossEncoder("./models/bge-reranker-base")
-client = chromadb.Client()
-collection = client.create_collection(name="my_docs")
-for i, doc in enumerate(chunks):
-    collection.add(
-        documents=[doc],
-        embeddings=[embeddings_array[i]],
-        ids=[str(i)]
-    )
-chat1 = Chat("query", Data.user_info, None, Data.assistant_chat_params, 0)
+chromaVectorDB = ChromaVectorDB()
+# chromaVectorDB.create_collection(
+#     chunks, embeddings_array, collection_file_path, collection_file_name)
+# chat1 = Chat("query", Data.user_info, None, Data.assistant_chat_params, 0)
 
-for question, question_embedding in zip(questions, questions_embeddings_array):
-    results = collection.query(
-        query_embeddings=question_embedding,
-        n_results=10
-    )
-
-    docs = results["documents"][0]
-
-    pairs = [[question, doc] for doc in docs]
-
-    # Step 3: Rerank
-    scores = reranker.predict(pairs)
-
-    # Step 4: Sort by score
-    ranked_docs = sorted(zip(docs, scores), key=lambda x: x[1], reverse=True)
-
-    # Step 5: Take top
-    top_docs = [doc for doc, score in ranked_docs[:5]]
-    print(f"Question: {question}")
-    response = chat1.generate_output(question, top_docs)
-    print(f"Answer: {response}\n")
+results = chromaVectorDB.return_best_results(
+    collection_file_name, collection_file_path, questions, 6, True, 3)
+print(results)

@@ -40,7 +40,10 @@ def return_similarity_scores(texts, file_type="array", embedding=None, query="",
 
 def calculate_embeddings(file_type, data, file_name=None):
     texts = []
-    if file_type == "text":
+    if file_type == "string":
+        embedding = model.encode(data, normalize_embeddings=True)
+        return embedding
+    elif file_type == "text":
         with open(data, encoding='utf-8') as f:
             for line in f:
                 texts.append(line.rstrip("\n"))
@@ -54,12 +57,12 @@ def calculate_embeddings(file_type, data, file_name=None):
     elif file_type == "pdf":
         import fitz
         doc = fitz.open(data)
-        texts = ""
+        all_text = ""
         for page in doc:
             text = page.get_text()
-            texts += text
-
-        print(texts[:1000])  # preview
+            all_text += text
+        from utils import chunk_text_overlap
+        texts = chunk_text_overlap(all_text)
 
     embeddings = model.encode(texts, normalize_embeddings=True)
     embeddings = [embedding.tolist() for embedding in embeddings]
