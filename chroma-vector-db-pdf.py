@@ -1,5 +1,5 @@
 import fitz  # PyMuPDF
-import embeddings
+from embeddings_old import calculate_embeddings
 import chromadb
 from sentence_transformers import CrossEncoder
 from chat import Chat
@@ -27,7 +27,7 @@ def chunk_text_overlap(text, chunk_size=200, overlap=50):
 
 
 chunks = chunk_text_overlap(all_text)
-embeddings_array = embeddings.calculate_embeddings("array", chunks)
+embeddings_array = calculate_embeddings("array", chunks)
 
 questions = [
     # Easy

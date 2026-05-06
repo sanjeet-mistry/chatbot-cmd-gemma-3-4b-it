@@ -23,7 +23,7 @@ while 1:
     if (message_text.lower() == "quit" or message_text.lower() == "q"):
         break
     if pass_context:
-        from embeddings import return_similarity_scores
+        from embeddings_old import return_similarity_scores
         results = return_similarity_scores(
             context_file["type"], context_file["name"], message_text, 10)
         reply = chat.generate_output(message_text, results)

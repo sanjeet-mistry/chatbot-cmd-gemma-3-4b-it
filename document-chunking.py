@@ -66,11 +66,11 @@ queries = [
 #     "Why does Holmes ultimately fail to obtain the photograph?"
 # ]
 if calculate_embedding:
-    from embeddings import calculate_embeddings
+    from embeddings_old import calculate_embeddings
     chunks_embeddings = calculate_embeddings(
         "array", chunks, file_name)
 elif calculate_similarity:
-    from embeddings import return_similarity_scores
+    from embeddings_old import return_similarity_scores
     similarity_scores = []
     for query in queries:
         similarity_scores.append(return_similarity_scores(
