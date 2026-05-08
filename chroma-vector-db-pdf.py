@@ -8,17 +8,6 @@ import json
 collection_file_name = "harry-potter-and-the-sorcerer-stone"
 collection_file_path = "./week-3/chatbot-cmd-class/chroma-db/"
 
-doc = fitz.open(
-    "./week-3/chatbot-cmd-class/data/harry-potter-and-the-sorcerer's-stone.pdf")
-
-all_text = ""
-
-for page in doc:
-    text = page.get_text()
-    all_text += text
-
-chunks = chunk_text_overlap(all_text)
-
 questions = [
     # Easy
     "What is the full name of Harry’s uncle?",
@@ -70,18 +59,34 @@ questions = [
     "Trace how Harry’s opinion of Snape changes throughout the story and explain why."
 ]
 
-with open("./week-3/chatbot-cmd-class/generated/harry-potter-and-the-sorcerer's-stone.json") as file:
-    embeddings_array = json.load(file)["embeddings"]
-
 chromaVectorDB = ChromaVectorDB()
-# chromaVectorDB.create_collection(
-#     chunks, embeddings_array, collection_file_path, collection_file_name)
 
-results = chromaVectorDB.return_best_results(
-    collection_file_name, collection_file_path, questions)
-chat1 = Chat("query", Data.user_info, None, Data.assistant_chat_params, 0)
+createCollection = False
 
-for question, result in zip(questions, results):
-    print(f"Question: {question}")
-    response = chat1.generate_output(question, result)
-    print(f"Answer:\n{response}\n")
+if createCollection:
+    doc = fitz.open(
+        "./week-3/chatbot-cmd-class/data/harry-potter-and-the-sorcerer's-stone.pdf")
+
+all_text = ""
+
+for page in doc:
+    text = page.get_text()
+    all_text += text
+
+    chunks = chunk_text_overlap(all_text)
+
+    with open("./week-3/chatbot-cmd-class/generated/harry-potter-and-the-sorcerer's-stone.json") as file:
+        embeddings_array = json.load(file)["embeddings"]
+
+    chromaVectorDB.create_collection(
+        chunks, embeddings_array, collection_file_path, collection_file_name)
+
+else:
+    results = chromaVectorDB.return_best_results(
+        collection_file_name, collection_file_path, questions)
+    chat1 = Chat("query", Data.user_info, None, Data.assistant_chat_params, 0)
+
+    for question, result in zip(questions, results):
+        print(f"Question: {question}")
+        response = chat1.generate_output(question, result)
+        print(f"Answer:\n{response}\n")
