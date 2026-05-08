@@ -79,6 +79,34 @@ class Chat():
         new_message = {"role": "user", "content": message_text}
         if self.mode == "query":
             self.messages_recent = []
+            formatted_context = ""
+
+            for index, text in enumerate(context, start=1):
+                formatted_context += str(index) + \
+                    ". " + text.strip('\n') + "\n"
+            prompt = f"""Question:
+{message_text}
+
+You must answer ONLY using information explicitly present in the provided context.
+
+Do NOT use outside knowledge.
+Do NOT infer missing details.
+Do NOT combine unrelated parts of the context.
+
+If the answer is not clearly supported by the context, reply:
+"Not enough information."
+Do NOT include this phrase if partial information is available.
+
+Use only the minimum context necessary to answer the question.
+
+Keep the answer under 150 words.
+Answer in one concise paragraph.
+Be direct and factual.
+
+Context:
+{formatted_context}"""
+
+            new_message = {"role": "user", "content": prompt}
             self.messages_recent.append(new_message)
         self.append_new_message(new_message)
         if self.mode == "roleplay":
@@ -92,27 +120,6 @@ Use the following information to answer:"""
                 self.messages_recent[0]["content"] += "\n- " + \
                     obj["text"].strip("\n")
 
-        if self.mode == "query":
-            self.messages_recent[0]["content"] = f"""Query:
-{message_text} 
-Answer using ONLY the information provided below.
-Do NOT add any new information, assumptions, or examples.
-
-First identify the relevant facts from the context, then answer using only those facts.
-
-If NO relevant information is present in the context, reply only with "Not enough information."
-Do NOT include this phrase if partial information is available.
-
-Include only the most relevant facts needed to answer the question. Avoid unnecessary details.
-
-Keep the answer in max of 120 words.
-Answer in one concise paragraph.
-Be direct and factual.
-
-Context:"""
-            for text in context:
-                self.messages_recent[0]["content"] += "\n- " + \
-                    text.strip("\n")
         input_ids = self.model.tokenizer.apply_chat_template(
             self.messages_summ_recent if self.use_summ else self.messages_recent,
             tokenize=True,
