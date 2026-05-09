@@ -213,3 +213,17 @@ Output: Neutral"""
             "hair_style": "messy, long"
         },
     ]
+    chunks = [
+        {
+            "size": 200,
+            "overlap": 50
+        },
+        {
+            "size": 256,
+            "overlap": 64
+        },
+        {
+            "size": 300,
+            "overlap": 75
+        }
+    ]

@@ -10,5 +10,6 @@ with fitz.open(file_name) as doc:
     for page in doc:
         all_text += page.get_text()
 
-chunks = chunk_text_overlap(all_text)
-calculate_embeddings("array", chunks, "harry-potter-and-the-sorcerer's-stone")
+chunks = chunk_text_overlap(all_text, 250, 60)
+calculate_embeddings(
+    "array", chunks, "harry-potter-and-the-sorcerer-stone-250-60")

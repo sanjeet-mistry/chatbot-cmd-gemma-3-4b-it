@@ -93,9 +93,8 @@ Do NOT use outside knowledge.
 Do NOT infer missing details.
 Do NOT combine unrelated parts of the context.
 
-If the answer is not clearly supported by the context, reply:
+If the context does not contain enough information to answer the question, reply ONLY:
 "Not enough information."
-Do NOT include this phrase if partial information is available.
 
 Use only the minimum context necessary to answer the question.
 

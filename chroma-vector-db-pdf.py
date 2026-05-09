@@ -5,7 +5,8 @@ from utils import chunk_text_overlap
 from chroma_vector_db import ChromaVectorDB
 import json
 
-collection_file_name = "harry-potter-and-the-sorcerer-stone"
+chunks_setting = Data.chunks[2]
+collection_file_name = f"harry-potter-and-the-sorcerer-stone-{chunks_setting['size']}-{chunks_setting['overlap']}"
 collection_file_path = "./week-3/chatbot-cmd-class/chroma-db/"
 
 questions = [
@@ -67,15 +68,16 @@ if createCollection:
     doc = fitz.open(
         "./week-3/chatbot-cmd-class/data/harry-potter-and-the-sorcerer's-stone.pdf")
 
-all_text = ""
+    all_text = ""
 
-for page in doc:
-    text = page.get_text()
-    all_text += text
+    for page in doc:
+        text = page.get_text()
+        all_text += text
 
-    chunks = chunk_text_overlap(all_text)
+    chunks = chunk_text_overlap(all_text, chunks_setting["size"],
+                                chunks_setting["overlap"])
 
-    with open("./week-3/chatbot-cmd-class/generated/harry-potter-and-the-sorcerer's-stone.json") as file:
+    with open(f"./week-3/chatbot-cmd-class/generated/{collection_file_name}.json") as file:
         embeddings_array = json.load(file)["embeddings"]
 
     chromaVectorDB.create_collection(
@@ -83,7 +85,7 @@ for page in doc:
 
 else:
     results = chromaVectorDB.return_best_results(
-        collection_file_name, collection_file_path, questions)
+        collection_file_name, collection_file_path, questions, 20, True, {'min': 2, 'max': 6})
     chat1 = Chat("query", Data.user_info, None, Data.assistant_chat_params, 0)
 
     for question, result in zip(questions, results):
