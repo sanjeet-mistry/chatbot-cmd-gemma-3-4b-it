@@ -61,7 +61,7 @@ def calculate_embeddings(file_type, data, file_name=None):
         for page in doc:
             text = page.get_text()
             all_text += text
-        from utils import chunk_text_overlap
+        from core.utils import chunk_text_overlap
         texts = chunk_text_overlap(all_text)
 
     embeddings = model.encode(texts, normalize_embeddings=True)

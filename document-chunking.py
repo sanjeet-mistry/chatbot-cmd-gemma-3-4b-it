@@ -76,7 +76,7 @@ elif calculate_similarity:
         similarity_scores.append(return_similarity_scores(
             chunks, "json", f"./week-3/chatbot-cmd-class/data/{file_name}.json", query, 4))
 
-    from data import Data
+    from core.data import Data
     from core.assistant import Assistant
     assistant1 = Assistant(Data.assistants[3], Data.user_info)
     from core.chat import Chat

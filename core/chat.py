@@ -16,7 +16,7 @@ class Chat():
         self.user_gender = user_info["gender"]
         self.mode = mode
         if chat_settings is None:
-            from data import Data
+            from core.data import Data
             self.chat_settings = Data.default_chat_params
         else:
             self.chat_settings = chat_settings
@@ -43,7 +43,7 @@ class Chat():
             self.model = Model(model_name)
         self.use_summ = False
         if self.use_summ:
-            from summary import Summary
+            from core.summary import Summary
             self.messages_summ = copy.deepcopy(self.messages)
             self.messages_summ_recent = copy.deepcopy(self.messages)
             self.summary = Summary()

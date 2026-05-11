@@ -1,6 +1,6 @@
 from core.chat import Chat
 from core.character import Character
-from data import Data
+from core.data import Data
 from core.assistant import Assistant
 
 pass_context = False
