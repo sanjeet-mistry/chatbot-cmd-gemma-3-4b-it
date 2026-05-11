@@ -1,6 +1,6 @@
 import fitz  # PyMuPDF
 from core.chat import Chat
-from data import Data
+from core.data import Data
 from core.utils import chunk_text_overlap
 from core.chroma_vector_db import ChromaVectorDB
 import json
@@ -9,56 +9,36 @@ chunks_setting = Data.chunks[2]
 collection_file_name = f"harry-potter-and-the-sorcerer-stone-{chunks_setting['size']}-{chunks_setting['overlap']}"
 collection_file_path = "./week-3/chatbot-cmd-class/chroma-db/"
 
-questions = [
-    # Easy
-    "What is the full name of Harry’s uncle?",
-    "Where do the Dursleys live?",
-    "What is the name of Dudley’s school?",
-    "What animal escapes from the zoo?",
-    "What is the name of the street where Harry lives?",
+with open("./week-3/chatbot-cmd-class/queries/harry-potter-sorceror-stone-2.txt", encoding="utf-8") as file:
+    text = file.read()
+    questions = text.split("\n\n")
+    print(questions)
 
-    # Medium
-    "Why does Mr. Dursley feel uneasy on his way to work at the beginning of the story?",
-    "What unusual events are reported on the news the night Harry arrives at the Dursleys’ house?",
-    "Why does Harry have to go to the zoo with the Dursleys?",
-    "What does the snake say (or imply) to Harry at the zoo?",
-    "Why does Professor McGonagall think leaving Harry with the Dursleys is a bad idea?",
+# questions = [
+#     # Easy
+#     "What is the full name of Harry’s uncle?",
+#     "Where do the Dursleys live?",
+#     "What is the name of Dudley’s school?",
+#     "What animal escapes from the zoo?",
+#     "What is the name of the street where Harry lives?",
 
-    # Hard
-    "How does Dumbledore explain why Harry should grow up away from fame?",
-    "What clues in the first chapter suggest something unusual has happened in the wizarding world?",
-    "How do the Dursleys treat Harry differently compared to Dudley? Give specific examples.",
-    "What evidence shows that Harry has magical abilities before he knows he is a wizard?",
+#     # Medium
+#     "Why does Mr. Dursley feel uneasy on his way to work at the beginning of the story?",
+#     "What unusual events are reported on the news the night Harry arrives at the Dursleys’ house?",
+#     "Why does Harry have to go to the zoo with the Dursleys?",
+#     "What does the snake say (or imply) to Harry at the zoo?",
+#     "Why does Professor McGonagall think leaving Harry with the Dursleys is a bad idea?",
 
-    # Very Hard
-    "Explain how the author builds tension about Voldemort’s disappearance using multiple perspectives (e.g., news, conversations, and observations)."
-]
+#     # Hard
+#     "How does Dumbledore explain why Harry should grow up away from fame?",
+#     "What clues in the first chapter suggest something unusual has happened in the wizarding world?",
+#     "How do the Dursleys treat Harry differently compared to Dudley? Give specific examples.",
+#     "What evidence shows that Harry has magical abilities before he knows he is a wizard?",
 
-questions = [
-    "What is the name of Harry’s owl?",
-    "What color are Harry’s eyes?",
-    "Who leaves Harry on the Dursleys’ doorstep?",
-    "What present does Hagrid give Harry for his birthday?",
-    "What position does Harry play in Quidditch?",
+#     # Very Hard
+#     "Explain how the author builds tension about Voldemort’s disappearance using multiple perspectives (e.g., news, conversations, and observations)."
+# ]
 
-    "Why is Harry forced to live in the cupboard under the stairs?",
-    "How does Harry first learn he is a wizard?",
-    "Why are the Dursleys afraid of anything unusual?",
-    "Describe Harry’s first meeting with Draco Malfoy.",
-    "Why does Hagrid get angry in the hut on the rock?",
-
-    "What events lead Harry to suspect Snape is trying to steal the Philosopher’s Stone?",
-    "How does Harry discover that Nicolas Flamel is connected to the mystery?",
-    "What clues make Hermione realize what creature is guarding the trapdoor?",
-    "Why does Harry think he can trust Hagrid even when others doubt him?",
-    "How does the relationship between Harry and Dudley begin to change after the zoo incident?",
-
-    "Explain how the author gradually reveals that the wizarding world knows Harry before he knows it himself.",
-    "Compare how Professor McGonagall and Hagrid feel about leaving Harry with the Dursleys.",
-    "Describe the sequence of events that causes Harry to miss the train platform at King’s Cross initially.",
-    "Explain how the author builds suspense around the forbidden corridor before Harry discovers what is hidden there.",
-    "Trace how Harry’s opinion of Snape changes throughout the story and explain why."
-]
 
 chromaVectorDB = ChromaVectorDB()
 

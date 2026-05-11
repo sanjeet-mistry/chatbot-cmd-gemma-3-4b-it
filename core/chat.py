@@ -2,7 +2,7 @@ import torch
 import copy
 import datetime as dt
 import random
-from model import Model
+from core.model import Model
 
 
 class Chat():

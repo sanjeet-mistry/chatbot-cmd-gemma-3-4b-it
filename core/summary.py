@@ -1,6 +1,6 @@
 import torch
 import datetime as dt
-from model import Model
+from core.model import Model
 
 
 class Summary():
