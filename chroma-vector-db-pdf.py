@@ -1,8 +1,8 @@
 import fitz  # PyMuPDF
-from classes.chat import Chat
+from core.chat import Chat
 from data import Data
-from classes.utils import chunk_text_overlap
-from classes.chroma_vector_db import ChromaVectorDB
+from core.utils import chunk_text_overlap
+from core.chroma_vector_db import ChromaVectorDB
 import json
 
 chunks_setting = Data.chunks[2]

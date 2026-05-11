@@ -66,20 +66,20 @@ queries = [
 #     "Why does Holmes ultimately fail to obtain the photograph?"
 # ]
 if calculate_embedding:
-    from classes.embeddings_old import calculate_embeddings
+    from core.embeddings_old import calculate_embeddings
     chunks_embeddings = calculate_embeddings(
         "array", chunks, file_name)
 elif calculate_similarity:
-    from classes.embeddings_old import return_similarity_scores
+    from core.embeddings_old import return_similarity_scores
     similarity_scores = []
     for query in queries:
         similarity_scores.append(return_similarity_scores(
             chunks, "json", f"./week-3/chatbot-cmd-class/data/{file_name}.json", query, 4))
 
     from data import Data
-    from classes.assistant import Assistant
+    from core.assistant import Assistant
     assistant1 = Assistant(Data.assistants[3], Data.user_info)
-    from classes.chat import Chat
+    from core.chat import Chat
     chat1 = Chat("assistant", Data.user_info,
                  assistant1, Data.assistant_chat_params, 0, "gemma-4-e4b-it")
     for i in range(len(similarity_scores)):

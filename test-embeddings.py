@@ -1,4 +1,4 @@
-from classes.embeddings_old import return_similarity_scores
+from core.embeddings_old import return_similarity_scores
 # query = "I got a new mobile number. How to update?"
 query = "What time does Swapnil have dinner at?"
 results = return_similarity_scores(

@@ -1,6 +1,6 @@
 import chromadb
 from sentence_transformers import SentenceTransformer, CrossEncoder
-from classes.chat import Chat
+from core.chat import Chat
 from data import Data
 import torch
 
