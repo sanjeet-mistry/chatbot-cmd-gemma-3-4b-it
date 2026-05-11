@@ -1,7 +1,7 @@
-from chat import Chat
-from character import Character
+from classes.chat import Chat
+from classes.character import Character
 from data import Data
-from assistant import Assistant
+from classes.assistant import Assistant
 
 pass_context = False
 context_file = {
@@ -23,7 +23,7 @@ while 1:
     if (message_text.lower() == "quit" or message_text.lower() == "q"):
         break
     if pass_context:
-        from embeddings_old import return_similarity_scores
+        from classes.embeddings_old import return_similarity_scores
         results = return_similarity_scores(
             context_file["type"], context_file["name"], message_text, 10)
         reply = chat.generate_output(message_text, results)

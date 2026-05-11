@@ -1,7 +1,7 @@
-from embeddings_old import calculate_embeddings
+from classes.embeddings_old import calculate_embeddings
 import fitz
-from utils import chunk_text_overlap
-from embeddings_old import calculate_embeddings
+from classes.utils import chunk_text_overlap
+from classes.embeddings_old import calculate_embeddings
 
 file_name = "./week-3/chatbot-cmd-class/data/harry-potter-and-the-sorcerer's-stone.pdf"
 

@@ -1,4 +1,4 @@
-from summary import Summary
+from classes.summary import Summary
 import datetime as dt
 
 messages = [
