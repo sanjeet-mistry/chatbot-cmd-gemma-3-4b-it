@@ -49,17 +49,17 @@ class ChromaVectorDB():
                 # Step 4: Sort by score
                 ranked_docs = sorted(
                     zip(docs, scores), key=lambda x: x[1], reverse=True)
-                print([score for doc, score in ranked_docs])
 
                 top_doc = ranked_docs[0]
                 top_docs = [(doc, score) for doc,
-                            score in ranked_docs if score >= (.35 * top_doc[1])]
+                            score in ranked_docs if score >= max((.35 * top_doc[1]), .15)]
 
                 if len(top_docs) < top_k['min']:
                     top_docs = ranked_docs[:top_k['min']]
                 elif len(top_docs) > top_k['max']:
                     top_docs = top_docs[:top_k['max']]
 
+                print([score for doc, score in top_docs])
                 top_docs = [doc for doc, score in top_docs]
 
                 top_chunks.append(top_docs)

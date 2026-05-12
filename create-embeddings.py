@@ -12,4 +12,4 @@ with fitz.open(file_name) as doc:
 
 chunks = chunk_text_overlap(all_text)
 calculate_embeddings(
-    "array", chunks, "sherlock-holmes-200-50")
+    "array", chunks, "sherlock-holmes-300-75")

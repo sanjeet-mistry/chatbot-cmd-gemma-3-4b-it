@@ -114,7 +114,7 @@ Context:
 
         if context and self.mode == "assistant":
             self.messages_recent[0]["content"] = f"""{self.messages_initial[0]['content']} 
-Use the following information to answer:"""
+Context:"""
             for obj in context:
                 self.messages_recent[0]["content"] += "\n- " + \
                     obj["text"].strip("\n")
