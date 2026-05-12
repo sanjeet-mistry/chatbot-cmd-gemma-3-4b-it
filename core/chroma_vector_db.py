@@ -17,7 +17,7 @@ class ChromaVectorDB():
             )
 
     def return_best_results(self, collection_name, collection_path, queries=None, num_of_results=20, use_reranker=True, top_k={'min': 2, 'max': 10}):
-        from embeddings_old import calculate_embeddings
+        from core.embeddings_old import calculate_embeddings
         client = chromadb.PersistentClient(path=collection_path)
         collection = client.get_or_create_collection(
             name=collection_name)
@@ -49,12 +49,11 @@ class ChromaVectorDB():
                 # Step 4: Sort by score
                 ranked_docs = sorted(
                     zip(docs, scores), key=lambda x: x[1], reverse=True)
+                print([score for doc, score in ranked_docs])
 
                 top_doc = ranked_docs[0]
                 top_docs = [(doc, score) for doc,
                             score in ranked_docs if score >= (.35 * top_doc[1])]
-
-                # print([score for doc, score in top_docs])
 
                 if len(top_docs) < top_k['min']:
                     top_docs = ranked_docs[:top_k['min']]

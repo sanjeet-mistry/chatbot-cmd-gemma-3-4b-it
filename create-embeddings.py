@@ -3,13 +3,13 @@ import fitz
 from core.utils import chunk_text_overlap
 from core.embeddings_old import calculate_embeddings
 
-file_name = "./week-3/chatbot-cmd-class/data/harry-potter-and-the-sorcerer's-stone.pdf"
+file_name = "./week-3/chatbot-cmd-class/data/sherlock-holmes.txt"
 
 with fitz.open(file_name) as doc:
     all_text = ""
     for page in doc:
         all_text += page.get_text()
 
-chunks = chunk_text_overlap(all_text, 250, 60)
+chunks = chunk_text_overlap(all_text)
 calculate_embeddings(
-    "array", chunks, "harry-potter-and-the-sorcerer-stone-250-60")
+    "array", chunks, "sherlock-holmes-200-50")
