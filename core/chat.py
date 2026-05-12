@@ -104,12 +104,15 @@ Be direct and factual.
 
 Context:
 {formatted_context}"""
-
             new_message = {"role": "user", "content": prompt}
             self.messages_recent.append(new_message)
+
         self.append_new_message(new_message)
+
         if self.mode == "roleplay":
             self.check_to_create_summary()
+
+        if self.mode in ("roleplay", "assistant"):
             self.update_messages_recent()
 
         if context and self.mode == "assistant":
