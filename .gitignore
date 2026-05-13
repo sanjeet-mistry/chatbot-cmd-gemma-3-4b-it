@@ -3,3 +3,4 @@ chats/
 venv/
 chroma-db/
 generated/
+data/

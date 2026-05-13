@@ -6,8 +6,9 @@ from core.chroma_vector_db import ChromaVectorDB
 import json
 
 chunks_setting = Data.chunks[0]
-file_name = "sherlock-holmes"
+file_name = "harry-potter-and-the-sorcerer-stone"
 file_path = f"./week-3/chatbot-cmd-class/data/{file_name}"
+file_type = "pdf"
 collection_file_name = f"{file_name}-{chunks_setting['size']}-{chunks_setting['overlap']}"
 collection_file_path = "./week-3/chatbot-cmd-class/chroma-db/"
 
@@ -17,7 +18,6 @@ with open(f"./week-3/chatbot-cmd-class/queries/{file_name}.txt", encoding="utf-8
 
 chromaVectorDB = ChromaVectorDB()
 createCollection = False
-file_type = "text"
 
 if createCollection:
     if file_type == "pdf":
