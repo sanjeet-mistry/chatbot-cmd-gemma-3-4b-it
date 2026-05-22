@@ -13,14 +13,14 @@ collection_file_name = f"{file_name}-{chunks_setting['size']}-{chunks_setting['o
 collection_file_path = "./week-3/chatbot-cmd-class/chroma-db/"
 
 document_metadata = {
-    "source": "",
-    "title": "",
+    "source": "harry-potter-and-the-sorcerer-stone.pdf",
+    "title": "Harry Potter And the Sorcerer’s Stone",
     "series": "Harry Potter",
     "book_number": 1,
     "author": "J. K. Rowling",
     "category": ["fantasy", "fiction", "young-adult"],
     "language": "en",
-    "publication_year": 0,
+    "publication_year": 1997,
     "universe": "Wizarding World"
 }
 

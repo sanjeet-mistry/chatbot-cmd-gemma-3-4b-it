@@ -1,13 +1,14 @@
 import fitz
 import re
+from core.utils import chunk_text_overlap
 
-file_name = "./week-3/chatbot-cmd-class/data/harry-potter-and-the-prisoner-of-azkaban.pdf"
+file_name = "./week-3/chatbot-cmd-class/data/harry-potter-and-the-sorcerer-stone.pdf"
 
 current_chapter = None
 chapter_start_pattern = r"C H A P T E R[\s]+[A-Z]+"
 
 
-def extract_and_clean_page_content(page_blocks):
+def extract_and_clean_page_content(page_blocks, pdf_page):
     global current_chapter
     length = len(page_blocks)
     obj = {}
@@ -39,7 +40,8 @@ def extract_and_clean_page_content(page_blocks):
                     "chapter-title": chapter_title,
                     "chapter-number": current_chapter,
                     "chapter-text": chapter_text,
-                    "book-page-number": book_page_number
+                    "book-page": book_page_number,
+                    "pdf-page": pdf_page
                 }
             else:
                 # extract chapter info
@@ -65,7 +67,8 @@ def extract_and_clean_page_content(page_blocks):
                     "chapter-title": chapter_title,
                     "chapter-number": current_chapter,
                     "chapter-text": chapter_text_on_page,
-                    "book-page-number": book_page_number
+                    "book-page": book_page_number,
+                    "pdf-page": pdf_page
                 }
             return obj
         # chapter page
@@ -88,13 +91,15 @@ def extract_and_clean_page_content(page_blocks):
             obj = {
                 "chapter-text": chapter_text,
                 "chapter-number": current_chapter,
-                "book-page-number": book_page_number
+                "book-page": book_page_number,
+                "pdf-page": pdf_page
             }
             return obj
     return None
 
 
 pages = []
+chunks = []
 
 with fitz.open(file_name) as doc:
     for index, page in enumerate(doc, start=1):
@@ -105,8 +110,25 @@ with fitz.open(file_name) as doc:
             # if index == 305:
             #     print(len(text_array))
             #     print(text_array)
-            obj = extract_and_clean_page_content(text_array)
+            obj = extract_and_clean_page_content(text_array, index)
             if obj:
                 # print(f"{obj['chapter-number']}, {obj['book-page-number']}")
                 pages.append(obj)
     print(len(pages))
+
+for index, page in pages:
+    if page["chapter-title"]:
+        text = page["chapter-title"] + "\n\n" + page["chapter-text"]
+    else:
+        text = page["chapter-text"]
+    text_chunks = chunk_text_overlap(text)
+    for chunk in text_chunks:
+        chunks.append(
+            {
+                "text": chunk,
+                "pdf-page": page["pdf-page"],
+                "book-page": page["book-page"],
+                "chapter-number": page["chapter-number"],
+                "chapter-title": page["chapter-title"]
+            }
+        )
