@@ -1,6 +1,7 @@
 import fitz
 import re
 from core.utils import chunk_text_overlap
+from core.embeddings_old import calculate_embeddings
 
 file_name = "./week-3/chatbot-cmd-class/data/harry-potter-and-the-sorcerer-stone.pdf"
 
@@ -114,11 +115,14 @@ with fitz.open(file_name) as doc:
             if obj:
                 # print(f"{obj['chapter-number']}, {obj['book-page-number']}")
                 pages.append(obj)
-    print(len(pages))
 
-for index, page in pages:
-    if page["chapter-title"]:
-        text = page["chapter-title"] + "\n\n" + page["chapter-text"]
+for index, page in enumerate(pages):
+    chapter_title = ""
+    if "chapter-title" in page:
+        chapter_title = page["chapter-title"]
+        text = chapter_title + "\n\n" + page["chapter-text"]
+        if (index == 0):
+            print(text)
     else:
         text = page["chapter-text"]
     text_chunks = chunk_text_overlap(text)
@@ -129,6 +133,13 @@ for index, page in pages:
                 "pdf-page": page["pdf-page"],
                 "book-page": page["book-page"],
                 "chapter-number": page["chapter-number"],
-                "chapter-title": page["chapter-title"]
+                "chapter-title": chapter_title
             }
         )
+
+chunks_text = [chunk["text"] for chunk in chunks]
+# print(len(chunks_text))
+# print(chunks_text[0])
+
+calculate_embeddings(
+    "array", chunks_text, "harry-potter-and-the-sorcerer-stone-200-50")
