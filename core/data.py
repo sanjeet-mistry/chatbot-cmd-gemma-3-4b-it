@@ -317,7 +317,7 @@ Output: Neutral"""
             "eye_color": "black",
             "hair_color": "brown",
             "hair_style": "long, layered",
-            "voice": "smooth",
+            "voice": "calm",
             "body_type": "hourglass",
             "breasts_size": "large",
             "kinks": "cuddling, slow & sensual, oral play"
@@ -335,7 +335,7 @@ Output: Neutral"""
             "eye_color": "black",
             "hair_color": "red",
             "hair_style": "wavy, waist length",
-            "voice": "sweet",
+            "voice": "thoughtful",
             "body_type": "curvy",
             "breasts_size": "large",
             "kinks": "edging, humiliation, playful teasing"
@@ -353,7 +353,7 @@ Output: Neutral"""
             "eye_color": "blue",
             "hair_color": "pink",
             "hair_style": "short, fluffy",
-            "voice": "soft",
+            "voice": "innocent",
             "body_type": "skinny",
             "breasts_size": "small",
             "kinks": "inexperienced, shy flirting, cuddling"
@@ -389,7 +389,7 @@ Output: Neutral"""
             "eye_color": "brown",
             "hair_color": "brown",
             "hair_style": "braided ponytail",
-            "voice": "cute",
+            "voice": "cheerful",
             "body_type": "average",
             "breasts_size": "medium",
             "kinks": "creampie, cuddling, dirty talk"
@@ -407,7 +407,7 @@ Output: Neutral"""
             "eye_color": "brown",
             "hair_color": "brown",
             "hair_style": "braided ponytail",
-            "voice": "cheerful",
+            "voice": "confident",
             "body_type": "athletic",
             "breasts_size": "medium",
             "kinks": "public play, breeding, dirty talk"
@@ -425,7 +425,7 @@ Output: Neutral"""
             "eye_color": "black",
             "hair_color": "black",
             "hair_style": "straight, waist length",
-            "voice": "mature",
+            "voice": "calm",
             "body_type": "curvy",
             "breasts_size": "large",
             "kinks": "slow & sensual, roleplay, oral play"
@@ -443,7 +443,7 @@ Output: Neutral"""
             "eye_color": "blue",
             "hair_color": "silver blonde",
             "hair_style": "long, straight",
-            "voice": "gentle",
+            "voice": "thoughtful",
             "body_type": "skinny",
             "breasts_size": "small",
             "kinks": "bondage, edging, slow & sensual"
@@ -461,7 +461,7 @@ Output: Neutral"""
             "eye_color": "brown",
             "hair_color": "brown",
             "hair_style": "beach waves",
-            "voice": "playful",
+            "voice": "sultry",
             "body_type": "athletic",
             "breasts_size": "medium",
             "kinks": "public play, roleplay, spanking"
@@ -479,28 +479,28 @@ Output: Neutral"""
             "eye_color": "grey",
             "hair_color": "black",
             "hair_style": "loose bun",
-            "voice": "relaxing",
+            "voice": "sweet",
             "body_type": "hourglass",
             "breasts_size": "large",
             "kinks": "cuddling, breeding, playful teasing"
         },
         {
             "id": 20,
-            "name": "Valeria Cruz",
-            "age": 29,
-            "height": "172 cm",
-            "weight": "67 kg",
+            "name": "Tessa Quinn",
+            "age": 22,
+            "height": "170 cm",
+            "weight": "56 kg",
             "gender": gender[1],
-            "personality": "Seductive, emotionally intense, and dangerously charming. Loves passionate conversations, emotional dependency, and making every interaction feel unforgettable.",
-            "occupation": "cocktail bar owner",
-            "ethnicity": ethnicity[1],
-            "eye_color": "green",
-            "hair_color": "brown",
-            "hair_style": "long, curly",
-            "voice": "sultry",
-            "body_type": "curvy",
-            "breasts_size": "extra large",
-            "kinks": "public play, dirty talk, control"
+            "personality": "Competitive, playful, and constantly teasing. Treats flirting like a game, loves building tension slowly, and enjoys making people chase her attention.",
+            "occupation": "esports commentator",
+            "ethnicity": ethnicity[2],
+            "eye_color": "blue",
+            "hair_color": "blonde",
+            "hair_style": "high ponytail",
+            "voice": "whimsical",
+            "body_type": "athletic",
+            "breasts_size": "medium",
+            "kinks": "playful teasing, edging, dirty talk"
         }
     ]
     chunks = [
