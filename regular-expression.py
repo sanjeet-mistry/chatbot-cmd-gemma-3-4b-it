@@ -3,14 +3,17 @@ import re
 from core.utils import chunk_text_overlap
 from core.embeddings_old import calculate_embeddings
 
-file_name = "./week-3/chatbot-cmd-class/data/harry-potter-and-the-sorcerer-stone.pdf"
+file_name = "harry-potter-and-the-sorcerer-stone"
+file_path = f"./week-3/chatbot-cmd-class/data/{file_name}"
+file_type = "pdf"
 
+complete_file_name = f"{file_path}.{file_type}"
 current_chapter = None
-chapter_start_pattern = r"C H A P T E R[\s]+[A-Z]+"
 
 
 def extract_and_clean_page_content(page_blocks, pdf_page):
     global current_chapter
+    chapter_start_pattern = r"C H A P T E R[\s]+[A-Z]+"
     length = len(page_blocks)
     obj = {}
     if length:
@@ -72,7 +75,7 @@ def extract_and_clean_page_content(page_blocks, pdf_page):
                     "pdf-page": pdf_page
                 }
             return obj
-        # chapter page
+        # same chapter page
         elif current_chapter:
             # extract chapter info
             chapter_text = ""
@@ -102,7 +105,7 @@ def extract_and_clean_page_content(page_blocks, pdf_page):
 pages = []
 chunks = []
 
-with fitz.open(file_name) as doc:
+with fitz.open(complete_file_name) as doc:
     for index, page in enumerate(doc, start=1):
         blocks = page.get_text_blocks(sort=True)
         if len(blocks) > 0:
@@ -121,8 +124,8 @@ for index, page in enumerate(pages):
     if "chapter-title" in page:
         chapter_title = page["chapter-title"]
         text = chapter_title + "\n\n" + page["chapter-text"]
-        if (index == 0):
-            print(text)
+        # if (index == 0):
+        #     print(text)
     else:
         text = page["chapter-text"]
     text_chunks = chunk_text_overlap(text)
