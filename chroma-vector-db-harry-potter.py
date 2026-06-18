@@ -11,7 +11,7 @@ chunks_setting = Data.chunks[0]
 file_path = "./week-3/chatbot-cmd-class/data/"
 collection_file_path = "./week-3/chatbot-cmd-class/chroma-db/"
 current_chapter = None
-create_collection = True
+create_collection = False
 books = Data.books
 
 
@@ -164,11 +164,11 @@ if create_collection:
 else:
     with open("./week-3/chatbot-cmd-class/queries/harry-potter-sorceror-stone.txt", encoding="utf-8") as file:
         text = file.read()
-        questions = text.split("\n\n")
+        questions = text.split("\n")
 
     collection_file_name = f"harry-potter-1-{chunks_setting['size']}-{chunks_setting['overlap']}"
     chroma_vector_DB = ChromaVectorDB(
-        collection_file_path, collection_file_name)
+        collection_file_name, collection_file_path)
     results = chroma_vector_DB.return_best_results(questions)
     chat1 = Chat("query", Data.user_info, None, Data.assistant_chat_params, 0)
 
