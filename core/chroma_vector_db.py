@@ -2,25 +2,50 @@ import chromadb
 
 
 class ChromaVectorDB():
-    def create_collection(self, chunks, embeddings_array, collection_path, collection_name):
+    def __init__(self, collection_name, collection_path):
         self.collection_name = collection_name
         self.collection_path = collection_path
-        client = chromadb.PersistentClient(path=collection_path)
+
+    def create_collection(self, document_metadata, chunks, embeddings_array):
+        client = chromadb.PersistentClient(path=self.collection_path)
         collection = client.get_or_create_collection(
-            name=collection_name)
+            name=self.collection_name,
+            metadata={
+                "source": document_metadata["source"],
+                "title": document_metadata["title"],
+                "series": document_metadata["series"],
+                "book_number": document_metadata["book_number"],
+                "author": document_metadata["author"],
+                "category": document_metadata["category"],
+                "language": document_metadata["language"],
+                "publication_year": document_metadata["publication_year"],
+                "universe": document_metadata["universe"]
+            })
+        chunks_text = [chunk["text"] for chunk in chunks]
 
         for i, doc in enumerate(chunks):
             collection.add(
-                documents=[doc],
+                documents=[chunks_text[i]],
                 embeddings=[embeddings_array[i]],
-                ids=[str(i)]
+                ids=[str(i)],
+                metadatas=[
+                    {
+                        "pdf-page": doc["pdf-page"],
+                        "book-page": doc["book-page"],
+                        "chapter-number": doc["chapter-number"],
+                        "chapter-title": doc["chapter-title"],
+
+                        "chunk_id": i,
+                        "chunk_index": i,
+                    }
+                ]
             )
 
-    def return_best_results(self, collection_name, collection_path, queries=None, num_of_results=20, use_reranker=True, top_k={'min': 2, 'max': 10}):
+    def return_best_results(self, queries=None, num_of_results=20, use_reranker=True, top_k={'min': 2, 'max': 10}):
         from core.embeddings_old import calculate_embeddings
-        client = chromadb.PersistentClient(path=collection_path)
+        client = chromadb.PersistentClient(path=self.collection_path)
         collection = client.get_or_create_collection(
-            name=collection_name)
+            name=self.collection_name)
         top_chunks = []
         if isinstance(queries, str):
             queries = [queries]

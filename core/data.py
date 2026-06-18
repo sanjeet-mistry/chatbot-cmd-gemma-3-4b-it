@@ -517,3 +517,18 @@ Output: Neutral"""
             "overlap": 75
         }
     ]
+    books = [
+        {
+            "id": "hp_1",
+            "collection": "harry-potter-1",
+            "source": "harry-potter-and-the-sorcerer-stone.pdf",
+            "title": "Harry Potter And the Sorcerer’s Stone",
+            "series": "Harry Potter",
+            "book_number": 1,
+            "author": "J. K. Rowling",
+            "category": "fantasy, fiction, young-adult",
+            "language": "en",
+            "publication_year": 1997,
+            "universe": "Wizarding World"
+        }
+    ]
