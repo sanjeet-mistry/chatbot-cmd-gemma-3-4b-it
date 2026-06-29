@@ -2,6 +2,8 @@ import chromadb
 
 
 class ChromaVectorDB():
+    show_console_logs = True
+
     def __init__(self, collection_name, collection_path):
         self.collection_name = collection_name
         self.collection_path = collection_path
@@ -58,10 +60,20 @@ class ChromaVectorDB():
             query_embedding = calculate_embeddings("string", query)
             results = collection.query(
                 query_embeddings=query_embedding,
-                n_results=num_of_results
+                n_results=num_of_results,
+                include=["documents", "distances", "metadatas"]
             )
 
             docs = results["documents"][0]
+            ids = results["ids"][0]
+            distances = results["distances"][0]
+            metadatas = results["metadatas"][0]
+
+            if ChromaVectorDB.show_console_logs:
+                for doc, distance in zip(docs, distances):
+                    print(doc)
+                    print(f"Distance: {distance}")
+                print()
 
             if not use_reranker:
                 top_chunks.append(docs)
@@ -73,20 +85,32 @@ class ChromaVectorDB():
 
                 # Step 4: Sort by score
                 ranked_docs = sorted(
-                    zip(docs, scores), key=lambda x: x[1], reverse=True)
+                    zip(docs, distances, metadatas, scores), key=lambda x: x[3], reverse=True)
 
                 top_doc = ranked_docs[0]
-                top_docs = [(doc, score) for doc,
-                            score in ranked_docs if score >= max((.35 * top_doc[1]), .15)]
+                top_score = top_doc[3]
+                if top_score >= .15:
+                    top_docs = [(doc, distance, metadata, score) for doc, distance, metadata,
+                                score in ranked_docs if score >= (.35 * top_score)]
 
-                if len(top_docs) < top_k['min']:
-                    top_docs = ranked_docs[:top_k['min']]
-                elif len(top_docs) > top_k['max']:
-                    top_docs = top_docs[:top_k['max']]
+                    if len(top_docs) < top_k['min']:
+                        if top_score >= .3:
+                            top_docs = ranked_docs[:top_k['min']]
+                        else:
+                            top_docs = ranked_docs[:top_k['max']]
+                    elif len(top_docs) > top_k['max']:
+                        top_docs = ranked_docs[:top_k['max']]
+                else:
+                    top_docs = ranked_docs[:top_k['max']]
 
-                print([score for doc, score in top_docs])
-                top_docs = [doc for doc, score in top_docs]
+                if ChromaVectorDB.show_console_logs:
+                    print("Reranker chunks:")
+                    for top_doc in top_docs:
+                        print(top_doc[0])
+                        print(f"Score: {top_doc[3]}")
 
+                top_docs = [doc for doc, distance, metadata,
+                            score in top_docs]
                 top_chunks.append(top_docs)
 
         return top_chunks

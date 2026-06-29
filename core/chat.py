@@ -96,7 +96,7 @@ Do NOT combine unrelated parts of the context.
 If the context does not contain enough information to answer the question, reply ONLY:
 "Not enough information."
 
-Use only the minimum context necessary to answer the question.
+Do not include information merely because it appears in the retrieved context. Include only evidence that directly answers the question.
 
 Keep the answer under 150 words.
 Answer in one concise paragraph.

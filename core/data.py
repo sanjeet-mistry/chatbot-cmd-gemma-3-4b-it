@@ -509,12 +509,28 @@ Output: Neutral"""
             "overlap": 50
         },
         {
-            "size": 256,
-            "overlap": 64
+            "size": 240,
+            "overlap": 60
+        },
+        {
+            "size": 264,
+            "overlap": 66
         },
         {
             "size": 300,
             "overlap": 75
+        },
+        {
+            "size": 360,
+            "overlap": 90
+        },
+        {
+            "size": 400,
+            "overlap": 100
+        },
+        {
+            "size": 456,
+            "overlap": 114
         }
     ]
     books = [
