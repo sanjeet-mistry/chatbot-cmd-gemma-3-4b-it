@@ -12,7 +12,7 @@ new_line_start_x = 47
 
 with fitz.open(file_name) as doc:
     for page_num, page in enumerate(doc, start=1):
-        page_spans = []
+        page_lines = []
         page_dict = page.get_text("dict")
         blocks = page_dict["blocks"]
         blocks = [item for item in blocks if item["type"] == 0]
@@ -21,62 +21,69 @@ with fitz.open(file_name) as doc:
             lines = block["lines"]
             for line in lines:
                 spans = line["spans"]
+                cleaned_line = []
                 for span in spans:
                     text = span["text"].strip()
                     if text != "" and text != "\x91":
-                        page_spans.append(span)
+                        cleaned_line.append(span)
+                page_lines.append(cleaned_line)
         # print(page_spans)
-        for index, span in enumerate(page_spans, start=1):
-            if index == 1:
-                text = span['text']
-                if text.find("C H A P T E R") == 0:
-                    if not chapters_start:
-                        chapters_start = True
-                    new_chapter_start = True
-                    current_chapter += 1
-                else:
-                    if not chapters_start:
-                        break
-                    new_chapter_start = False
-                if new_chapter_start:
-                    chapter = {
-                        "title": "",
-                        "pdf_page_number": page_num,
-                        "book_page_number": "",
-                        "text": ""
-                    }
-                    chapters.append(chapter)
-            else:
-                size = round(span['size'])
-                font = span['font']
-                text = span['text']
-                if size == 36 and font == "Able":
-                    title = text.strip()
-                    if not chapters[current_chapter - 1]['title']:
-                        chapters[current_chapter -
-                                 1]['title'] += " " + title
+        for line_index, line in enumerate(page_lines, start=1):
+            for span_index, span in enumerate(line, start=1):
+                if line_index == 1 and span_index == 1:
+                    text = span['text']
+                    if text.find("C H A P T E R") == 0:
+                        if not chapters_start:
+                            chapters_start = True
+                        new_chapter_start = True
+                        current_chapter += 1
                     else:
-                        chapters[current_chapter - 1]['title'] = title
-                if size == 20 and font == "Able":
+                        if not chapters_start:
+                            break
+                        new_chapter_start = False
                     if new_chapter_start:
-                        chapters[current_chapter -
-                                 1]["book_page_number"] = int(text.strip())
-                if (size == 13 or size == 11) and (font == "AGaramondPro-Regular" or font == "AGaramondPro-Italic"):
-                    x_pos = round(span['origin'][0])
-                    if x_pos == new_line_start_x:
-                        chapter_text = chapters[current_chapter - 1]['text']
-                        if not chapter_text:
-                            chapters[current_chapter - 1]['text'] = text
-                        else:
-                            chapters[current_chapter - 1]['text'] += text
-
-                    else:
-                        chapter_text = chapters[current_chapter - 1]['text']
-                        if not chapter_text:
-                            chapters[current_chapter - 1]['text'] = text
-                        else:
+                        chapter = {
+                            "title": "",
+                            "pdf_page_number": page_num,
+                            "book_page_number": "",
+                            "text": ""
+                        }
+                        chapters.append(chapter)
+                else:
+                    size = round(span['size'])
+                    font = span['font']
+                    text = span['text']
+                    if size == 36 and font == "Able":
+                        title = text.strip()
+                        if not chapters[current_chapter - 1]['title']:
                             chapters[current_chapter -
-                                     1]['text'] += "\n" + text
+                                     1]['title'] += " " + title
+                        else:
+                            chapters[current_chapter - 1]['title'] = title
+                    if size == 20 and font == "Able":
+                        if new_chapter_start:
+                            chapters[current_chapter -
+                                     1]["book_page_number"] = int(text.strip())
+                    if (size == 13 or size == 11) and (font == "AGaramondPro-Regular" or font == "AGaramondPro-Italic"):
+                        x_pos = round(span['origin'][0])
+                        chapter_text = chapters[current_chapter - 1]['text']
+                        if not chapter_text:
+                            chapters[current_chapter - 1]['text'] = text
+                        else:
+                            if span_index == 1:
+                                if x_pos > new_line_start_x:
+                                    chapters[current_chapter -
+                                             1]['text'] += "\n" + text
+                                else:
+                                    chapters[current_chapter -
+                                             1]['text'] += text
+                            else:
+                                chapters[current_chapter - 1]['text'] += text
+                    if size == 85 and font == "Able":
+                        text = text.strip()
+                        if (len(text) == 1):
+                            chapters[current_chapter - 1]['text'] = text + \
+                                chapters[current_chapter - 1]['text']
 
     print(len(chapters))
     print(chapters[0]["text"])
