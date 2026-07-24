@@ -1,4 +1,5 @@
 import fitz
+import re
 
 file_name = "./week-3/chatbot-cmd-class/data/harry-potter-and-the-sorcerer-stone.pdf"
 
@@ -27,7 +28,8 @@ with fitz.open(file_name) as doc:
                     if text != "" and text != "\x91":
                         cleaned_line.append(span)
                 page_lines.append(cleaned_line)
-        # print(page_spans)
+        # if page_num == 54:
+        #     print(page_lines)
         for line_index, line in enumerate(page_lines, start=1):
             for span_index, span in enumerate(line, start=1):
                 if line_index == 1 and span_index == 1:
@@ -56,15 +58,15 @@ with fitz.open(file_name) as doc:
                     if size == 36 and font == "Able":
                         title = text.strip()
                         if not chapters[current_chapter - 1]['title']:
+                            chapters[current_chapter - 1]['title'] = title
+                        else:
                             chapters[current_chapter -
                                      1]['title'] += " " + title
-                        else:
-                            chapters[current_chapter - 1]['title'] = title
-                    if size == 20 and font == "Able":
+                    elif size == 20 and font == "Able":
                         if new_chapter_start:
                             chapters[current_chapter -
                                      1]["book_page_number"] = int(text.strip())
-                    if (size == 13 or size == 11) and (font == "AGaramondPro-Regular" or font == "AGaramondPro-Italic"):
+                    elif (size == 13 or size == 11) and (font == "AGaramondPro-Regular" or font == "AGaramondPro-Italic" or font == "FeltTipRoman,Italic"):
                         x_pos = round(span['origin'][0])
                         chapter_text = chapters[current_chapter - 1]['text']
                         if not chapter_text:
@@ -76,14 +78,21 @@ with fitz.open(file_name) as doc:
                                              1]['text'] += "\n" + text
                                 else:
                                     chapters[current_chapter -
+                                             1]['text'] = re.sub(r"([a-zA-Z]+)-$", r'\1', chapters[current_chapter -
+                                                                                                   1]['text'])
+                                    chapters[current_chapter -
                                              1]['text'] += text
                             else:
+                                chapters[current_chapter -
+                                         1]['text'] = re.sub(r"([a-zA-Z]+)-$", r'\1', chapters[current_chapter -
+                                                                                               1]['text'])
+
                                 chapters[current_chapter - 1]['text'] += text
-                    if size == 85 and font == "Able":
+                    elif size == 85 and font == "Able":
                         text = text.strip()
                         if (len(text) == 1):
                             chapters[current_chapter - 1]['text'] = text + \
                                 chapters[current_chapter - 1]['text']
 
-    print(len(chapters))
+    # print(len(chapters))
     print(chapters[0]["text"])
