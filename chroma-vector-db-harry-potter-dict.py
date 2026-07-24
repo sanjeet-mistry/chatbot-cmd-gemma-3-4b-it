@@ -94,5 +94,7 @@ with fitz.open(file_name) as doc:
                             chapters[current_chapter - 1]['text'] = text + \
                                 chapters[current_chapter - 1]['text']
 
+    for chapter_num, chapter in enumerate(chapters, start=1):
+        chapter["text"] = f"Chapter {chapter_num}\n{chapter['title']}\n\n{chapter['text']}"
     # print(len(chapters))
     print(chapters[0]["text"])
