@@ -7,11 +7,11 @@ import json
 import re
 from core.embeddings_old import calculate_embeddings
 
-chunks_setting = Data.chunks[4]
+chunks_setting = Data.chunks[0]
 file_path = "./week-3/chatbot-cmd-class/data/"
 collection_file_path = "./week-3/chatbot-cmd-class/chroma-db/"
 current_chapter = None
-create_collection = False
+create_collection = True
 books = Data.books
 
 
@@ -125,7 +125,7 @@ if create_collection:
                         # print(f"{obj['chapter-number']}, {obj['book-page-number']}")
                         pages.append(obj)
 
-    for index, page in enumerate(pages):
+    for index, page in enumerate(pages, start=1):
         chapter_title = ""
         if "chapter-title" in page:
             chapter_title = page["chapter-title"]
@@ -136,6 +136,8 @@ if create_collection:
             text = page["chapter-text"]
         text_chunks = chunk_text_overlap(
             text, chunks_setting["size"], chunks_setting['overlap'])
+        if index == 16:
+            print(text_chunks)
         for chunk in text_chunks:
             chunks.append(
                 {
