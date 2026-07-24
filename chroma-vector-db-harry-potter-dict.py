@@ -28,7 +28,7 @@ with fitz.open(file_name) as doc:
                     if text != "" and text != "\x91":
                         cleaned_line.append(span)
                 page_lines.append(cleaned_line)
-        # if page_num == 54:
+        # if page_num == 153:
         #     print(page_lines)
         for line_index, line in enumerate(page_lines, start=1):
             for span_index, span in enumerate(line, start=1):
@@ -66,7 +66,7 @@ with fitz.open(file_name) as doc:
                         if new_chapter_start:
                             chapters[current_chapter -
                                      1]["book_page_number"] = int(text.strip())
-                    elif (size == 13 or size == 11) and (font == "AGaramondPro-Regular" or font == "AGaramondPro-Italic" or font == "FeltTipRoman,Italic"):
+                    elif (size in [11, 13, 15]) and (font in ["AGaramondPro-Regular", "AGaramondPro-Italic", "FeltTipRoman,Italic", "FranklinGothicLTExtraCon"]):
                         x_pos = round(span['origin'][0])
                         chapter_text = chapters[current_chapter - 1]['text']
                         if not chapter_text:
@@ -97,4 +97,4 @@ with fitz.open(file_name) as doc:
     for chapter_num, chapter in enumerate(chapters, start=1):
         chapter["text"] = f"Chapter {chapter_num}\n{chapter['title']}\n\n{chapter['text']}"
     # print(len(chapters))
-    print(chapters[0]["text"])
+    print(chapters[7]["text"])
