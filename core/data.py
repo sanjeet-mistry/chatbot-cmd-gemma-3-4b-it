@@ -509,11 +509,42 @@ Output: Neutral"""
             "overlap": 50
         },
         {
-            "size": 256,
-            "overlap": 64
+            "size": 240,
+            "overlap": 60
+        },
+        {
+            "size": 264,
+            "overlap": 66
         },
         {
             "size": 300,
             "overlap": 75
+        },
+        {
+            "size": 360,
+            "overlap": 90
+        },
+        {
+            "size": 400,
+            "overlap": 100
+        },
+        {
+            "size": 456,
+            "overlap": 114
+        }
+    ]
+    books = [
+        {
+            "id": "hp_1",
+            "collection": "harry-potter-1",
+            "source": "harry-potter-and-the-sorcerer-stone.pdf",
+            "title": "Harry Potter And the Sorcerer’s Stone",
+            "series": "Harry Potter",
+            "book_number": 1,
+            "author": "J. K. Rowling",
+            "category": "fantasy, fiction, young-adult",
+            "language": "en",
+            "publication_year": 1997,
+            "universe": "Wizarding World"
         }
     ]
