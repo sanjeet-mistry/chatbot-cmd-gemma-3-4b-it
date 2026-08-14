@@ -11,7 +11,7 @@ context_file = {
 mode = "roleplay"
 
 if mode == "roleplay":
-    character1 = Character(Data.characters[0], Data.user_info)
+    character1 = Character(Data.characters[0], Data.user_info, True)
     chat = Chat("roleplay", Data.user_info,
                 character1, Data.qwen_roleplay_params)
 elif mode == "assistant":
