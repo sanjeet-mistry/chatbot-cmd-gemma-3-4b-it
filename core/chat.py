@@ -126,6 +126,8 @@ Context:"""
             self.messages_summ_recent if self.use_summ else self.messages_recent,
             tokenize=True,
             add_generation_prompt=True,
+            return_dict=True,
+            enable_thinking=False,  # Disables CoT reasoning tokens
             return_tensors="pt").to("cuda")
 
         with torch.inference_mode():
@@ -142,7 +144,7 @@ Context:"""
         new_tokens = outputs[0][prompt_length:]
         # Decode only assistant reply
         reply = self.model.tokenizer.decode(
-            new_tokens, skip_special_tokens=True)
+            new_tokens, skip_special_tokens=True).strip()
 
         new_message = {"role": "assistant", "content": reply}
         self.append_new_message(new_message)

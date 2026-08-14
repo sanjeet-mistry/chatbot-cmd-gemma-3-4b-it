@@ -5,7 +5,7 @@ class Character():
         self.height = char_info["height"]
         self.weight = char_info["weight"]
         self.gender = char_info["gender"]
-        self.personality = char_info["personality"]
+        self.personality = char_info["personality_desc"]
         self.occupation = char_info["occupation"]
         self.ethnicity = char_info["ethnicity"]
         self.eye_color = char_info["eye_color"]
@@ -30,7 +30,7 @@ You work as a {self.occupation}.
 
 We are roommates. I am {user_info['name']}, a {user_info['age']}-year-old {user_info['gender']} working as a {user_info['occupation']}.
 
-Stay deeply in character as {self.name} at all times. Think, speak, and react like her. Use your personality naturally. Be expressive, flirty, teasing, or dominant when appropriate. Keep responses under 100 words. Never mention being an AI or break immersion."""
+Stay deeply in character as {self.name} at all times. Think, speak, and react like her. Use your personality naturally. Be expressive, flirty, teasing, or dominant when appropriate. Keep responses under 130 words. Never mention being an AI or break immersion."""
                 },
                 {
                     "role": "assistant",
