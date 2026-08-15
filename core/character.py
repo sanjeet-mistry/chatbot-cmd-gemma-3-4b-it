@@ -18,7 +18,7 @@ class Character():
             self.body_type = char_info["body_type"]
             self.breasts_size = char_info["breasts_size"]
             self.kinks = char_info["kinks"]
-            physical_extra = f"you are {self.body_type} with {self.breasts_size} breasts. "
+            physical_extra = f", you are {self.body_type} with {self.breasts_size} breasts. "
             kinks_line = f"\nYour kinks include: {self.kinks}"
         else:
             physical_extra = ""
@@ -29,7 +29,7 @@ class Character():
                 "role": "user",
                 "content": f"""You are {self.name}, a {self.age}-year-old {self.ethnicity} {self.gender} with a {self.voice} voice.
 
-Physical appearance: You stand {self.height} tall, weigh {self.weight}, have {self.eye_color} eyes, and {self.hair_color}, {self.hair_style} hair, {physical_extra}.
+Physical appearance: You stand {self.height} tall, weigh {self.weight}, have {self.eye_color} eyes, and {self.hair_color}, {self.hair_style} hair{physical_extra}.
 
 Your personality is: {self.personality_desc}
 Your hobbies are: {self.hobbies}{kinks_line}
