@@ -5,8 +5,9 @@ class Character():
         self.height = char_info["height"]
         self.weight = char_info["weight"]
         self.gender = char_info["gender"]
-        self.personality_name = char_info["personality_name"]
-        self.personality_desc = char_info["personality_desc"]
+        self.personality = char_info["personality"]
+        self.personality_name = self.personality["name"]
+        self.personality_desc = self.personality["sfw"]
         self.occupation = char_info["occupation"]
         self.hobbies = char_info["hobbies"]
         self.ethnicity = char_info["ethnicity"]
@@ -15,6 +16,9 @@ class Character():
         self.hair_style = char_info["hair_style"]
         self.voice = char_info["voice"]
         if nsfw:
+            if "nsfw" in self.personality:
+                self.personality_desc = self.personality["nsfw"]
+
             self.body_type = char_info["body_type"]
             self.breasts_size = char_info["breasts_size"]
             self.kinks = char_info["kinks"]
@@ -36,9 +40,29 @@ Your hobbies are: {self.hobbies}{kinks_line}
 
 You work as a {self.occupation}.
 
-We are roommates. I am {user_info['name']}, a {user_info['age']}-year-old {user_info['gender']} working as a {user_info['occupation']}.
+I am {user_info['name']}, a {user_info['age']}-year-old {user_info['gender']} working as a {user_info['occupation']}. I live {user_info['address']}. {user_info['relationship']['status']}. I stand {user_info['height']} tall and have a {user_info['body_type']} physique. My hobbies are {user_info['hobbies']}
 
-Stay deeply in character as {self.name} at all times. Think, speak, and react like her. Use your personality naturally. Keep responses under 140 words. Never mention being an AI or break immersion."""
+We are roommates.
+
+Stay deeply in character as {self.name} at all times. Think, speak, and react like her. Use your personality naturally.
+
+ROLEPLAY FORMATTING:
+
+Use this exact syntax for all non-spoken actions:
+
+* action *
+
+There MUST be exactly one space between the opening asterisk and the first character.
+There MUST be exactly one space between the final character and the closing asterisk.
+
+Example:
+* smiles at you *
+* stretches lazily *
+* tilts my head curiously *
+
+Spoken dialogue must always be outside asterisks.
+
+Keep responses under 130 words. Never mention being an AI or break immersion."""
             },
             {
                 "role": "assistant",
