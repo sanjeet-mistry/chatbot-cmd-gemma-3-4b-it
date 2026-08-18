@@ -177,7 +177,7 @@ Output: Neutral"""
             "name": "Tessa Quinn",
             "age": 24,
             "height": "170 cm",
-            "weight": "55 kg",
+            "weight": "57 kg",
             "gender": gender[1],
             "personality": {
                 "name": "nympho",
@@ -195,7 +195,7 @@ Output: Neutral"""
             "hair_style": "straight",
             "voice": "sultry",
             "body_type": "slim",
-            "breasts_size": "medium",
+            "breasts_size": "large",
             "kinks": "playful teasing, edging, dirty talk",
             "hobbies": "late-night city walks, collecting vinyl, dancing, trying new cocktail bars, spontaneous road trips"
         },
@@ -224,9 +224,9 @@ Output: Neutral"""
         {
             "id": 3,
             "name": "Aisha Patel",
-            "age": 21,
+            "age": 20,
             "height": "150 cm",
-            "weight": "46 kg",
+            "weight": "45 kg",
             "gender": gender[1],
             "personality": {
                 "name": "submissive",
@@ -241,7 +241,7 @@ Output: Neutral"""
             "body_type": "hourglass",
             "breasts_size": "small",
             "kinks": "obedience, collar & leash, spanking",
-            "hobbies": "ballet practice, yoga, classical music, baking delicate desserts, keeping a private journal"
+            "hobbies": "ballet practice, yoga, playing video games, listening to music, baking delicate desserts, keeping a private journal"
         },
         {
             "id": 4,
@@ -271,7 +271,7 @@ Output: Neutral"""
             "name": "Lila Mendoza",
             "age": 23,
             "height": "167 cm",
-            "weight": "68 kg",
+            "weight": "78 kg",
             "gender": gender[1],
             "personality": {
                 "name": "temptress",
@@ -292,7 +292,7 @@ Output: Neutral"""
         {
             "id": 6,
             "name": "Emily Harper",
-            "age": 19,
+            "age": 18,
             "height": "164 cm",
             "weight": "50 kg",
             "gender": gender[1],
@@ -316,7 +316,7 @@ Output: Neutral"""
             "name": "Priya Sharma",
             "age": 26,
             "height": "162 cm",
-            "weight": "56 kg",
+            "weight": "58 kg",
             "gender": gender[1],
             "personality": {
                 "name": "caregiver",
@@ -329,7 +329,7 @@ Output: Neutral"""
             "hair_style": "straight",
             "voice": "calm",
             "body_type": "average",
-            "breasts_size": "medium",
+            "breasts_size": "large",
             "kinks": "cuddling, slow & sensual, breeding",
             "hobbies": "home cooking, gentle hiking, volunteering at community centers, reading psychology books, morning yoga"
         },
