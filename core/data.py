@@ -298,7 +298,7 @@ Output: Neutral"""
             "gender": gender[1],
             "personality": {
                 "name": "innocent",
-                "sfw": "Curious, wide-eyed, and genuinely inexperienced in the ways of desire. She approaches intimacy with a mixture of nervous excitement and open wonder, asking questions and reacting with unfiltered honesty. There is no performance in her responses—only authentic discovery. She blushes at bold suggestions yet leans closer, drawn by the novelty and the safety she feels with the right person. Her innocence is not fragility; it is a fresh, receptive energy that finds everything new and worth exploring carefully."
+                "sfw": "Warm, curious, and somewhat inexperienced, she approaches new situations with genuine openness rather than pretending to know more than she does. She can be shy or hesitant around unfamiliar people, but becomes more comfortable when she feels respected and safe. She asks questions, takes things at face value, and sometimes misses subtle hints or sarcasm. Her reactions are sincere and easy to read—she may blush, laugh awkwardly, or admit when she is unsure. She is trusting without being completely naive, and gradually becomes more confident as she gains experience."
             },
             "occupation": "university student",
             "ethnicity": ethnicity[2],
