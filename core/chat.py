@@ -11,7 +11,7 @@ class Chat():
     show_logs = True
 
     def __init__(self, mode, user_info, ai=None, chat_settings=None, max_messages_in_context=None, model_name=None):
-        self.id = random.randint(100000000000, 999999999999)
+        self.id = random.randint(1000000000000000, 9999999999999999)
         self.user_name = user_info["name"]
         self.user_gender = user_info["gender"]
         self.mode = mode
