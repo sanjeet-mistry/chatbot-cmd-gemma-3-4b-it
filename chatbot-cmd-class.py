@@ -11,9 +11,9 @@ context_file = {
 mode = "roleplay"
 
 if mode == "roleplay":
-    character1 = Character(Data.characters[19], Data.user_info, True)
+    character1 = Character(Data.characters[5], Data.user_info, True)
     chat = Chat("roleplay", Data.user_info,
-                character1, Data.roleplay_chat_params)
+                character1, Data.qwen_roleplay_params)
 elif mode == "assistant":
     assistant1 = Assistant(Data.assistants[1], Data.user_info)
     # chat = Chat(mode, Data.user_info, assistant1, Data.assistant_classify_chat_params, 0)
@@ -32,6 +32,6 @@ while 1:
     if mode == "assistant":
         print(f"Assistant:\n{reply}\n")
     elif mode == "roleplay":
-        print(f"{character1.name} (Assistant):\n{reply}\n")
+        print(f"\n{character1.name} (Assistant):\n{reply}\n")
 
 chat.export_chat_text()
