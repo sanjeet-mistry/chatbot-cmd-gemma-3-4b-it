@@ -122,13 +122,20 @@ Context:"""
                 self.messages_recent[0]["content"] += "\n- " + \
                     obj["text"].strip("\n")
 
+        chat_template_kwargs = {
+            "tokenize": True,
+            "add_generation_prompt": True,
+            "return_dict": True,
+            "return_tensors": "pt",
+        }
+
+        if self.model.model_name == "qwen-3.5-4b":
+            # Disables CoT reasoning tokens
+            chat_template_kwargs["enable_thinking"] = False
+
         input_ids = self.model.tokenizer.apply_chat_template(
             self.messages_summ_recent if self.use_summ else self.messages_recent,
-            tokenize=True,
-            add_generation_prompt=True,
-            return_dict=True,
-            enable_thinking=False,  # Disables CoT reasoning tokens
-            return_tensors="pt").to("cuda")
+            **chat_template_kwargs).to("cuda")
 
         with torch.inference_mode():
             outputs = self.model.model_info.generate(

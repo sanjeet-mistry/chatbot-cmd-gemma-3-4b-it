@@ -7,9 +7,11 @@ class Model:
     models_folder = "./models/"
     cache = {}
 
-    def __init__(self, model_name="qwen-3.5-4b"):
+    def __init__(self, model_name="gemma-3-4b-it"):
 
         if model_name not in Model.cache:
+
+            self.model_name = model_name
 
             model_path = Model.models_folder + model_name
 
@@ -22,7 +24,8 @@ class Model:
                 model_path,
                 quantization_config=BitsAndBytesConfig(
                     load_in_4bit=True,
-                    bnb_4bit_compute_dtype=torch.bfloat16  # Changed to bfloat16 for Qwen stability
+                    # Changed to bfloat16 for Qwen stability
+                    bnb_4bit_compute_dtype=torch.bfloat16 if model_name == "qwen-3.5-4b" else torch.float16
                 ),
                 device_map="cuda",
                 trust_remote_code=True

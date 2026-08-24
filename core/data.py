@@ -36,7 +36,7 @@ class Data():
         "do_sample": False
     }
     roleplay_chat_params = {
-        "max_new_tokens": 150,
+        "max_new_tokens": 200,
         "temperature": .7,
         "top_p": .9,
         "top_k": 40,
