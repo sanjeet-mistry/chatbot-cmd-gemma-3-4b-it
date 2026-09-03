@@ -9,9 +9,9 @@ class Data():
         "relationship": {
             "status": "I am single"
         },
-        "height": "183 cm",
+        "height": "185 cm",
         "body_type": "toned",
-        "hobbies": "playing video games, playing and watching soccer, fitness, listening to music, shopping, and food"
+        "hobbies": "playing games (DOTA 2, GTA, Deadlock, and FIFA), playing and watching soccer, fitness, listening to music, shopping, and food"
     }
     default_chat_params = {
         "max_new_tokens": 150,
@@ -492,3 +492,13 @@ Output: Neutral"""
             "universe": "Wizarding World"
         }
     ]
+    trigger_words = {
+        "common": ['by', 'in', "at"],
+        "series": ['series'],
+        "book_name": ["book name", "book"],
+        "book_number": ["book number", "book no", "book"],
+        "author": "",
+        "chapter": ["chapter number", "chapter no", "chapter"],
+        "chapter_name": ["chapter"],
+        "category": "",
+    }
