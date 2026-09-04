@@ -2,7 +2,7 @@ import chromadb
 
 
 class ChromaVectorDB():
-    show_console_logs = True
+    show_console_logs = False
 
     def __init__(self, collection_name, collection_path):
         self.collection_name = collection_name
@@ -25,10 +25,21 @@ class ChromaVectorDB():
             })
         chunks_text = [chunk["text"] for chunk in chunks]
 
-        for i, doc in enumerate(chunks):
+        current_chapter = ""
+        for i, doc in enumerate(chunks, start=1):
+            if current_chapter == "":
+                current_chapter = doc["chapter-number"]
+                chapter_chunk_index = 1
+            elif current_chapter == doc["chapter-number"]:
+                chapter_chunk_index += 1
+            elif doc["chapter-number"] > current_chapter:
+                chapter_chunk_index = 1
+                current_chapter = doc["chapter-number"]
+            print(
+                f"Chapter: {doc['chapter-number']}, Chunk: {chapter_chunk_index}")
             collection.add(
-                documents=[chunks_text[i]],
-                embeddings=[embeddings_array[i]],
+                documents=[chunks_text[i-1]],
+                embeddings=[embeddings_array[i-1]],
                 ids=[str(i)],
                 metadatas=[
                     {
@@ -36,9 +47,9 @@ class ChromaVectorDB():
                         "book-page": doc["book-page"],
                         "chapter-number": doc["chapter-number"],
                         "chapter-title": doc["chapter-title"],
-
                         "chunk_id": i,
-                        "chunk_index": i,
+                        "book_chunk_index": i,
+                        "chapter_chunk_index": chapter_chunk_index
                     }
                 ]
             )
