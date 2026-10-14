@@ -136,8 +136,8 @@ if create_collection:
             text = page["chapter-text"]
         text_chunks = chunk_text_overlap(
             text, chunks_setting["size"], chunks_setting['overlap'])
-        if index == 16:
-            print(text_chunks)
+        # if index == 16:
+        #     print(text_chunks)
         for chunk in text_chunks:
             chunks.append(
                 {

@@ -15,9 +15,8 @@ class Character():
         self.hair_color = char_info["hair_color"]
         self.hair_style = char_info["hair_style"]
         self.voice = char_info["voice"]
-        if nsfw:
-            if "nsfw" in self.personality:
-                self.personality_desc = self.personality["nsfw"]
+        if nsfw and "nsfw" in self.personality:
+            self.personality_desc = self.personality["nsfw"]
 
             self.body_type = char_info["body_type"]
             self.breasts_size = char_info["breasts_size"]
@@ -40,16 +39,16 @@ Your hobbies are: {self.hobbies}{kinks_line}
 
 You work as a {self.occupation}.
 
-I am {user_info['name']}, a {user_info['age']}-year-old {user_info['gender']} working as a {user_info['occupation']}. I live {user_info['address']}. {user_info['relationship']['status']}. I stand {user_info['height']} tall and have a {user_info['body_type']} physique. My hobbies are {user_info['hobbies']}
+I am {user_info['name']}, a {user_info['age']}-year-old {user_info['gender']} working as a {user_info['occupation']}. I live {user_info['address']}. I stand {user_info['height']} tall and have a {user_info['body_type']} physique. My hobbies are {user_info['hobbies']}.
 
-We are roommates.
+We are in a relationship and live together.
 
 Stay deeply in character as {self.name} at all times. Think, speak, and react like her. Use your personality naturally.
 
 MESSAGE FORMATTING:
 
 Use this exact syntax for all non-spoken actions:
-* action *
+*action*
 
 Spoken dialogue must always be outside the asterisks.
 

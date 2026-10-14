@@ -35,8 +35,9 @@ class ChromaVectorDB():
             elif doc["chapter-number"] > current_chapter:
                 chapter_chunk_index = 1
                 current_chapter = doc["chapter-number"]
-            print(
-                f"Chapter: {doc['chapter-number']}, Chunk: {chapter_chunk_index}")
+            if ChromaVectorDB.show_console_logs:
+                print(
+                    f"Chapter: {doc['chapter-number']}, Chunk: {chapter_chunk_index}")
             collection.add(
                 documents=[chunks_text[i-1]],
                 embeddings=[embeddings_array[i-1]],
