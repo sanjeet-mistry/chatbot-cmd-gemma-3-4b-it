@@ -9,12 +9,13 @@ context_file = {
     "type": "text"
 }
 mode = "roleplay"
-model_name = "gemma-3-4b-it"
+model = Data.models["qwen-3-8b"]
+model_family = model["family"]
 
 if mode == "roleplay":
     character1 = Character(Data.characters[12], Data.user_info, True)
     chat = Chat("roleplay", Data.user_info,
-                character1, Data.qwen_roleplay_params if model_name == "qwen-3.5-4b" else Data.roleplay_nsfw_chat_params)
+                character1, Data.qwen_roleplay_params if model_family == "qwen" else Data.roleplay_nsfw_chat_params, 11, model)
 elif mode == "assistant":
     assistant1 = Assistant(Data.assistants[1], Data.user_info)
     # chat = Chat(mode, Data.user_info, assistant1, Data.assistant_classify_chat_params, 0)

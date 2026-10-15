@@ -524,3 +524,35 @@ Output: Neutral"""
         "chapter_name": ["chapter"],
         "category": "",
     }
+    models = {
+        "gemma-3-4b-it": {
+            "name": "gemma-3-4b-it",
+            "family": "gemma",
+            "sub-family": "gemma-3",
+            "parameter-count": "4b"
+        },
+        "gemma-4-e4b-it": {
+            "name": "gemma-4-e4b-it",
+            "family": "gemma",
+            "sub-family": "gemma-4",
+            "parameter-count": "e4b"
+        },
+        "qwen-3.5-4b": {
+            "name": "qwen-3.5-4b",
+            "family": "qwen",
+            "sub-family": "qwen-3.5",
+            "parameter-count": "4b"
+        },
+        "qwen-3-8b": {
+            "name": "qwen-3-8b",
+            "family": "qwen",
+            "sub-family": "qwen-3",
+            "parameter-count": "8b"
+        },
+        "gemmasutra-small-4b-v1": {
+            "name": "gemmasutra-small-4b-v1",
+            "family": "gemmasutra",
+            "sub-family": "gemmasutra-small",
+            "parameter-count": "4b"
+        }
+    }
