@@ -3,15 +3,16 @@ import copy
 import datetime as dt
 import random
 from core.model import Model
+from core.data import Data
 
 
 class Chat():
     # number of recent messages to add in context including the initial messages
     messages_in_context = 11
-    show_logs = True
+    show_logs = False
 
-    def __init__(self, mode, user_info, ai=None, chat_settings=None, max_messages_in_context=None, model_name=None):
-        self.id = random.randint(1000000000, 9999999999)
+    def __init__(self, mode, user_info, ai=None, chat_settings=None, max_messages_in_context=None, model_info=Data.models["gemma-3-4b-it"]):
+        self.id = random.randint(1000000000000000, 9999999999999999)
         self.user_name = user_info["name"]
         self.user_gender = user_info["gender"]
         self.mode = mode
@@ -37,10 +38,7 @@ class Chat():
         self.messages = (copy.deepcopy(self.messages_initial) +
                          self.messages) if self.messages_initial else self.messages
         self.messages_recent = copy.deepcopy(self.messages)
-        if model_name == None:
-            self.model = Model()
-        else:
-            self.model = Model(model_name)
+        self.chatModel = Model(model_info)
         self.use_summ = False
         if self.use_summ:
             from core.summary import Summary
@@ -96,7 +94,7 @@ Do NOT combine unrelated parts of the context.
 If the context does not contain enough information to answer the question, reply ONLY:
 "Not enough information."
 
-Use only the minimum context necessary to answer the question.
+Do not include information merely because it appears in the retrieved context. Include only evidence that directly answers the question.
 
 Keep the answer under 150 words.
 Answer in one concise paragraph.
@@ -122,14 +120,23 @@ Context:"""
                 self.messages_recent[0]["content"] += "\n- " + \
                     obj["text"].strip("\n")
 
-        input_ids = self.model.tokenizer.apply_chat_template(
+        chat_template_kwargs = {
+            "tokenize": True,
+            "add_generation_prompt": True,
+            "return_dict": True,
+            "return_tensors": "pt",
+        }
+
+        if self.chatModel.model_info["family"] == "qwen":
+            # Disables CoT reasoning tokens
+            chat_template_kwargs["enable_thinking"] = False
+
+        input_ids = self.chatModel.tokenizer.apply_chat_template(
             self.messages_summ_recent if self.use_summ else self.messages_recent,
-            tokenize=True,
-            add_generation_prompt=True,
-            return_tensors="pt").to("cuda")
+            **chat_template_kwargs).to("cuda")
 
         with torch.inference_mode():
-            outputs = self.model.model_info.generate(
+            outputs = self.chatModel.model.generate(
                 **input_ids,
                 max_new_tokens=self.chat_settings["max_new_tokens"],
                 do_sample=self.chat_settings["do_sample"],
@@ -141,8 +148,8 @@ Context:"""
         prompt_length = input_ids["input_ids"].shape[-1]
         new_tokens = outputs[0][prompt_length:]
         # Decode only assistant reply
-        reply = self.model.tokenizer.decode(
-            new_tokens, skip_special_tokens=True)
+        reply = self.chatModel.tokenizer.decode(
+            new_tokens, skip_special_tokens=True).strip()
 
         new_message = {"role": "assistant", "content": reply}
         self.append_new_message(new_message)
