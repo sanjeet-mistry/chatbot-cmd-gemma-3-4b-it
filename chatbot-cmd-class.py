@@ -9,7 +9,7 @@ context_file = {
     "type": "text"
 }
 mode = "roleplay"
-model = Data.models["qwen-3-8b"]
+model = Data.models["gemma-4-e4b-it"]
 model_family = model["family"]
 
 if mode == "roleplay":

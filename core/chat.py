@@ -9,7 +9,7 @@ from core.data import Data
 class Chat():
     # number of recent messages to add in context including the initial messages
     messages_in_context = 11
-    show_logs = False
+    show_logs = True
 
     def __init__(self, mode, user_info, ai=None, chat_settings=None, max_messages_in_context=None, model_info=Data.models["gemma-3-4b-it"]):
         self.id = random.randint(1000000000000000, 9999999999999999)
