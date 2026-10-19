@@ -11,7 +11,6 @@ class Data():
         "hobbies": "fitness, playing and watching soccer, playing video games, music, and food"
     }
     default_chat_params = {
-        "max_new_tokens": 150,
         "temperature": 0.6,
         "top_p": 0.9,
         "top_k": 40,
@@ -19,21 +18,18 @@ class Data():
         "do_sample": True
     }
     assistant_chat_params = {
-        "max_new_tokens": 250,
         "temperature": .6,
         "top_p": .9,
         "top_k": 50,
         "do_sample": True
     }
     assistant_classify_chat_params = {
-        "max_new_tokens": 50,
         "temperature": 0,
         "top_p": 1,
         "top_k": 0,
         "do_sample": False
     }
     roleplay_chat_params = {
-        "max_new_tokens": 200,
         "temperature": .7,
         "top_p": .9,
         "top_k": 40,
@@ -41,7 +37,6 @@ class Data():
         "do_sample": True
     }
     roleplay_chat_params_gemma_4 = {
-        "max_new_tokens": 150,
         "temperature": .6,
         "top_p": .9,
         "top_k": 40,
@@ -49,7 +44,6 @@ class Data():
         "do_sample": True
     }
     roleplay_nsfw_chat_params = {
-        "max_new_tokens": 180,
         "temperature": .8,
         "top_p": .92,
         "top_k": 50,
@@ -57,7 +51,6 @@ class Data():
         "do_sample": True
     }
     qwen_roleplay_params = {
-        "max_new_tokens": 200,  # Slightly increased to allow complete conversational thoughts
         "temperature": 0.8,     # Raised from 0.7 for better emotional expressiveness
         "top_p": 0.9,
         "top_k": 40,
@@ -65,7 +58,6 @@ class Data():
         "do_sample": True
     }
     qwen_assistant_params = {
-        "max_new_tokens": 250,
         "temperature": 0.5,    # Lowered slightly for consistency
         "top_p": 0.85,
         "top_k": 40,
@@ -73,7 +65,6 @@ class Data():
         "do_sample": True
     }
     qwen_query_rag_params = {
-        "max_new_tokens": 250,
         "temperature": 0.1,    # Near-deterministic to strictly enforce your negative constraints
         "top_p": 0.8,
         # Keep True if top_p/top_k are used, or set False for pure greedy decoding
@@ -468,7 +459,7 @@ Output: Neutral"""
             "breasts_size": "large",
             "butt": "bubble",
             "kinks": "oral play, dominance, control, exhibitionism, lingerie",
-            "hobbies": "cooking, movie nights, home decorating, fashion, hanging out with friends, caring for her younger sister Zoey (19)"
+            "hobbies": "cooking, movie nights, home decorating, fashion, caring for her younger sister Zoey (19), fitness"
         }
     ]
     chunks = [
@@ -556,5 +547,27 @@ Output: Neutral"""
             "family": "gemmasutra",
             "sub-family": "gemmasutra-small",
             "parameter-count": "4b"
+        }
+    }
+    response_length = {
+        "short": {
+            "words": 50,
+            "tokens": 75
+        },
+        "medium": {
+            "words": 100,
+            "tokens": 140
+        },
+        "default": {
+            "words": 120,
+            "tokens": 160
+        },
+        "long": {
+            "words": 150,
+            "tokens": 200
+        },
+        "very-long": {
+            "words": 200,
+            "tokens": 270
         }
     }

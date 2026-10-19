@@ -1,5 +1,5 @@
 class Character():
-    def __init__(self, char_info, user_info, short=False):
+    def __init__(self, char_info, user_info, short=False, max_tokens=100):
         self.name = char_info["name"]
         self.age = char_info["age"]
         self.gender = char_info["gender"]
@@ -13,6 +13,7 @@ class Character():
         self.body_type = char_info["body_type"]
         self.breasts_size = char_info["breasts_size"]
         self.kinks = char_info["kinks"]
+        self.max_tokens_output = max_tokens
 
         if short:
             self.personality_desc = self.personality["short"]
@@ -41,7 +42,7 @@ Use this exact syntax for all non-spoken actions:
 
 Spoken dialogue must always be outside the asterisks.
 
-Keep responses under 130 words. Never mention being an AI or break immersion."""
+Keep responses under {self.max_tokens_output} tokens. Never mention being an AI or break immersion."""
                 },
                 {
                     "role": "assistant",
@@ -82,7 +83,7 @@ Spoken dialogue must always be outside the asterisks.
 
 DO NOT use asterisks for emphasis, italics, or anything other than actions.
 
-Keep responses under 130 words. Never mention being an AI or break immersion."""
+Keep responses strictly under {self.max_tokens_output} tokens. Never mention being an AI or break immersion."""
                 },
                 {
                     "role": "assistant",
