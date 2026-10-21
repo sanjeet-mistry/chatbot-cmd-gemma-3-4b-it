@@ -551,7 +551,7 @@ Output: Neutral"""
     }
     response_length = {
         "short": {
-            "words": 50,
+            "words": 60,
             "tokens": 75
         },
         "default": {
