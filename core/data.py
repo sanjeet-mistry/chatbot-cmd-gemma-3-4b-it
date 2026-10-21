@@ -554,20 +554,20 @@ Output: Neutral"""
             "words": 50,
             "tokens": 75
         },
-        "medium": {
-            "words": 100,
-            "tokens": 140
-        },
         "default": {
+            "words": 80,
+            "tokens": 100
+        },
+        "medium": {
             "words": 120,
-            "tokens": 160
+            "tokens": 150
         },
         "long": {
-            "words": 150,
+            "words": 160,
             "tokens": 200
         },
         "very-long": {
-            "words": 200,
-            "tokens": 270
+            "words": 240,
+            "tokens": 300
         }
     }
