@@ -18,3 +18,19 @@ def chunk_text(text, chunk_size=200):
         chunks.append(" ".join(chunk))
 
     return chunks
+
+
+def get_gender_pronoun(gender, form="subject", case="lower"):
+    pronouns = {
+        "male": {"subject": "he", "object": "him"},
+        "female": {"subject": "she", "object": "her"}
+    }
+
+    pronoun = pronouns[gender.lower()][form.lower()]
+
+    if case == "capital":
+        return pronoun.capitalize()
+    elif case == "upper":
+        return pronoun.upper()
+
+    return pronoun

@@ -9,7 +9,7 @@ context_file = {
     "type": "text"
 }
 mode = "roleplay"
-model = Data.models["gemma-4-e4b-it"]
+model = Data.models["gemma-3-4b-it"]
 response_length = Data.response_length["medium"]
 if model["family"] == "qwen":
     chat_parameters = Data.qwen_roleplay_params
@@ -22,9 +22,9 @@ chat_parameters['max_new_tokens'] = response_length["tokens"]
 
 if mode == "roleplay":
     character1 = Character(
-        Data.characters[12], Data.user_info, True, chat_parameters['max_new_tokens'])
+        Data.characters[12], Data.user_info, False, chat_parameters['max_new_tokens'])
     chat = Chat("roleplay", Data.user_info,
-                character1, chat_parameters, 11, model)
+                character1, chat_parameters, 21, model)
 elif mode == "assistant":
     assistant1 = Assistant(Data.assistants[1], Data.user_info)
     # chat = Chat(mode, Data.user_info, assistant1, Data.assistant_classify_chat_params, 0)
