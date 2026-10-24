@@ -5,6 +5,26 @@ class SystemPromptGroup():
     def __init__(self, user_info, characters, active_character_name, max_tokens_output=100):
 
         self.characters = characters
+
+        message = self.update_system_prompt(
+            user_info, characters, active_character_name, max_tokens_output)
+
+        self.messages_initial = [
+            {
+                "role": "user",
+                "content": message
+            },
+            {
+                "role": "assistant",
+                "content": ""
+            }
+        ]
+
+    def update_messages_initial(self, user_info, active_character_name, max_tokens_output):
+        self.messages_initial[0]['content'] = self.update_system_prompt(
+            user_info, active_character_name, max_tokens_output)
+
+    def update_system_prompt(self, user_info, active_character_name, max_tokens_output):
         self.set_active_character(active_character_name)
 
         other_characters_short_info = ""
@@ -20,7 +40,7 @@ class SystemPromptGroup():
 
         message = f"""You are roleplaying a group chat with the following participants:
 {user_info['name']} (User), {character_names}.
-
+        
 ACTIVE CHARACTER:
 {self.active_character.name} is a {self.active_character.age}-year-old {self.active_character.ethnicity} {self.active_character.gender}.
 Physical appearance: {get_gender_pronoun(self.active_character.gender, "capital", "upper")} has {self.active_character.hair_color}, {self.active_character.hair_style} hair, {get_gender_pronoun(self.active_character.gender)} is {self.active_character.body_type} with {self.active_character.breasts_size} breasts.
@@ -43,16 +63,7 @@ Rules:
 - Spoken dialogue must always be outside the asterisks.
 - Keep responses under {max_tokens_output} tokens. Never mention being an AI or break immersion."""
 
-        self.messages_initial = [
-            {
-                "role": "user",
-                "content": message
-            },
-            {
-                "role": "assistant",
-                "content": ""
-            }
-        ]
+        return message
 
     def set_active_character(self, name):
         for character in self.characters:
