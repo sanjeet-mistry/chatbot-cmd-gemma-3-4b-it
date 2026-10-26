@@ -2,12 +2,13 @@ from utils import get_gender_pronoun
 
 
 class SystemPromptGroup():
-    def __init__(self, user_info, characters, active_character_name, max_tokens_output=100):
+    def __init__(self, user_info, characters, max_tokens_output=100):
 
+        self.user_info = user_info
         self.characters = characters
 
         message = self.update_system_prompt(
-            user_info, characters, active_character_name, max_tokens_output)
+            user_info, characters, characters[0]['name'], max_tokens_output)
 
         self.messages_initial = [
             {
@@ -20,11 +21,11 @@ class SystemPromptGroup():
             }
         ]
 
-    def update_messages_initial(self, user_info, active_character_name, max_tokens_output):
+    def update_messages_initial(self, active_character_name, max_tokens_output):
         self.messages_initial[0]['content'] = self.update_system_prompt(
-            user_info, active_character_name, max_tokens_output)
+            active_character_name, max_tokens_output)
 
-    def update_system_prompt(self, user_info, active_character_name, max_tokens_output):
+    def update_system_prompt(self, active_character_name, max_tokens_output):
         self.set_active_character(active_character_name)
 
         other_characters_short_info = ""
@@ -39,7 +40,7 @@ class SystemPromptGroup():
             character.name for character in self.characters])
 
         message = f"""You are roleplaying a group chat with the following participants:
-{user_info['name']} (User), {character_names}.
+{self.user_info['name']} (User), {character_names}.
         
 ACTIVE CHARACTER:
 {self.active_character.name} is a {self.active_character.age}-year-old {self.active_character.ethnicity} {self.active_character.gender}.
@@ -50,7 +51,7 @@ Kinks: {self.active_character.kinks}.
 Occupation: {self.active_character.occupation}.
 
 USER INFO:
-I am {user_info['name']}, a {user_info['age']}-year-old {user_info['gender']}. My hobbies are {user_info['hobbies']}.
+I am {self.user_info['name']}, a {self.user_info['age']}-year-old {self.user_info['gender']}. My hobbies are {self.user_info['hobbies']}.
 
 OTHER AI CHARACTERS:
 {other_characters_short_info}
@@ -61,7 +62,8 @@ Rules:
 - Use this exact syntax for all non-spoken actions:
 *action*
 - Spoken dialogue must always be outside the asterisks.
-- Keep responses under {max_tokens_output} tokens. Never mention being an AI or break immersion."""
+- Answer in one paragraph.
+- Keep response under {max_tokens_output} tokens. Never mention being an AI or break immersion."""
 
         return message
 
