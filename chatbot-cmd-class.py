@@ -8,8 +8,8 @@ context_file = {
     "name": "./week-3/chatbot-cmd-class/data/swapnil-info.txt",
     "type": "text"
 }
-mode = "roleplay"
-model = Data.models["gemma-3-4b-it"]
+mode = "assistant"
+model = Data.models["qwen-3.5-4b-uncensored-hauhaucs"]
 response_length = Data.response_length["medium"]
 if model["family"] == "qwen":
     chat_parameters = Data.qwen_roleplay_params
@@ -26,9 +26,13 @@ if mode == "roleplay":
     chat = Chat("roleplay", Data.user_info,
                 character1, chat_parameters, 21, model)
 elif mode == "assistant":
-    assistant1 = Assistant(Data.assistants[1], Data.user_info)
+    assistant1 = Assistant(Data.assistants[4], Data.user_info)
     # chat = Chat(mode, Data.user_info, assistant1, Data.assistant_classify_chat_params, 0)
-    # chat = Chat(mode, Data.user_info, assistant1, Data.assistant_chat_params, 0)
+    chat_parameters = Data.qwen_assistant_params
+    chat_parameters["max_new_tokens"] = 500
+
+    chat = Chat(mode, Data.user_info, assistant1,
+                chat_parameters, 11, model)
 while 1:
     message_text = input(f"{Data.user_info['name']} (User):\n").strip()
     if (message_text.lower() == "quit" or message_text.lower() == "q"):

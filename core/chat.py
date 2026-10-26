@@ -17,7 +17,6 @@ class Chat():
         self.user_gender = user_info["gender"]
         self.mode = mode
         if chat_settings is None:
-            from core.data import Data
             self.chat_settings = Data.default_chat_params
         else:
             self.chat_settings = chat_settings
