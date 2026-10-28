@@ -9,7 +9,7 @@ import random
 class GroupChat():
     show_logs = True
 
-    def __init__(self, user_info, characters=None, model_info=Data.models["gemma-3-4b-it"], messages_initial=[], chat_settings=None, max_messages_in_context=17):
+    def __init__(self, user_info, characters=None, model_info=Data.models["gemma-3-4b-it"], chat_settings=None, max_messages_in_context=17):
         self.id = random.randint(1000000000000000, 9999999999999999)
         self.messages_in_context = max_messages_in_context
         self.user_info = user_info
@@ -19,11 +19,11 @@ class GroupChat():
         self.system_prompt = SystemPromptGroup(self.user_info, self.characters)
 
         if chat_settings is None:
-            self.chat_settings = Data.default_chat_params
+            self.chat_settings = Data.roleplay_chat_params
         else:
             self.chat_settings = chat_settings
 
-        self.messages_initial = copy.deepcopy(messages_initial)
+        self.messages_initial = self.system_prompt.messages_initial
         self.messages = copy.deepcopy(self.messages_initial)
         self.messages_recent = copy.deepcopy(self.messages_initial)
 
@@ -35,11 +35,21 @@ class GroupChat():
         elif last_message['role'] == message['role'] == 'assistant':
             last_message['content'] += "\n" + message['content']
 
-    def update_messages_recent(self, message):
+    def update_messages_initial(self, active_character_name):
+        self.system_prompt.update_messages_initial(active_character_name)
+        self.messages[0] = copy.deepcopy(self.messages_initial[0])
+        self.messages_recent[0] = copy.deepcopy(self.messages_initial[0])
+
+    def update_messages_recent(self):
         length = len(self.messages)
         if length < self.messages_in_context:
-            self.messages_recent.append(message)
+            self.messages_recent = copy.deepcopy(self.messages)
+        else:
+            value = 2
+            if length % 2 == 0:
+                value = 3
+            self.messages_recent = copy.deepcopy(
+                self.messages_initial) + copy.deepcopy(self.messages[-(self.messages_in_context - value)])
 
-    def update_messages_initial(self):
-        random_character = random.choice(self.characters)
-        self.system_prompt.update_messages_initial(random_character)
+    def generate_output(self, message_text=None, active_character_name=None):
+        start = dt.datetime.now()

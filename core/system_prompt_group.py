@@ -22,10 +22,6 @@ class SystemPromptGroup():
         ]
 
     def update_messages_initial(self, active_character_name, max_tokens_output):
-        self.messages_initial[0]['content'] = self.update_system_prompt(
-            active_character_name, max_tokens_output)
-
-    def update_system_prompt(self, active_character_name, max_tokens_output):
         self.set_active_character(active_character_name)
 
         other_characters_short_info = ""
@@ -65,7 +61,7 @@ Rules:
 - Answer in one paragraph.
 - Keep response under {max_tokens_output} tokens. Never mention being an AI or break immersion."""
 
-        return message
+        self.messages_initial[0]['content'] = message
 
     def set_active_character(self, name):
         for character in self.characters:

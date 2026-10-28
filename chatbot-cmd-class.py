@@ -36,6 +36,7 @@ elif mode == "assistant":
 while 1:
     message_text = input(f"{Data.user_info['name']} (User):\n").strip()
     if (message_text.lower() == "quit" or message_text.lower() == "q"):
+        chat.export_chat_text()
         break
     if pass_context:
         from core.embeddings_old import return_similarity_scores
@@ -48,5 +49,3 @@ while 1:
         print(f"Assistant:\n{reply}\n")
     elif mode == "roleplay":
         print(f"\n{character1.name} (Assistant):\n{reply}\n")
-
-chat.export_chat_text()
