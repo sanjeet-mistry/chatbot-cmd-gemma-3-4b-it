@@ -11,11 +11,17 @@ from core.group_chat import GroupChat
 #     else:
 #         chat_parameters = Data.roleplay_chat_params
 
+# chat_parameters['max_new_tokens'] = 100
+
 character_nums = [12, 2]
+character_names = []
+relationships = ["girlfriend", "roommate"]
 characters = []
-for num in character_nums:
+for index, num in enumerate(character_nums):
     character = Character(Data.characters[num], Data.user_info)
+    character.relationship = relationships[index]
     characters.append(character)
+    character_names.append(character.name)
 
 group_chat = GroupChat(Data.user_info, characters)
 firstTime = True
@@ -34,6 +40,6 @@ while 1:
             message_text = ""
 
     active_character = input(
-        "Which character do you want to reply? (Type their name): ").lower()
+        f"Which character do you want to reply? ({' or '.join(character_names)}): ")
     reply = group_chat.generate_output(message_text, active_character)
-    print(f"\n{active_character} (Assistant):\n{reply}\n")
+    print(f"\n{active_character.capitalize()} (Assistant):\n{reply}\n")

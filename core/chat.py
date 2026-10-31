@@ -37,7 +37,7 @@ class Chat():
         self.messages = (copy.deepcopy(self.messages_initial) +
                          self.messages) if self.messages_initial else self.messages
         self.messages_recent = copy.deepcopy(self.messages)
-        self.chatModel = Model(model_info)
+        self.chat_model = Model(model_info)
         self.use_summ = False
         if self.use_summ:
             from core.summary import Summary
@@ -126,16 +126,16 @@ Context:"""
             "return_tensors": "pt",
         }
 
-        if self.chatModel.model_info["family"] == "qwen":
+        if self.chat_model.model_info["family"] == "qwen":
             # Disables CoT reasoning tokens
             chat_template_kwargs["enable_thinking"] = False
 
-        input_ids = self.chatModel.tokenizer.apply_chat_template(
+        input_ids = self.chat_model.tokenizer.apply_chat_template(
             self.messages_summ_recent if self.use_summ else self.messages_recent,
             **chat_template_kwargs).to("cuda")
 
         with torch.inference_mode():
-            outputs = self.chatModel.model.generate(
+            outputs = self.chat_model.model.generate(
                 **input_ids,
                 max_new_tokens=self.chat_settings["max_new_tokens"],
                 do_sample=self.chat_settings["do_sample"],
@@ -147,7 +147,7 @@ Context:"""
         prompt_length = input_ids["input_ids"].shape[-1]
         new_tokens = outputs[0][prompt_length:]
         # Decode only assistant reply
-        reply = self.chatModel.tokenizer.decode(
+        reply = self.chat_model.tokenizer.decode(
             new_tokens, skip_special_tokens=True).strip()
 
         new_message = {"role": "assistant", "content": reply}

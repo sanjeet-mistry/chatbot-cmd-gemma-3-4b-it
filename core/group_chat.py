@@ -3,6 +3,7 @@ import copy
 import datetime as dt
 from core.data import Data
 from core.system_prompt_group import SystemPromptGroup
+from core.model import Model
 import random
 
 
@@ -14,7 +15,7 @@ class GroupChat():
         self.messages_in_context = max_messages_in_context
         self.user_info = user_info
         self.characters = characters
-        self.model_info = model_info
+        self.chat_model = Model(model_info)
 
         self.system_prompt = SystemPromptGroup(self.user_info, self.characters)
 
@@ -27,13 +28,13 @@ class GroupChat():
         self.messages = copy.deepcopy(self.messages_initial)
         self.messages_recent = copy.deepcopy(self.messages_initial)
 
-    def append_message(self, message):
-        length = len(self.messages)
-        last_message = self.messages[length - 1]
-        if last_message['role'] != message['role']:
-            self.messages.append(message)
-        elif last_message['role'] == message['role'] == 'assistant':
-            last_message['content'] += "\n" + message['content']
+    def append_message(self, new_message):
+        self.messages.append(new_message)
+
+    def delete_blank_message(self):
+        last_message = self.messages[len(self.messages) - 1]['content']
+        del self.messages[-2:]
+        self.messages[len(self.messages) - 1]['content'] += "\n" + last_message
 
     def update_messages_initial(self, active_character_name):
         self.system_prompt.update_messages_initial(active_character_name)
@@ -53,3 +54,56 @@ class GroupChat():
 
     def generate_output(self, message_text=None, active_character_name=None):
         start = dt.datetime.now()
+
+        new_message = {"role": "user", "content": message_text}
+        self.append_message(new_message)
+        self.update_messages_recent()
+        ai_reply = False
+
+        if message_text == "" and active_character_name:
+            ai_reply = True
+
+        if active_character_name:
+            self.update_messages_initial(active_character_name)
+
+        chat_template_kwargs = {
+            "tokenize": True,
+            "add_generation_prompt": True,
+            "return_dict": True,
+            "return_tensors": "pt",
+        }
+
+        input_ids = self.chat_model.tokenizer.apply_chat_template(
+            self.messages_recent,
+            **chat_template_kwargs).to("cuda")
+
+        with torch.inference_mode():
+            outputs = self.chat_model.model.generate(
+                **input_ids,
+                max_new_tokens=self.chat_settings.get("max_new_tokens", 100),
+                do_sample=self.chat_settings["do_sample"],
+                temperature=self.chat_settings["temperature"],
+                top_p=self.chat_settings["top_p"],
+                top_k=self.chat_settings["top_k"],
+                repetition_penalty=self.chat_settings.get("repetition_penalty", 1.0))
+
+        prompt_length = input_ids["input_ids"].shape[-1]
+        new_tokens = outputs[0][prompt_length:]
+        # Decode only assistant reply
+        reply = self.chat_model.tokenizer.decode(
+            new_tokens, skip_special_tokens=True).strip()
+
+        reply = f"{active_character_name.capitalize()}: {reply}"
+        new_message = {"role": "assistant", "content": reply}
+        self.append_message(new_message)
+
+        if ai_reply:
+            self.delete_blank_message()
+
+        self.update_messages_recent()
+
+        end = dt.datetime.now()
+        if GroupChat.show_logs:
+            print(f"Time to reply: {end - start}")
+
+        return reply

@@ -176,7 +176,8 @@ Output: Neutral"""
     characters = [
         {
             "id": 1,
-            "name": "Tessa Quinn",
+            "name": "Tessa",
+            "full_name": "Tessa Quinn",
             "age": 24,
             "height": "170 cm",
             "weight": "57 kg",
@@ -199,7 +200,8 @@ Output: Neutral"""
         },
         {
             "id": 2,
-            "name": "Sofia Reyes",
+            "name": "Sofia",
+            "full_name": "Sofia Reyes",
             "age": 24,
             "height": "166 cm",
             "weight": "61 kg",
@@ -222,7 +224,8 @@ Output: Neutral"""
         },
         {
             "id": 3,
-            "name": "Aisha Patel",
+            "name": "Aisha",
+            "full_name": "Aisha Patel",
             "age": 20,
             "height": "150 cm",
             "weight": "45 kg",
@@ -245,7 +248,8 @@ Output: Neutral"""
         },
         {
             "id": 4,
-            "name": "Victoria Hale",
+            "name": "Victoria",
+            "full_name": "Victoria Hale",
             "age": 28,
             "height": "176 cm",
             "weight": "66 kg",
@@ -268,7 +272,8 @@ Output: Neutral"""
         },
         {
             "id": 5,
-            "name": "Lila Mendoza",
+            "name": "Lila",
+            "full_name": "Lila Mendoza",
             "age": 23,
             "height": "167 cm",
             "weight": "78 kg",
@@ -291,7 +296,8 @@ Output: Neutral"""
         },
         {
             "id": 6,
-            "name": "Emily Harper",
+            "name": "Emily",
+            "full_name": "Emily Harper",
             "age": 18,
             "height": "164 cm",
             "weight": "50 kg",
@@ -314,7 +320,8 @@ Output: Neutral"""
         },
         {
             "id": 7,
-            "name": "Priya Sharma",
+            "name": "Priya",
+            "full_name": "Priya Sharma",
             "age": 26,
             "height": "162 cm",
             "weight": "58 kg",
@@ -337,7 +344,8 @@ Output: Neutral"""
         },
         {
             "id": 8,
-            "name": "Jade Torres",
+            "name": "Jade",
+            "full_name": "Jade Torres",
             "age": 25,
             "height": "169 cm",
             "weight": "64 kg",
@@ -360,7 +368,8 @@ Output: Neutral"""
         },
         {
             "id": 9,
-            "name": "Serena Blake",
+            "name": "Serena",
+            "full_name": "Serena Blake",
             "age": 27,
             "height": "171 cm",
             "weight": "60 kg",
@@ -383,7 +392,8 @@ Output: Neutral"""
         },
         {
             "id": 10,
-            "name": "Maya Kapoor",
+            "name": "Maya",
+            "full_name": "Maya Kapoor",
             "age": 29,
             "height": "161 cm",
             "weight": "55 kg",
@@ -406,7 +416,8 @@ Output: Neutral"""
         },
         {
             "id": 11,
-            "name": "Nora Ellis",
+            "name": "Nora",
+            "full_name": "Nora Ellis",
             "age": 20,
             "height": "162 cm",
             "weight": "49 kg",
@@ -429,7 +440,8 @@ Output: Neutral"""
         },
         {
             "id": 12,
-            "name": "Isabella Cruz",
+            "name": "Isabella",
+            "full_name": "Isabella Cruz",
             "age": 30,
             "height": "172 cm",
             "weight": "65 kg",
@@ -453,9 +465,10 @@ Output: Neutral"""
         {
             "id": 13,
             "name": "Claire",
+            "full_name": "Claire",
             "age": 22,
             "height": "168 cm",
-            "weight": "55 kg",
+            "weight": "56 kg",
             "gender": gender[1],
             "personality": {
                 "name": "lover",
