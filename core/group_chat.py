@@ -50,7 +50,7 @@ class GroupChat():
             if length % 2 == 0:
                 value = 3
             self.messages_recent = copy.deepcopy(
-                self.messages_initial) + copy.deepcopy(self.messages[-(self.messages_in_context - value)])
+                self.messages_initial) + copy.deepcopy(self.messages[-(self.messages_in_context - value):])
 
     def generate_output(self, message_text=None, active_character_name=None):
         start = dt.datetime.now()

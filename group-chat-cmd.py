@@ -13,7 +13,7 @@ from core.group_chat import GroupChat
 
 # chat_parameters['max_new_tokens'] = 100
 
-character_nums = [12, 2]
+character_nums = [12, 8]
 character_names = []
 relationships = ["girlfriend", "roommate"]
 characters = []
