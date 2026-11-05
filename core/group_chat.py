@@ -2,69 +2,114 @@ import torch
 import copy
 import datetime as dt
 from core.data import Data
-from core.system_prompt_group import SystemPromptGroup
 from core.model import Model
+from core.utils import get_gender_pronoun
 import random
 
 
 class GroupChat():
     show_logs = True
 
-    def __init__(self, user_info, characters=None, model_info=Data.models["gemma-3-4b-it"], chat_settings=None, max_messages_in_context=17):
+    def __init__(self, user_info, characters=None, model_info=Data.models["gemma-3-4b-it"], chat_settings=None, max_messages_in_context=25):
         self.id = random.randint(1000000000000000, 9999999999999999)
         self.messages_in_context = max_messages_in_context
         self.user_info = user_info
         self.characters = characters
         self.chat_model = Model(model_info)
 
-        self.system_prompt = SystemPromptGroup(self.user_info, self.characters)
-
         if chat_settings is None:
             self.chat_settings = Data.roleplay_chat_params
         else:
             self.chat_settings = chat_settings
 
-        self.messages_initial = self.system_prompt.messages_initial
-        self.messages = copy.deepcopy(self.messages_initial)
-        self.messages_recent = copy.deepcopy(self.messages_initial)
+        self.chat_history_full = []
+        self.chat_history_recent = []
 
-    def append_message(self, new_message):
-        self.messages.append(new_message)
+        self.messages = [
+            {
+                "role": "user",
+                "content": ""
+            }
+        ]
+        self.active_character = characters[0]
 
-    def delete_blank_message(self):
-        last_message = self.messages[len(self.messages) - 1]['content']
-        del self.messages[-2:]
-        self.messages[len(self.messages) - 1]['content'] += "\n" + last_message
+    def set_active_character(self, name):
+        for character in self.characters:
+            if character.name.lower() == name.lower():
+                self.active_character = character
+                return
 
-    def update_messages_initial(self, active_character_name):
-        self.system_prompt.update_messages_initial(active_character_name)
-        self.messages[0] = copy.deepcopy(self.messages_initial[0])
-        self.messages_recent[0] = copy.deepcopy(self.messages_initial[0])
+    def update_system_prompt(self, active_character_name, max_tokens_output=100):
+        self.set_active_character(active_character_name)
+
+        other_characters_short_info = ""
+        for character in self.characters:
+            if character != self.active_character:
+                text = f"{character.name} is a {character.age}-year-old {character.ethnicity} {character.gender}. Relationship with user: {character.relationship}.\n"
+                other_characters_short_info += text
+
+        character_names = ", ".join(
+            character.name for character in self.characters)
+
+        chat_transcript = "\n".join(
+            f"{item['speaker']}: {item['message']}" for item in self.chat_history_recent)
+
+        self.system_prompt = f"""You are {self.active_character.name}, participating in a group chat with {self.user_info['name']} (User) and other characters: {character_names}.
+
+YOUR CHARACTER:
+{self.active_character.name} is a {self.active_character.age}-year-old {self.active_character.ethnicity} {self.active_character.gender}.
+Appearance: {get_gender_pronoun(self.active_character.gender, 'subject', 'capital')} has {self.active_character.hair_color}, {self.active_character.hair_style} hair and a {self.active_character.body_type} body with {self.active_character.breasts_size} breasts.
+Personality: {self.active_character.personality_desc}
+Hobbies: {self.active_character.hobbies}.
+Kinks: {self.active_character.kinks}.
+Occupation: {self.active_character.occupation}.
+
+USER:
+{self.user_info['name']}, {self.user_info['age']}-year-old {self.user_info['gender']}.
+Hobbies: {self.user_info['hobbies']}.
+Your relationship: {self.active_character.relationship}
+
+OTHER CHARACTERS:
+{other_characters_short_info}
+
+GROUP CHAT HISTORY:
+{chat_transcript}
+
+RULES:
+- Always stay in character. Only speak and act as {self.active_character.name}. Never control, impersonate or speak on behalf of other characters or the user.
+- This is a shared group conversation. Interact naturally with both the user and other characters.
+- Pay attention to who is being addressed. If the user addresses another character, don't assume the message is directed at you. Respond according to the conversation context and your own character's perspective.
+- Maintain conversational continuity and remember what each participant has said. Avoid repetitive responses and unnecessary agreement.
+
+RESPONSE FORMAT:
+- Never include your name or any speaker label at the beginning of your response.
+- Use *action* for non-spoken actions. Keep spoken dialogue outside asterisks.
+- Answer in one paragraph.
+
+Never mention being an AI or break character. Keep your response under {max_tokens_output} tokens."""
+
+        self.messages[0]["content"] = self.system_prompt
+
+    def append_message(self, message_text, active_character_name):
+        self.chat_history_full.append(
+            {
+                "speaker": active_character_name.capitalize(),
+                "message": message_text
+            }
+        )
 
     def update_messages_recent(self):
-        length = len(self.messages)
-        if length < self.messages_in_context:
-            self.messages_recent = copy.deepcopy(self.messages)
-        else:
-            value = 2
-            if length % 2 == 0:
-                value = 3
-            self.messages_recent = copy.deepcopy(
-                self.messages_initial) + copy.deepcopy(self.messages[-(self.messages_in_context - value):])
+        self.chat_history_recent = copy.deepcopy(self.chat_history_full[-(
+            self.messages_in_context):])
 
     def generate_output(self, message_text=None, active_character_name=None):
         start = dt.datetime.now()
 
-        new_message = {"role": "user", "content": message_text}
-        self.append_message(new_message)
-        self.update_messages_recent()
-        ai_reply = False
+        if message_text:
+            self.append_message(message_text, "user")
+            self.update_messages_recent()
 
-        if message_text == "" and active_character_name:
-            ai_reply = True
-
-        if active_character_name:
-            self.update_messages_initial(active_character_name)
+        self.update_system_prompt(active_character_name)
 
         chat_template_kwargs = {
             "tokenize": True,
@@ -74,7 +119,7 @@ class GroupChat():
         }
 
         input_ids = self.chat_model.tokenizer.apply_chat_template(
-            self.messages_recent,
+            self.messages,
             **chat_template_kwargs).to("cuda")
 
         with torch.inference_mode():
@@ -93,13 +138,7 @@ class GroupChat():
         reply = self.chat_model.tokenizer.decode(
             new_tokens, skip_special_tokens=True).strip()
 
-        reply = f"{active_character_name.capitalize()}: {reply}"
-        new_message = {"role": "assistant", "content": reply}
-        self.append_message(new_message)
-
-        if ai_reply:
-            self.delete_blank_message()
-
+        self.append_message(reply, active_character_name)
         self.update_messages_recent()
 
         end = dt.datetime.now()
